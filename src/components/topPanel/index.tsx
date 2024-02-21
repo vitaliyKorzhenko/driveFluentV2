@@ -37,7 +37,14 @@ const additionalItems: string[] = [
 ];
   
 
-export const MainTopPanel = (props: Partial<ToolbarProps>) => (
+export interface MainTopPanelProps extends ToolbarProps {
+  /**
+   * The title of the application.
+   */
+ changeTheme?: () => void;
+}
+
+export const MainTopPanel = (props: MainTopPanelProps) => (
   <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
 
     <ToolbarButton
@@ -47,6 +54,13 @@ export const MainTopPanel = (props: Partial<ToolbarProps>) => (
       title="StatPlus.io"
     >
       StatPlus.io
+    </ToolbarButton>
+    <ToolbarButton
+      aria-label="Generate Random Theme"
+      title="Random Theme"
+      onClick={props.changeTheme}
+    >
+      RandomTHEME!
     </ToolbarButton>
     <ToolbarButton
       aria-label="Subscription"

@@ -26,6 +26,8 @@ const useStyles = makeStyles({
     justifyContent: "flex-start",
     ...shorthands.padding("50px", "20px"),
     rowGap: "20px",
+    width: "100%",
+    height: "100%",
   },
 });
 
