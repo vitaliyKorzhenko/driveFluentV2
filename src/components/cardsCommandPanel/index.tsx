@@ -138,7 +138,7 @@ export const CardsChildPanel = () => {
 
       <div className={styles.main}>
         <Button appearance="primary" onClick={() => setOpen(true)}>
-          Open Child Cards
+          Commands
         </Button>
       </div>
     </div>

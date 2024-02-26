@@ -8,13 +8,15 @@ import {
   tokens,
   makeStyles,
   shorthands,
+  ToolbarButton,
 } from "@fluentui/react-components";
-import { Dismiss24Regular } from "@fluentui/react-icons";
+import { Dismiss24Regular,TextSubscript24Filled} from "@fluentui/react-icons";
 import { SubscriptionTitleButton } from "../subscriptionTitleButton";
 import { ActiveDiscountIntent } from "../activeDiscountMessage";
 import { BillingHistoryIntent } from "../billingHistoryMessage";
 import { PricesButton } from "../showPricesButton";
 import { TablePrices } from "../pricesTable";
+
 
 const useStyles = makeStyles({
   root: {
@@ -86,9 +88,13 @@ export const SubscriptionPanel = () => {
       </OverlayDrawer>
 
       <div className={styles.main}>
-        <Button appearance="primary" onClick={() => setOpen(true)}>
-          Subscription Panel
-        </Button>
+      <ToolbarButton
+      aria-label="Subscription"
+      onClick={() => setOpen(true)}
+      icon={<TextSubscript24Filled />}
+    >
+      FREE
+    </ToolbarButton>
       </div>
     </div>
   );

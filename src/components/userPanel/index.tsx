@@ -12,9 +12,10 @@ import {
   Input,
   shorthands,
   Persona,
+  ToolbarButton,
 } from "@fluentui/react-components";
 import { Dismiss24Regular } from "@fluentui/react-icons";
-import { PersonRegular, PhoneRegular, MailRegular } from "@fluentui/react-icons";
+import { PersonRegular, PhoneRegular, MailRegular, People24Regular } from "@fluentui/react-icons";
 import { SubscriptionButton } from "../subscritionButton";
 import { LogoutButton } from "../logoutButton";
 import { AccountButton } from "../accountButton";
@@ -116,9 +117,11 @@ export const UserPanel = () => {
       </OverlayDrawer>
 
       <div className={styles.main}>
-        <Button appearance="primary" onClick={() => setOpen(true)}>
-          User Panel
-        </Button>
+      <ToolbarButton
+      aria-label="User"
+      icon={<People24Regular />} 
+      onClick={() => setOpen(true)}
+    />
       </div>
     </div>
   );

@@ -33,11 +33,10 @@ export interface MainTopPanelProps extends ToolbarProps {
    * The title of the application.
    */
  changeTheme?: () => void;
-
  changeDriveMode?: () => void;
 }
 
-export const MainTopPanel = (props: MainTopPanelProps) => (
+export const MainTopPanelSpread = (props: MainTopPanelProps) => (
   <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
 
     <ToolbarButton
@@ -48,19 +47,12 @@ export const MainTopPanel = (props: MainTopPanelProps) => (
     >
       StatPlus.io
     </ToolbarButton>
-
     <ToolbarButton
     icon={<MoldRegular/>}
-    onClick={
-      () => {
-        if (props.changeDriveMode)
-        props.changeDriveMode();  
-      
-      }
-    }
+    onClick={props.changeDriveMode}
     >
-      Go-Spread
-    </ToolbarButton>
+      Go-DRIVE
+      </ToolbarButton>
     <SubscriptionPanel/>
 
     <ToolbarDivider />
