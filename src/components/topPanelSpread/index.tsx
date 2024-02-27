@@ -19,6 +19,7 @@ import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { CardsChildPanel } from "../cardsCommandPanel";
+import { logout } from "../../firebase";
 
 
 
@@ -34,6 +35,7 @@ export interface MainTopPanelProps extends ToolbarProps {
    */
  changeTheme?: () => void;
  changeDriveMode?: () => void;
+  changeAuth?: () => void;
 }
 
 export const MainTopPanelSpread = (props: MainTopPanelProps) => (
@@ -53,6 +55,15 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => (
     >
       Go-DRIVE
       </ToolbarButton>
+      <ToolbarButton
+      aria-label="Sign Out"
+      onClick={async () => {
+        await logout();
+        props.changeAuth && props.changeAuth();
+      }}
+    >
+      Sign Out
+    </ToolbarButton>
     <SubscriptionPanel/>
 
     <ToolbarDivider />

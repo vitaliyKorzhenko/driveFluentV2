@@ -5,12 +5,19 @@ import { MainTopPanel } from './components/topPanel/index.tsx'
 import { FilesTabs } from './components/filesTab/index.tsx'
 import { SpreadsheetComponent } from './components/speadsheet/index.tsx'
 import { MainTopPanelSpread } from './components/topPanelSpread/index.tsx'
+import Login from './components/loginPage/index.tsx'
 function App() {
 
 
   const [theme, setTheme] = useState(webDarkTheme);
 
   const [driveMode, setDriveMode] = useState(true);
+
+  const [isAuth, setIsAuth] = useState(false);
+
+  const changeAuth = () => {
+    setIsAuth(!isAuth);
+  }
 
   const changeDriveMode = () => {
     console.log('changeDriveMode');
@@ -34,42 +41,88 @@ function App() {
         break;
     }
   };
-  
-  if (driveMode) {
+  if (!isAuth) {
+  return (
+    <FluentProvider>
+    <Login
+    changeAuth={changeAuth}
+    />
+    </FluentProvider>
+  )
+  } else {
+    if (driveMode) {
+      return (
+        <FluentProvider 
+        theme={theme} 
+        style={{
+          height: '100vh',
+          width: '100vw',
+        }}
+        >
+            <MainTopPanel 
+            changeTheme={toggleTheme}
+            changeDriveMode={changeDriveMode}
+            changeAuth={changeAuth}
+            />
+            <FilesTabs/>
+          </FluentProvider>
+       
+      )
+    } else {
+      return (
+        <FluentProvider 
+        theme={theme} 
+        style={{
+          height: '100vh',
+          width: '100vw',
+        }}
+        >
+          <MainTopPanelSpread 
+          changeTheme={toggleTheme}
+          changeDriveMode={changeDriveMode}
+          changeAuth={changeAuth}
+          />
+          <SpreadsheetComponent/>
+          </FluentProvider>
+      )
+    }
+  }
 
-  return (
-    <FluentProvider 
-    theme={theme} 
-    style={{
-      height: '100vh',
-      width: '100vw',
-    }}
-    >
-        <MainTopPanel 
-        changeTheme={toggleTheme}
-        changeDriveMode={changeDriveMode}
-        />
-        <FilesTabs/>
-      </FluentProvider>
+//   if (driveMode) {
+
+//   return (
+//     <FluentProvider 
+//     theme={theme} 
+//     style={{
+//       height: '100vh',
+//       width: '100vw',
+//     }}
+//     >
+//         <MainTopPanel 
+//         changeTheme={toggleTheme}
+//         changeDriveMode={changeDriveMode}
+//         />
+//         <FilesTabs/>
+//       </FluentProvider>
    
-  )
-} else {
-  return (
-    <FluentProvider 
-    theme={theme} 
-    style={{
-      height: '100vh',
-      width: '100vw',
-    }}
-    >
-      <MainTopPanelSpread 
-      changeTheme={toggleTheme}
-      changeDriveMode={changeDriveMode}
-      />
-      <SpreadsheetComponent/>
-      </FluentProvider>
-  )
-}
+//   )
+// } else {
+//   return (
+//     <FluentProvider 
+//     theme={theme} 
+//     style={{
+//       height: '100vh',
+//       width: '100vw',
+//     }}
+//     >
+//       <MainTopPanelSpread 
+//       changeTheme={toggleTheme}
+//       changeDriveMode={changeDriveMode}
+//       />
+//       <SpreadsheetComponent/>
+//       </FluentProvider>
+//   )
+// }
 }
 
 export default App
