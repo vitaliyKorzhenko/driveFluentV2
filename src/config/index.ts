@@ -1,4 +1,4 @@
-import { AppLogger } from "../logs";
+import { AppLogger } from "../logsApp";
 
 export class AppConfiguration {
 

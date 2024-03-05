@@ -10,7 +10,7 @@
 import axios from 'axios';
 import API from '../index';
 import { AppConfiguration } from '../../config';
-import { AppLogger } from '../../logs';
+import { AppLogger } from '../../logsApp';
 import { ServerNodeResponse, ServiceResponseErrorCodes } from '../../types/server';
 import { MessageHelper } from '../messages';
 import { IMethod } from '../methods';
