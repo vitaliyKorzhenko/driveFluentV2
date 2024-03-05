@@ -151,7 +151,7 @@ export const Login = (props : LoginProps) => {
                 {/* Ваша картинка здесь */}
                 <Image
                     alt="Login"
-                    src="/public/statplus.png"
+                    src="/statplus.png"
                     style={{
                         width: '400px',
                         height: '400px',
