@@ -1,9 +1,7 @@
 import {
-  FolderRegular,
   OpenRegular,
   DocumentRegular,
-  DocumentPdfRegular,
-  VideoRegular,
+  TextDescription24Regular
 } from "@fluentui/react-icons";
 import {
   PresenceBadgeStatus,
@@ -21,6 +19,7 @@ import {
   TableColumnId,
   DataGridCellFocusMode,
 } from "@fluentui/react-components";
+import { IExampleFileNodeModel } from "../../types/files";
 
 type FileCell = {
   label: string;
@@ -43,29 +42,19 @@ type Item = {
 description: FileDescriptionCell;
 };
 
-const items: Item[] = [
-  {
-    file: { label: "Meeting notes", icon: <DocumentRegular /> },
-    author: { label: "Vitaliy Korzhenko", status: "available" },
-    description: { label: "Meeting notes for the last meeting" }
-  },
-  {
-    file: { label: "Thursday presentation", icon: <FolderRegular /> },
-    author: { label: "Alex Simachov", status: "busy" },
-    description: { label: "Presentation for the next meeting" }
-  },
-  {
-    file: { label: "Training recording", icon: <VideoRegular /> },
-    author: { label: "Vitaliy Korzhenko", status: "away" },
-    description: { label: "Recording of the last training session" },
-  },
-  {
-    file: { label: "Purchase order", icon: <DocumentPdfRegular /> },
-    author: { label: "Alex Simachov", status: "offline" },
-    description: { label: "Purchase order for the last month" }, 
-  },
-     
-];
+function parseNodeModelsToItems(files: IExampleFileNodeModel[]): Item[] {
+  let author1: AuthorCell = { label: "Vitaliy Korzhenko", status: 'available' };
+  let author2: AuthorCell = { label: "Alex Simachov", status: 'busy' };
+  
+  return files.map((file: IExampleFileNodeModel) => {
+    let mathRandom = Math.round(Math.random());
+    return {
+      file: { label: file.file_name, icon: <DocumentRegular /> },
+      author:  mathRandom % 2 == 1 ? author1 : author2,
+      description: { label: file.description, icon: <TextDescription24Regular/> }
+    };
+  });
+}
 
 const columns: TableColumnDefinition<Item>[] = [
   createTableColumn<Item>({
@@ -78,7 +67,13 @@ const columns: TableColumnDefinition<Item>[] = [
     },
     renderCell: (item) => {
       return (
-        <TableCellLayout media={item.file.icon}>
+        <TableCellLayout media={item.file.icon}
+        style={{
+          fontSize: "16px",
+          fontWeight: "bold",
+
+        }}
+        >
           {item.file.label}
         </TableCellLayout>
       );
@@ -101,6 +96,7 @@ const columns: TableColumnDefinition<Item>[] = [
               name={item.author.label}
               badge={{ status: item.author.status }}
             />
+            
           }
         >
           {item.author.label}
@@ -156,10 +152,13 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   }
 };
 
-export const FilesExampleGrid = () => {
+export interface FilesExampleGridProps {
+  files: IExampleFileNodeModel[];
+}
+export const FilesExampleGrid = (props: FilesExampleGridProps) => {
   return (
     <DataGrid
-      items={items}
+      items={parseNodeModelsToItems(props.files)}
       columns={columns}
       sortable
       selectionMode="multiselect"

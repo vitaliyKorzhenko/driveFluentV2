@@ -1,11 +1,12 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FluentProvider, webLightTheme, webDarkTheme, teamsDarkTheme, teamsHighContrastTheme, teamsLightTheme } from '@fluentui/react-components'
-import { MainTopPanel } from './components/topPanel/index.tsx'
-import { FilesTabs } from './components/filesTab/index.tsx'
 import { SpreadsheetComponent } from './components/speadsheet/index.tsx'
 import { MainTopPanelSpread } from './components/topPanelSpread/index.tsx'
 import Login from './components/loginPage/index.tsx'
+import { Drive } from './components/drive/index.tsx'
+import { auth } from './firebase/index.tsx'
+import { AppConfiguration } from './config/index.ts'
 function App() {
 
 
@@ -41,6 +42,26 @@ function App() {
         break;
     }
   };
+
+
+  useEffect(() => {
+    // init config
+    AppConfiguration.initConfig(false);
+    // Listen for changes in the authentication state
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+        setIsAuth(true);
+      } else {
+        // User is signed out
+        setIsAuth(false);
+      }
+    });
+
+    // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
   if (!isAuth) {
   return (
     <FluentProvider>
@@ -51,23 +72,14 @@ function App() {
   )
   } else {
     if (driveMode) {
-      return (
-        <FluentProvider 
-        theme={theme} 
-        style={{
-          height: '100vh',
-          width: '100vw',
-        }}
-        >
-            <MainTopPanel 
-            changeTheme={toggleTheme}
-            changeDriveMode={changeDriveMode}
-            changeAuth={changeAuth}
-            />
-            <FilesTabs/>
-          </FluentProvider>
-       
-      )
+     return (
+      <Drive
+      changeAuth={changeAuth}
+      changeDriveMode={changeDriveMode}
+      changeTheme={toggleTheme}
+      theme={theme}
+      />
+     )
     } else {
       return (
         <FluentProvider 
@@ -87,42 +99,6 @@ function App() {
       )
     }
   }
-
-//   if (driveMode) {
-
-//   return (
-//     <FluentProvider 
-//     theme={theme} 
-//     style={{
-//       height: '100vh',
-//       width: '100vw',
-//     }}
-//     >
-//         <MainTopPanel 
-//         changeTheme={toggleTheme}
-//         changeDriveMode={changeDriveMode}
-//         />
-//         <FilesTabs/>
-//       </FluentProvider>
-   
-//   )
-// } else {
-//   return (
-//     <FluentProvider 
-//     theme={theme} 
-//     style={{
-//       height: '100vh',
-//       width: '100vw',
-//     }}
-//     >
-//       <MainTopPanelSpread 
-//       changeTheme={toggleTheme}
-//       changeDriveMode={changeDriveMode}
-//       />
-//       <SpreadsheetComponent/>
-//       </FluentProvider>
-//   )
-// }
 }
 
 export default App
