@@ -1,4 +1,3 @@
-import { UserProfile } from "firebase/auth";
 import { AppLogger } from "../../logsApp";
 import { ServiceResponseErrorCodes } from "../../types/server";
 import { ApiBase } from "../ApiBase";
