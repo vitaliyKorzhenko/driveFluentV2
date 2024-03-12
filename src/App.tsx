@@ -7,6 +7,9 @@ import Login from './components/loginPage/index.tsx'
 import { Drive } from './components/drive/index.tsx'
 import { auth } from './firebase/index.tsx'
 import { AppConfiguration } from './config/index.ts'
+import { ApiUserNode } from './api/ApiUser/index.ts'
+import { LocalStorageHelper } from './helpers/localstorageHelper.ts'
+import { UserProfile } from './users/index.ts'
 function App() {
 
 
@@ -50,7 +53,21 @@ function App() {
     // Listen for changes in the authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log('user', user);
+        const email = user.email ? user.email : '';
         // User is signed in
+        ApiUserNode.loginWithEmailNode(email).then((res) => {
+          console.log('res', res);
+          if (!res) {
+            console.log('User not found');
+          }
+          LocalStorageHelper.setUserId(res.toString());
+          UserProfile.setCurrentUserId(res.toString());
+          
+        }
+        ).catch((error) => {
+          console.log('error', error);
+        }); 
         setIsAuth(true);
       } else {
         // User is signed out

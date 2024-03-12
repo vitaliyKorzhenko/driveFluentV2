@@ -19,6 +19,8 @@ import { PersonRegular, PhoneRegular, MailRegular, People24Regular } from "@flue
 import { SubscriptionButton } from "../subscritionButton";
 import { LogoutButton } from "../logoutButton";
 import { AccountButton } from "../accountButton";
+import { UserProfile } from "../../users";
+import { ApiUserNode } from "../../api/ApiUser";
 
 const useStyles = makeStyles({
   root: {
@@ -56,6 +58,31 @@ export const UserPanel = () => {
 
   const beforeId = useId("content-before");
 
+  const [firstName , setFirstName] = React.useState(UserProfile.getFirstName());
+
+  const [lastName , setLastName] = React.useState(UserProfile.getLastName());
+
+  const [phone, setPhone] = React.useState(UserProfile.getPhone());
+
+  const [email, setEmail] = React.useState(UserProfile.getEmail());
+
+  React.useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    console.log("userId", userId);
+    if (userId) {
+    UserProfile.setCurrentUserId(userId.toString());
+    ApiUserNode.getProfile(userId).then((response) => {
+      UserProfile.initUserProfile(response);
+      setFirstName(UserProfile.getFirstName());
+      setLastName(UserProfile.getLastName());
+      setPhone(UserProfile.getPhone());
+      setEmail(UserProfile.getEmail());
+    }).catch((error) => {
+      console.log('error', error);
+    })
+  }
+  }
+  , []);
 
   return (
     <div>
@@ -89,25 +116,43 @@ export const UserPanel = () => {
         size="medium"
         name="Vitaliy Korzhenko"
         avatar={{ color: "colorful" }}
-        secondaryText="vitaliykorzenkoua@gmail.com"
+        secondaryText={email}
       />
             </div>
           
             <div>
               <Label htmlFor={beforeId}>First name</Label>
-              <Input contentBefore={<PersonRegular />} id={beforeId} />
+              <Input contentBefore={<PersonRegular />} 
+              id={beforeId} 
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              />
       </div>
       <div>
               <Label htmlFor={beforeId}>Last name</Label>
-              <Input contentBefore={<PersonRegular />} id={beforeId} />
+              <Input contentBefore={<PersonRegular />} 
+              id={beforeId} 
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              />
       </div>
       <div>
               <Label htmlFor={beforeId}>Phone</Label>
-              <Input contentBefore={<PhoneRegular/>} id={beforeId} />
+              <Input contentBefore={<PhoneRegular/>} 
+              id={beforeId} 
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              />
       </div>
       <div>
-              <Label typeof="email" htmlFor={beforeId}>Email</Label>
-              <Input contentBefore={<MailRegular/>} id={beforeId} />
+              <Label typeof="email" 
+              htmlFor={beforeId}
+              >Email</Label>
+              <Input contentBefore={<MailRegular/>} 
+              id={beforeId} 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              />
       </div>
             <div>
               <LogoutButton/>
