@@ -3,8 +3,6 @@ import {
   EditRegular,
   OpenRegular,
   DocumentRegular,
-  DocumentPdfRegular,
-  VideoRegular,
   DeleteRegular,
   DoubleSwipeUpRegular,
 } from "@fluentui/react-icons";
@@ -23,6 +21,7 @@ import {
   TableColumnId,
   DataGridCellFocusMode,
 } from "@fluentui/react-components";
+import { IUserFileNodeModel } from "../../types/files";
 
 type FileCell = {
   label: string;
@@ -52,32 +51,13 @@ type Item = {
 
 };
 
-const items: Item[] = [
-  {
-    file: { label: "Meeting notes", icon: <DocumentRegular /> },
-    author: { label: "Max Mustermann", status: "available" },
-    lastUpdated: { label: "7h ago", timestamp: 1 },
-  },
-  {
-    file: { label: "Thursday presentation", icon: <FolderRegular /> },
-    author: { label: "Erika Mustermann", status: "busy" },
-    lastUpdated: { label: "Yesterday at 1:45 PM", timestamp: 2 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-  {
-    file: { label: "Training recording", icon: <VideoRegular /> },
-    author: { label: "John Doe", status: "away" },
-    lastUpdated: { label: "Yesterday at 1:45 PM", timestamp: 2 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-  {
-    file: { label: "Purchase order", icon: <DocumentPdfRegular /> },
-    author: { label: "Jane Doe", status: "offline" },
-    lastUpdated: { label: "Tue at 9:30 AM", timestamp: 3 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-];
 
+function parseSizeToMbLabel(size: number | null | undefined): string {
+  if (!size) {
+    return "0 MB";
+  }
+  return `${(size / 1024).toFixed(2)} MB`;
+}
 const columns: TableColumnDefinition<Item>[] = [
   createTableColumn<Item>({
     columnId: "file",
@@ -89,7 +69,14 @@ const columns: TableColumnDefinition<Item>[] = [
     },
     renderCell: (item) => {
       return (
-        <TableCellLayout media={item.file.icon}>
+        <TableCellLayout 
+        media={item.file.icon}
+        style={{
+          fontWeight: "bold",
+          fontStyle: "italic",
+        
+        }}
+        >
           {item.file.label}
         </TableCellLayout>
       );
@@ -105,7 +92,16 @@ const columns: TableColumnDefinition<Item>[] = [
       return "Last updated";
     },
     renderCell: (item) => {
-      return item.lastUpdated.label;
+      return (
+        <TableCellLayout
+          style={{
+            fontWeight: "bold",
+            color: 'red'
+          }}
+          >
+          {item.lastUpdated.label}
+          </TableCellLayout>
+      )
     },
   }),   
   createTableColumn<Item>({
@@ -117,6 +113,16 @@ const columns: TableColumnDefinition<Item>[] = [
       return "File size";
     },
     renderCell: (item) => {
+      return (
+        <TableCellLayout
+          style={{
+            fontWeight: "bold",
+            color: 'green'
+          }}
+          >
+          {parseSizeToMbLabel(item.fileSize?.size)}
+          </TableCellLayout>
+      )
       return item.fileSize?.label;
     },
   }),
@@ -167,10 +173,29 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   }
 };
 
-export const FilesGrid = () => {
+export interface FilesGridProps {
+  files: IUserFileNodeModel[]
+}
+
+function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
+  let author1: AuthorCell = { label: "Vitaliy Korzhenko", status: 'available' };
+  let author2: AuthorCell = { label: "Alex Simachov", status: 'busy' };
+  
+  return files.map((file: IUserFileNodeModel) => {
+    let mathRandom = Math.round(Math.random());
+    return {
+      file: { label: file.file_name, icon: mathRandom ? <DocumentRegular /> : <FolderRegular /> },
+      fileSize: { label: file.file_size.toString(), size: file.file_size },
+      lastUpdated: { label: new Date().toLocaleDateString(), timestamp: Date.now() },
+      author: mathRandom ? author1 : author2
+    }
+  });
+}
+      
+export const FilesGrid = (props: FilesGridProps) => {
   return (
     <DataGrid
-      items={items}
+      items={parseNodeModelsToItems(props.files)}
       columns={columns}
       sortable
       selectionMode="multiselect"

@@ -6,3 +6,13 @@ export interface IExampleFileNodeModel {
    
 }
 
+export interface IUserFileNodeModel {
+    file_name: string;
+    description: string;
+    id: number;
+    file_data: string;
+    file_size: number;
+    folder?: string;
+    is_tarshed: boolean;
+}
+

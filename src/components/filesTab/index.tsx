@@ -15,7 +15,7 @@ import {
 import { FilesGrid } from "../filesGrid";
 import { FilesExampleGrid } from "../filesGridExample";
 import { FilesTrashGrid } from "../filesGridTrash";
-import { IExampleFileNodeModel } from "../../types/files";
+import { IExampleFileNodeModel, IUserFileNodeModel } from "../../types/files";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 
 export interface FilesTabsProps {
   examples: IExampleFileNodeModel[];
+  userFiles: IUserFileNodeModel[];
 }
 
 export const FilesTabs = (props :  FilesTabsProps) => {
@@ -50,7 +51,7 @@ export const FilesTabs = (props :  FilesTabsProps) => {
         style = {{color: 'black', padding: '10px'}}
          icon={<DocumentRegular />} value="myfiles"
          onClick={() => setSelectedTab("myfiles")}
-        
+
          >
             MY FILES
         </Tab>
@@ -76,7 +77,9 @@ export const FilesTabs = (props :  FilesTabsProps) => {
       </TabList>
         {
             selectedTab == "myfiles" ?
-            <FilesGrid /> :
+            <FilesGrid
+            files={props.userFiles}
+             /> :
             selectedTab == "examples" ?
             <FilesExampleGrid files={props.examples}  /> :
             <FilesTrashGrid />

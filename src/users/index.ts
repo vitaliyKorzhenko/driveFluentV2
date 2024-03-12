@@ -58,6 +58,11 @@ export class UserProfile {
         return this.currentUserId;
     }
 
+    public static getCurrentUserIdNumber(): number | null {
+        let numUserId = this.currentUserId ? parseInt(this.currentUserId) : null;
+        return numUserId;
+    }
+
     public static setCurrentUserId(userId: string) {
         this.currentUserId = userId;
     }
