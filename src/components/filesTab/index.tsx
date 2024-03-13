@@ -35,6 +35,7 @@ const useStyles = makeStyles({
 export interface FilesTabsProps {
   examples: IExampleFileNodeModel[];
   userFiles: IUserFileNodeModel[];
+  refreshFiles: () => void;
 }
 
 export const FilesTabs = (props :  FilesTabsProps) => {
@@ -79,6 +80,7 @@ export const FilesTabs = (props :  FilesTabsProps) => {
             selectedTab == "myfiles" ?
             <FilesGrid
             files={props.userFiles}
+            refreshFiles={props.refreshFiles}
              /> :
             selectedTab == "examples" ?
             <FilesExampleGrid files={props.examples}  /> :

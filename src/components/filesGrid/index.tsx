@@ -22,6 +22,7 @@ import {
   DataGridCellFocusMode,
 } from "@fluentui/react-components";
 import { IUserFileNodeModel } from "../../types/files";
+import { UserFilesToolbar } from "../userFilesToolbar";
 
 type FileCell = {
   label: string;
@@ -174,7 +175,8 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
 };
 
 export interface FilesGridProps {
-  files: IUserFileNodeModel[]
+  files: IUserFileNodeModel[],
+  refreshFiles?: () => void;
 }
 
 function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
@@ -194,6 +196,10 @@ function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
       
 export const FilesGrid = (props: FilesGridProps) => {
   return (
+    <>
+    <UserFilesToolbar
+      refreshFiles={props.refreshFiles}
+     />
     <DataGrid
       items={parseNodeModelsToItems(props.files)}
       columns={columns}
@@ -235,5 +241,6 @@ export const FilesGrid = (props: FilesGridProps) => {
         )}
       </DataGridBody>
     </DataGrid>
+    </>
   );
 };

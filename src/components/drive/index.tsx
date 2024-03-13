@@ -18,34 +18,35 @@ export const Drive = (props: DriveProps) => {
 
     const [userFiles, setUserFiles] = useState<IUserFileNodeModel[]>([]);
 
-    useEffect(() => {
-        const fetchDataExamles = async () => {
-            try {
-                console.log('go GET EXAMPLES');
-                let fetchedFiles: IExampleFileNodeModel[] = await ApiUserFilesNode.getExamplesFilesNode();
-                console.log('fetchedFiles', fetchedFiles);
-                setExampleFiles(fetchedFiles);
-            } catch (error) {
-                console.error("Error fetching files:", error);
-            }
-        };
-
-        const fetchUserFiles = async () => {
-            try {
-                console.log('go GET USER FILES');
-                let userId = UserProfile.getCurrentUserIdNumber();
-                console.log('userId', userId);
-                if (!userId) {
-                    console.error("Error fetching files: User not found");
-                    return;
-                }
-                let fetchedFiles: IUserFileNodeModel[] = await ApiUserFilesNode.getUserFilesNode(userId);
-                console.log('USER FILES', fetchedFiles);
-                setUserFiles(fetchedFiles);
-            } catch (error) {
-                console.error("Error fetching files:", error);
-            }
+    const fetchDataExamles = async () => {
+        try {
+            console.log('go GET EXAMPLES');
+            let fetchedFiles: IExampleFileNodeModel[] = await ApiUserFilesNode.getExamplesFilesNode();
+            console.log('fetchedFiles', fetchedFiles);
+            setExampleFiles(fetchedFiles);
+        } catch (error) {
+            console.error("Error fetching files:", error);
         }
+    };
+
+    const fetchUserFiles = async () => {
+        try {
+            console.log('go GET USER FILES');
+            let userId = UserProfile.getCurrentUserIdNumber();
+            console.log('userId', userId);
+            if (!userId) {
+                console.error("Error fetching files: User not found");
+                return;
+            }
+            let fetchedFiles: IUserFileNodeModel[] = await ApiUserFilesNode.getUserFilesNode(userId);
+            console.log('USER FILES', fetchedFiles);
+            setUserFiles(fetchedFiles);
+        } catch (error) {
+            console.error("Error fetching files:", error);
+        }
+    }
+    useEffect(() => {
+       
         //feth user files
 
         fetchDataExamles();
@@ -68,6 +69,7 @@ export const Drive = (props: DriveProps) => {
             <FilesTabs 
             examples={exampleFiles}
             userFiles={userFiles}
+            refreshFiles={fetchUserFiles}
              />
         </FluentProvider>
     );

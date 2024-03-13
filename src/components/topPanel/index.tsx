@@ -18,7 +18,6 @@ import type { ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
-import { CardsChildPanel } from "../cardsCommandPanel";
 import { logout } from "../../firebase";
 
 
@@ -110,6 +109,5 @@ export const MainTopPanel = (props: MainTopPanelProps) => (
       </Menu> 
     <ToolbarDivider />  
     <UserPanel/>
-    <CardsChildPanel/>
   </Toolbar>
 );
