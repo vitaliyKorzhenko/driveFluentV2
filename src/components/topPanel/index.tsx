@@ -19,6 +19,7 @@ import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { logout } from "../../firebase";
+import { VersionHelper } from "../../helpers/versionHelper";
 
 
 
@@ -48,9 +49,16 @@ export const MainTopPanel = (props: MainTopPanelProps) => (
       icon={<Apps24Regular />}
       title="StatPlus.io"
     >
-      StatPlus.io
+     { 'StatPlus.io'}
     </ToolbarButton>
-
+    <ToolbarButton
+    color="red"
+    style={{
+      color: 'red'
+    }}
+    >
+      { 'v' + VersionHelper.getVersion()}
+    </ToolbarButton>
     <ToolbarButton
     icon={<MoldRegular/>}
     onClick={
