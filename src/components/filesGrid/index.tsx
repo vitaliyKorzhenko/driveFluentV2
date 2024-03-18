@@ -23,8 +23,11 @@ import {
 } from "@fluentui/react-components";
 import { IUserFileNodeModel } from "../../types/files";
 import { UserFilesToolbar } from "../userFilesToolbar";
+import { EditFileDialog } from "../editFileDialog";
+import React from "react";
 
 type FileCell = {
+  id: number;
   label: string;
   icon: JSX.Element;
 };
@@ -59,109 +62,7 @@ function parseSizeToMbLabel(size: number | null | undefined): string {
   }
   return `${(size / 1024).toFixed(2)} MB`;
 }
-const columns: TableColumnDefinition<Item>[] = [
-  createTableColumn<Item>({
-    columnId: "file",
-    compare: (a, b) => {
-      return a.file.label.localeCompare(b.file.label);
-    },
-    renderHeaderCell: () => {
-      return "File";
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout 
-        media={item.file.icon}
-        style={{
-          fontWeight: "bold",
-          fontStyle: "italic",
-        
-        }}
-        >
-          {item.file.label}
-        </TableCellLayout>
-      );
-    },
-  }),
- 
-  createTableColumn<Item>({
-    columnId: "lastUpdated",
-    compare: (a, b) => {
-      return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
-    },
-    renderHeaderCell: () => {
-      return "Last updated";
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout
-          style={{
-            fontWeight: "bold",
-            color: 'red'
-          }}
-          >
-          {item.lastUpdated.label}
-          </TableCellLayout>
-      )
-    },
-  }),   
-  createTableColumn<Item>({
-    columnId: "fileSize",
-    compare: (a, b) => {
-      return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
-    },
-    renderHeaderCell: () => {
-      return "File size";
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout
-          style={{
-            fontWeight: "bold",
-            color: 'green'
-          }}
-          >
-          {parseSizeToMbLabel(item.fileSize?.size)}
-          </TableCellLayout>
-      )
-      return item.fileSize?.label;
-    },
-  }),
 
-  createTableColumn<Item>({
-    columnId: "singleAction",
-    renderHeaderCell: () => {
-      return "Single action";
-    },
-    renderCell: () => {
-      return <Button
-      style={{
-        width: "100%",
-      
-        color: "#1E90FF",
-
-      }}
-       icon={<OpenRegular />}>
-        Open
-        </Button>;
-    },
-  }),
-  createTableColumn<Item>({
-    columnId: "actions",
-    renderHeaderCell: () => {
-      return "Actions";
-    },
-    renderCell: () => {
-      return (
-        <>
-          <Button style={{color: 'orange'}} aria-label="Edit" icon={<EditRegular />} />
-          <Button style={{color: 'red'}} aria-label="Delete" icon={<DeleteRegular />} />
-          <Button style= {{color: 'black'}} aria-label="Duplicate" icon={<DoubleSwipeUpRegular />} />
-        </>
-      );
-    },
-  }),
-];
 
 const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   switch (columnId) {
@@ -186,7 +87,7 @@ function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
   return files.map((file: IUserFileNodeModel) => {
     let mathRandom = Math.round(Math.random());
     return {
-      file: { label: file.file_name, icon: mathRandom ? <DocumentRegular /> : <FolderRegular /> },
+      file: {id: file.id, label: file.file_name, icon: mathRandom ? <DocumentRegular /> : <FolderRegular /> },
       fileSize: { label: file.file_size.toString(), size: file.file_size },
       lastUpdated: { label: new Date().toLocaleDateString(), timestamp: Date.now() },
       author: mathRandom ? author1 : author2
@@ -195,6 +96,134 @@ function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
 }
       
 export const FilesGrid = (props: FilesGridProps) => {
+
+  const [isOpenEditFileDialog, setIsOpenEditFileDialog] = React.useState(false);
+  const [fileId, setFileId] = React.useState(0);
+  const [fileName, setFileName] = React.useState('');
+
+  const handleEditFile = (fileId: number, fileName: string) => {
+    setFileId(fileId);
+    setFileName(fileName);
+    setIsOpenEditFileDialog(true);
+  };
+
+  const closeEditFileDialog = () => {
+    setIsOpenEditFileDialog(false);
+  }
+
+
+  const columns: TableColumnDefinition<Item>[] = [
+    createTableColumn<Item>({
+      columnId: "file",
+      compare: (a, b) => {
+        return a.file.label.localeCompare(b.file.label);
+      },
+      renderHeaderCell: () => {
+        return "File";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout 
+          media={item.file.icon}
+          style={{
+            fontWeight: "bold",
+            fontStyle: "italic",
+          
+          }}
+          >
+            {item.file.label}
+          </TableCellLayout>
+        );
+      },
+    }),
+   
+    createTableColumn<Item>({
+      columnId: "lastUpdated",
+      compare: (a, b) => {
+        return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
+      },
+      renderHeaderCell: () => {
+        return "Last updated";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout
+            style={{
+              fontWeight: "bold",
+              color: 'red'
+            }}
+            >
+            {item.lastUpdated.label}
+            </TableCellLayout>
+        )
+      },
+    }),   
+    createTableColumn<Item>({
+      columnId: "fileSize",
+      compare: (a, b) => {
+        return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
+      },
+      renderHeaderCell: () => {
+        return "File size";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout
+            style={{
+              fontWeight: "bold",
+              color: 'green'
+            }}
+            >
+            {parseSizeToMbLabel(item.fileSize?.size)}
+            </TableCellLayout>
+        )
+        return item.fileSize?.label;
+      },
+    }),
+  
+    createTableColumn<Item>({
+      columnId: "singleAction",
+      renderHeaderCell: () => {
+        return "Single action";
+      },
+      renderCell: () => {
+        return <Button
+        style={{
+          width: "100%",
+        
+          color: "#1E90FF",
+  
+        }}
+         icon={<OpenRegular />}>
+          Open
+          </Button>;
+      },
+    }),
+    createTableColumn<Item>({
+      columnId: "actions",
+      renderHeaderCell: () => {
+        return "Actions";
+      },
+      renderCell: (item: Item) => {
+        return (
+          <>
+            <Button style={
+              {color: 'orange'}} 
+            aria-label="Edit" 
+            icon={<EditRegular />} 
+            onClick={() => {
+              console.log('edit file', item.file.id, item.file.label);
+              handleEditFile(item.file.id, item.file.label);
+            }}
+            />
+            <Button style={{color: 'red'}} aria-label="Delete" icon={<DeleteRegular />} />
+            <Button style= {{color: 'black'}} aria-label="Duplicate" icon={<DoubleSwipeUpRegular />} />
+          </>
+        );
+      },
+    }),
+  ];
+
   return (
     <>
     <UserFilesToolbar
@@ -241,6 +270,14 @@ export const FilesGrid = (props: FilesGridProps) => {
         )}
       </DataGridBody>
     </DataGrid>
+    <EditFileDialog 
+     refreshFiles={props.refreshFiles}
+      open={isOpenEditFileDialog}
+      fileId={fileId}
+      fileName={fileName}
+      closeDialog={closeEditFileDialog}
+
+      />
     </>
   );
 };

@@ -50,5 +50,17 @@ export class ApiUserFilesNode {
         if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
         return Promise.resolve<IUserFileNodeModel[]>(res.data)
     }
+
+    /*
+    renameFile
+    */
+
+    public static async renameFileNode(fileId: number, fileName: string): Promise<IUserFileNodeModel> {
+        const res = await ApiBase.runBaseRequest({ file_id: fileId, file_name: fileName }, MethodsHelper.renameFileNode);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve<IUserFileNodeModel>(res.data)
+    }
+
+    
 }
 
