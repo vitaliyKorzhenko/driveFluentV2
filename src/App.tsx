@@ -10,6 +10,7 @@ import { AppConfiguration } from './config/index.ts'
 import { ApiUserNode } from './api/ApiUser/index.ts'
 import { LocalStorageHelper } from './helpers/localstorageHelper.ts'
 import { UserProfile } from './users/index.ts'
+import { ProgressBarProvider } from './components/progressBar/progressContext.tsx'
 function App() {
 
 
@@ -90,12 +91,14 @@ function App() {
   } else {
     if (driveMode) {
      return (
+      <ProgressBarProvider>
       <Drive
       changeAuth={changeAuth}
       changeDriveMode={changeDriveMode}
       changeTheme={toggleTheme}
       theme={theme}
       />
+      </ProgressBarProvider>
      )
     } else {
       return (

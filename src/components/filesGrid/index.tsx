@@ -25,6 +25,8 @@ import { IUserFileNodeModel } from "../../types/files";
 import { UserFilesToolbar } from "../userFilesToolbar";
 import { EditFileDialog } from "../editFileDialog";
 import React from "react";
+import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
+import { useProgressBar } from "../progressBar/progressContext";
 
 type FileCell = {
   id: number;
@@ -101,11 +103,22 @@ export const FilesGrid = (props: FilesGridProps) => {
   const [fileId, setFileId] = React.useState(0);
   const [fileName, setFileName] = React.useState('');
 
+  const { startProgressBar, stopProgressBar } = useProgressBar(); 
   const handleEditFile = (fileId: number, fileName: string) => {
     setFileId(fileId);
     setFileName(fileName);
     setIsOpenEditFileDialog(true);
   };
+
+  const handleDuplicateFile = async (fileId: number) => {
+    try {
+      startProgressBar();
+      await ApiUserFilesNode.duplicateFileNode(fileId);
+      stopProgressBar();
+    } catch (error) {
+      console.error("duplicateFileNode Error: ", error);
+    }
+  }
 
   const closeEditFileDialog = () => {
     setIsOpenEditFileDialog(false);
@@ -217,7 +230,17 @@ export const FilesGrid = (props: FilesGridProps) => {
             }}
             />
             <Button style={{color: 'red'}} aria-label="Delete" icon={<DeleteRegular />} />
-            <Button style= {{color: 'black'}} aria-label="Duplicate" icon={<DoubleSwipeUpRegular />} />
+            <Button 
+            style= {{color: 'green'}} 
+            aria-label="Duplicate" 
+            onClick={async () => {
+              console.log('duplicate file', item.file.id);
+              await handleDuplicateFile(item.file.id);
+              props.refreshFiles && props.refreshFiles();
+            }}
+            icon={<DoubleSwipeUpRegular />} 
+
+            />
           </>
         );
       },
