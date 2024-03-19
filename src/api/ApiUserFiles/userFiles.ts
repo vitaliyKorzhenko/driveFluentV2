@@ -61,6 +61,15 @@ export class ApiUserFilesNode {
         return Promise.resolve<IUserFileNodeModel>(res.data)
     }
 
+    /*  
+    duplicate user file
+    */
+
+    public static async duplicateFileNode(fileId: number): Promise<IUserFileNodeModel> {
+        const res = await ApiBase.runBaseRequest({ file_id: fileId }, MethodsHelper.duplicateFileNode);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve<IUserFileNodeModel>(res.data)
+    }
     
 }
 

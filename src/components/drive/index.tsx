@@ -5,6 +5,8 @@ import { FilesTabs } from "../filesTab";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { IExampleFileNodeModel, IUserFileNodeModel} from "../../types/files";
 import { UserProfile } from "../../users";
+import { useProgressBar } from "../progressBar/progressContext"; // Импорт контекста прогресса
+import { Progress } from "../progressBar";
 
 export interface DriveProps {
     theme: Partial<Theme>;
@@ -17,6 +19,8 @@ export const Drive = (props: DriveProps) => {
     const [exampleFiles, setExampleFiles] = useState<IExampleFileNodeModel[]>([]); 
 
     const [userFiles, setUserFiles] = useState<IUserFileNodeModel[]>([]);
+
+    const { startProgressBar, stopProgressBar } = useProgressBar(); // Получение функции для изменения прогресса
 
     const fetchDataExamles = async () => {
         try {
@@ -32,15 +36,19 @@ export const Drive = (props: DriveProps) => {
     const fetchUserFiles = async () => {
         try {
             console.log('go GET USER FILES');
+            startProgressBar(); // Запуск прогресса
             let userId = UserProfile.getCurrentUserIdNumber();
             console.log('userId', userId);
             if (!userId) {
                 console.error("Error fetching files: User not found");
                 return;
             }
+            // startProgressBar(); // Запуск прогресса
             let fetchedFiles: IUserFileNodeModel[] = await ApiUserFilesNode.getUserFilesNode(userId);
             console.log('USER FILES', fetchedFiles);
+            stopProgressBar(); // Остановка прогресса
             setUserFiles(fetchedFiles);
+            // stopProgressBar(); // Остановка прогресса
         } catch (error) {
             console.error("Error fetching files:", error);
         }
@@ -48,10 +56,10 @@ export const Drive = (props: DriveProps) => {
     useEffect(() => {
        
         //feth user files
-
+        fetchUserFiles();
         fetchDataExamles();
         //fetch user files
-        fetchUserFiles();
+      
     }, []);
 
     return (
@@ -71,6 +79,9 @@ export const Drive = (props: DriveProps) => {
             userFiles={userFiles}
             refreshFiles={fetchUserFiles}
              />
+              <Progress/>
         </FluentProvider>
     );
 };
+
+
