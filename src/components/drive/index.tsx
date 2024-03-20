@@ -20,6 +20,8 @@ export const Drive = (props: DriveProps) => {
 
     const [userFiles, setUserFiles] = useState<IUserFileNodeModel[]>([]);
 
+    const [trashedUserFiles, setTrashedUserFiles] = useState<IUserFileNodeModel[]>([]);
+
     const { startProgressBar, stopProgressBar } = useProgressBar(); // Получение функции для изменения прогресса
 
     const fetchDataExamles = async () => {
@@ -45,9 +47,13 @@ export const Drive = (props: DriveProps) => {
             }
             // startProgressBar(); // Запуск прогресса
             let fetchedFiles: IUserFileNodeModel[] = await ApiUserFilesNode.getUserFilesNode(userId);
+            //filter trashed files
+            let userFiles = fetchedFiles.filter((file) => !file.is_trashed);
             console.log('USER FILES', fetchedFiles);
+            let trashedFiles = fetchedFiles.filter((file) => file.is_trashed);
             stopProgressBar(); // Остановка прогресса
-            setUserFiles(fetchedFiles);
+            setUserFiles(userFiles);
+            setTrashedUserFiles(trashedFiles);
             // stopProgressBar(); // Остановка прогресса
         } catch (error) {
             console.error("Error fetching files:", error);
@@ -78,6 +84,7 @@ export const Drive = (props: DriveProps) => {
             examples={exampleFiles}
             userFiles={userFiles}
             refreshFiles={fetchUserFiles}
+            trashFiles={trashedUserFiles}
              />
               <Progress/>
         </FluentProvider>

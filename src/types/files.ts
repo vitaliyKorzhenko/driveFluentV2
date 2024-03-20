@@ -13,6 +13,6 @@ export interface IUserFileNodeModel {
     file_data: string;
     file_size: number;
     folder?: string;
-    is_tarshed: boolean;
+    is_trashed: boolean;
 }
 

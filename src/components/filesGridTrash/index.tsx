@@ -1,13 +1,10 @@
 import {
   FolderRegular,
-  OpenRegular,
   DocumentRegular,
-  DocumentPdfRegular,
-  VideoRegular,
   DeleteRegular,
+  DualScreenUpdateRegular
 } from "@fluentui/react-icons";
 import {
-  PresenceBadgeStatus,
   DataGridBody,
   DataGridRow,
   DataGrid,
@@ -21,136 +18,14 @@ import {
   TableColumnId,
   DataGridCellFocusMode,
 } from "@fluentui/react-components";
+import { IUserFileNodeModel } from "../../types/files";
+import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
+import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
+import { useProgressBar } from "../progressBar/progressContext";
 
-type FileCell = {
-  label: string;
-  icon: JSX.Element;
-};
 
-type LastUpdatedCell = {
-  label: string;
-  timestamp: number;
-};
 
-type AuthorCell = {
-  label: string;
-  status: PresenceBadgeStatus;
-};
 
-type FileSizeCell = {
-  label: string;
-  size: number;
-};
-
-type Item = {
-  file: FileCell;
-  author: AuthorCell;
-  lastUpdated: LastUpdatedCell;
-  fileSize?: FileSizeCell;
-
-};
-
-const items: Item[] = [
-  {
-    file: { label: "Meeting notes", icon: <DocumentRegular /> },
-    author: { label: "Max Mustermann", status: "available" },
-    lastUpdated: { label: "7h ago", timestamp: 1 },
-  },
-  {
-    file: { label: "Thursday presentation", icon: <FolderRegular /> },
-    author: { label: "Erika Mustermann", status: "busy" },
-    lastUpdated: { label: "Yesterday at 1:45 PM", timestamp: 2 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-  {
-    file: { label: "Training recording", icon: <VideoRegular /> },
-    author: { label: "John Doe", status: "away" },
-    lastUpdated: { label: "Yesterday at 1:45 PM", timestamp: 2 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-  {
-    file: { label: "Purchase order", icon: <DocumentPdfRegular /> },
-    author: { label: "Jane Doe", status: "offline" },
-    lastUpdated: { label: "Tue at 9:30 AM", timestamp: 3 },
-    fileSize : { label: "1.5 MB", size: 1500 }
-  },
-];
-
-const columns: TableColumnDefinition<Item>[] = [
-  createTableColumn<Item>({
-    columnId: "file",
-    compare: (a, b) => {
-      return a.file.label.localeCompare(b.file.label);
-    },
-    renderHeaderCell: () => {
-      return "File";
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout media={item.file.icon}>
-          {item.file.label}
-        </TableCellLayout>
-      );
-    },
-  }),
-  
-  createTableColumn<Item>({
-    columnId: "lastUpdated",
-    compare: (a, b) => {
-      return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
-    },
-    renderHeaderCell: () => {
-      return "Last updated";
-    },
-    renderCell: (item) => {
-      return item.lastUpdated.label;
-    },
-  }),   
-  createTableColumn<Item>({
-    columnId: "fileSize",
-    compare: (a, b) => {
-      return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
-    },
-    renderHeaderCell: () => {
-      return "File size";
-    },
-    renderCell: (item) => {
-      return item.fileSize?.label;
-    },
-  }),
-
-  createTableColumn<Item>({
-    columnId: "singleAction",
-    renderHeaderCell: () => {
-      return "Single action";
-    },
-    renderCell: () => {
-      return <Button
-      style={{
-        width: "100%",
-      
-        color: "#1E90FF",
-
-      }}
-       icon={<OpenRegular />}>
-        Restore
-        </Button>;
-    },
-  }),
-  createTableColumn<Item>({
-    columnId: "actions",
-    renderHeaderCell: () => {
-      return "Actions";
-    },
-    renderCell: () => {
-      return (
-        <>
-          <Button style={{color: 'red'}} aria-label="Delete" icon={<DeleteRegular />} />
-        </>
-      );
-    },
-  }),
-];
 
 const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   switch (columnId) {
@@ -163,10 +38,165 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   }
 };
 
-export const FilesTrashGrid = () => {
+
+export interface FilesTrashGridProps {
+  refreshFiles: () => void;
+  trashedFiles: IUserFileNodeModel[];
+}
+
+function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
+  let author1: AuthorCell = { label: "Vitaliy Korzhenko", status: 'available' };
+  let author2: AuthorCell = { label: "Alex Simachov", status: 'busy' };
+  
+  return files.map((file: IUserFileNodeModel) => {
+    let mathRandom = Math.round(Math.random());
+    return {
+      file: {id: file.id, label: file.file_name, icon: mathRandom ? <DocumentRegular /> : <FolderRegular /> },
+      fileSize: { label: file.file_size.toString(), size: file.file_size },
+      lastUpdated: { label: new Date().toLocaleDateString(), timestamp: Date.now() },
+      author: mathRandom ? author1 : author2
+    }
+  });
+}
+ 
+
+export const FilesTrashGrid = (props: FilesTrashGridProps) => {
+
+  const { startProgressBar, stopProgressBar } = useProgressBar(); 
+
+  const handleRestoreFile = async (fileId: number) => {
+    try {
+      startProgressBar();
+      await ApiUserFilesNode.restoreFileNode(fileId);
+      stopProgressBar();
+    } catch (error) {
+      console.error("deleteFileNode Error: ", error);
+    }
+  }
+
+  const columns: TableColumnDefinition<Item>[] = [
+    createTableColumn<Item>({
+      columnId: "file",
+      compare: (a, b) => {
+        return a.file.label.localeCompare(b.file.label);
+      },
+      renderHeaderCell: () => {
+        return "File";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout 
+          media={item.file.icon}
+          style={{
+            fontWeight: "bold",
+            fontStyle: "italic",
+          
+          }}
+          >
+            {item.file.label}
+          </TableCellLayout>
+        );
+      },
+    }),
+   
+    createTableColumn<Item>({
+      columnId: "lastUpdated",
+      compare: (a, b) => {
+        return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
+      },
+      renderHeaderCell: () => {
+        return "Last updated";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout
+            style={{
+              fontWeight: "bold",
+              color: 'red'
+            }}
+            >
+            {item.lastUpdated.label}
+            </TableCellLayout>
+        )
+      },
+    }),   
+    createTableColumn<Item>({
+      columnId: "fileSize",
+      compare: (a, b) => {
+        return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
+      },
+      renderHeaderCell: () => {
+        return "File size";
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout
+            style={{
+              fontWeight: "bold",
+              color: 'green'
+            }}
+            >
+            {parseSizeToMbLabel(item.fileSize?.size)}
+            </TableCellLayout>
+        )
+        return item.fileSize?.label;
+      },
+    }),
+  
+    createTableColumn<Item>({
+      columnId: "singleAction",
+      renderHeaderCell: () => {
+        return "Single action";
+      },
+      renderCell: (item: Item) => {
+        return <Button
+        style={{
+          width: "100%",
+        
+          color: "orange",
+  
+        }}
+         icon={<DualScreenUpdateRegular />
+         }
+         onClick={async () => {
+          await handleRestoreFile(item.file.id);
+          props.refreshFiles && props.refreshFiles();
+         }}
+         >
+        
+        
+          Restore
+          </Button>;
+      },
+    }),
+    createTableColumn<Item>({
+      columnId: "actions",
+      renderHeaderCell: () => {
+        return "Actions";
+      },
+      renderCell: (item: Item) => {
+        return (
+          <>
+           
+            <Button 
+            style={{color: 'red'}} 
+            aria-label="Delete" 
+            icon={<DeleteRegular 
+            onClick={async () => {
+              console.log('delete file', item.file.id, item.file.label);
+            }
+            }
+            />} 
+            />
+          </>
+        );
+      },
+    }),
+  ];
+
   return (
     <DataGrid
-      items={items}
+      items={parseNodeModelsToItems(props.trashedFiles)}
       columns={columns}
       sortable
       selectionMode="multiselect"
