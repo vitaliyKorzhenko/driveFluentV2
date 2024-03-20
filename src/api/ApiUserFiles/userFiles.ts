@@ -70,6 +70,25 @@ export class ApiUserFilesNode {
         if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
         return Promise.resolve<IUserFileNodeModel>(res.data)
     }
+
+    /*
+    delete user file
+    */
+
+    public static async deleteFileNode(fileId: number): Promise<IUserFileNodeModel> {
+        const res = await ApiBase.runBaseRequest({ file_id: fileId }, MethodsHelper.deleteFileNode);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve<IUserFileNodeModel>(res.data)
+    }
+
+    /*
+    restore files
+    */
     
+    public static async restoreFileNode(fileId: number): Promise<IUserFileNodeModel> {
+        const res = await ApiBase.runBaseRequest({ file_ids: fileId.toString() }, MethodsHelper.restoreTrashFilesNode);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve<IUserFileNodeModel>(res.data)
+    }
 }
 

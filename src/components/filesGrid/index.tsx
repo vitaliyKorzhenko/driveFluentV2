@@ -7,7 +7,6 @@ import {
   DoubleSwipeUpRegular,
 } from "@fluentui/react-icons";
 import {
-  PresenceBadgeStatus,
   DataGridBody,
   DataGridRow,
   DataGrid,
@@ -27,43 +26,8 @@ import { EditFileDialog } from "../editFileDialog";
 import React from "react";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { useProgressBar } from "../progressBar/progressContext";
+import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
 
-type FileCell = {
-  id: number;
-  label: string;
-  icon: JSX.Element;
-};
-
-type LastUpdatedCell = {
-  label: string;
-  timestamp: number;
-};
-
-type AuthorCell = {
-  label: string;
-  status: PresenceBadgeStatus;
-};
-
-type FileSizeCell = {
-  label: string;
-  size: number;
-};
-
-type Item = {
-  file: FileCell;
-  author: AuthorCell;
-  lastUpdated: LastUpdatedCell;
-  fileSize?: FileSizeCell;
-
-};
-
-
-function parseSizeToMbLabel(size: number | null | undefined): string {
-  if (!size) {
-    return "0 MB";
-  }
-  return `${(size / 1024).toFixed(2)} MB`;
-}
 
 
 const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
@@ -117,6 +81,17 @@ export const FilesGrid = (props: FilesGridProps) => {
       stopProgressBar();
     } catch (error) {
       console.error("duplicateFileNode Error: ", error);
+    }
+  }
+
+
+  const handleDeleteFile = async (fileId: number) => {
+    try {
+      startProgressBar();
+      await ApiUserFilesNode.deleteFileNode(fileId);
+      stopProgressBar();
+    } catch (error) {
+      console.error("deleteFileNode Error: ", error);
     }
   }
 
@@ -229,7 +204,17 @@ export const FilesGrid = (props: FilesGridProps) => {
               handleEditFile(item.file.id, item.file.label);
             }}
             />
-            <Button style={{color: 'red'}} aria-label="Delete" icon={<DeleteRegular />} />
+            <Button 
+            style={{color: 'red'}} 
+            aria-label="Delete" 
+            icon={<DeleteRegular 
+            onClick={async () => {
+              console.log('delete file', item.file.id);
+              await handleDeleteFile(item.file.id);
+              props.refreshFiles && props.refreshFiles();
+            }
+            }
+            />} />
             <Button 
             style= {{color: 'green'}} 
             aria-label="Duplicate" 
