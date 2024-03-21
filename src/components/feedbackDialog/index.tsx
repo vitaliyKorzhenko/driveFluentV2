@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
     Dialog,
-    DialogTrigger,
     DialogSurface,
     DialogTitle,
     DialogContent,
@@ -64,7 +63,7 @@ export const FeedbackDialog = (props: FeedbackDialogProps) => {
         <Dialog 
         modalType="non-modal"
         open={props.open}
-        onOpenChange={(ev, data) => {
+        onOpenChange={(_ev, data) => {
             if (!data.open) {
                props.closeDialog();
             }

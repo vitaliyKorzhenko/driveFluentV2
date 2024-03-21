@@ -17,14 +17,6 @@ import { logout } from "../../firebase";
 import { VersionHelper } from "../../helpers/versionHelper";
 import React from "react";
 
-
-
-const additionalItems: string[] = [
-  'About',
-  'Feedback',
-];
-  
-
 export interface MainTopPanelProps extends ToolbarProps {
   /**
    * The title of the application.
