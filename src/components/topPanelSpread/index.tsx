@@ -15,7 +15,6 @@ import {
   MenuItem,
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
-import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { CardsChildPanel } from "../cardsCommandPanel";
@@ -73,20 +72,6 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => (
       onClick={props.changeTheme}
 
     />
-     <FeedbackDialog />
-    {/* <Menu>
-      <MenuTrigger>
-        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
-      </MenuTrigger>
-
-      <MenuPopover>
-        <MenuList>
-          {languages.map((language) => (
-            <MenuItem key={language}>{language}</MenuItem>
-          ))}
-        </MenuList>
-      </MenuPopover>
-    </Menu> */}
     <Menu>
       <MenuTrigger>
         <ToolbarButton aria-label="Help" icon={<Question24Regular />} />

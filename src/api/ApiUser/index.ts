@@ -41,4 +41,23 @@ export class ApiUserNode {
 
     return  Promise.resolve(res.data);
    }
+
+   public static async sendFeedback (userId: string, feedback: string): Promise<void> {
+    AppLogger.log('ApiUser.sendFeedback NODE()', 'Start Request' + userId);
+    const numberId = parseInt(userId);
+    const res = await ApiBase.runBaseRequest(
+      {
+        userId: numberId,
+        feedback_text: feedback
+      },
+      MethodsHelper.createFeedbackNode
+    );
+    console.log('res', res);
+
+    if (res.status !== ServiceResponseErrorCodes.NoError)
+      return Promise.reject(res.message);
+
+    return  Promise.resolve();
+   }
+
 }
