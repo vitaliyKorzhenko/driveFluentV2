@@ -8,11 +8,6 @@ import {
   Toolbar,
   ToolbarButton,
   ToolbarDivider,
-  Menu,
-  MenuTrigger,
-  MenuPopover,
-  MenuList,
-  MenuItem,
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
@@ -20,6 +15,7 @@ import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { logout } from "../../firebase";
 import { VersionHelper } from "../../helpers/versionHelper";
+import React from "react";
 
 
 
@@ -40,7 +36,20 @@ export interface MainTopPanelProps extends ToolbarProps {
  changeAuth?: () => void;
 }
 
-export const MainTopPanel = (props: MainTopPanelProps) => (
+export const MainTopPanel = (props: MainTopPanelProps) => {
+
+  const [openFeedback, setOpenFeedback] = React.useState(false);
+
+  const openFeedbackDialog = () => {
+    setOpenFeedback(true);
+  }
+
+  const closeFeedbackDialog = () => {
+    setOpenFeedback(false);
+  }
+
+  return (
+
   <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
 
     <ToolbarButton
@@ -89,7 +98,17 @@ export const MainTopPanel = (props: MainTopPanelProps) => (
       onClick={props.changeTheme}
 
     />
-     <FeedbackDialog />
+    <ToolbarButton
+      aria-label="Feedback"
+      onClick={openFeedbackDialog}
+      icon={<Question24Regular />}
+    >
+      Feedback
+    </ToolbarButton>
+     <FeedbackDialog 
+      open={openFeedback}
+      closeDialog={closeFeedbackDialog}
+     />
     {/* <Menu>
       <MenuTrigger>
         <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
@@ -103,19 +122,9 @@ export const MainTopPanel = (props: MainTopPanelProps) => (
         </MenuList>
       </MenuPopover>
     </Menu> */}
-    <Menu>
-      <MenuTrigger>
-        <ToolbarButton aria-label="Help" icon={<Question24Regular />} />
-      </MenuTrigger>
-        <MenuPopover>
-          <MenuList>
-            {additionalItems.map((item) => (
-              <MenuItem key={item}>{item}</MenuItem>
-            ))}
-          </MenuList>
-        </MenuPopover>
-      </Menu> 
+
     <ToolbarDivider />  
     <UserPanel/>
   </Toolbar>
-);
+  );
+};
