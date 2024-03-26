@@ -21,6 +21,9 @@ import { LogoutButton } from "../logoutButton";
 import { AccountButton } from "../accountButton";
 import { UserProfile } from "../../users";
 import { ApiUserNode } from "../../api/ApiUser";
+import { SaveProfileButton } from "../saveProfileButton";
+import { IChangeProfileModel } from "../../api/types";
+import { CountriesDropdown } from "../countriesDropdown";
 
 const useStyles = makeStyles({
   root: {
@@ -66,17 +69,36 @@ export const UserPanel = () => {
 
   const [email, setEmail] = React.useState(UserProfile.getEmail());
 
+  const [countryCode, setCountryCode] = React.useState(UserProfile.getCountryCode());
+
+  const updateProfile = async () => {
+    const profileInfo: IChangeProfileModel = {
+      first_name: firstName ? firstName : UserProfile.getFirstName(),
+      last_name: lastName ? lastName : UserProfile.getLastName(),
+      phone_number: phone ? phone : UserProfile.getPhone(),
+      country_code: countryCode ? countryCode : UserProfile.getCountryCode()
+    }
+    await ApiUserNode.changeUserProfile(profileInfo);
+  }
+
+  const updateCountryCode = (country: string) => {
+    UserProfile.setCountryCode(country);
+    setCountryCode(country);
+  }
+
   React.useEffect(() => {
     const userId = localStorage.getItem('userId');
-    console.log("userId", userId);
+    console.log("USER PANEL - USER ID", userId);
     if (userId) {
     UserProfile.setCurrentUserId(userId.toString());
     ApiUserNode.getProfile(userId).then((response) => {
+      console.log('USER PROFILE', response);
       UserProfile.initUserProfile(response);
       setFirstName(UserProfile.getFirstName());
       setLastName(UserProfile.getLastName());
       setPhone(UserProfile.getPhone());
       setEmail(UserProfile.getEmail());
+      setCountryCode(UserProfile.getCountryCode());
     }).catch((error) => {
       console.log('error', error);
     })
@@ -150,9 +172,25 @@ export const UserPanel = () => {
               >Email</Label>
               <Input contentBefore={<MailRegular/>} 
               id={beforeId} 
+              disabled={true}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               />
+      </div>
+      <div>
+        <CountriesDropdown
+        selectedCountry={UserProfile.getCountryCode()}
+        onChange={(country) => {
+          updateCountryCode(country);
+          
+        }}
+
+        />
+      </div>
+      <div>
+        <SaveProfileButton
+        onClick={updateProfile}
+        />
       </div>
             <div>
               <LogoutButton/>
