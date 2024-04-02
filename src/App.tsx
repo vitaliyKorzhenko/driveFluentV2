@@ -1,8 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
 import { FluentProvider, webLightTheme, webDarkTheme, teamsDarkTheme, teamsHighContrastTheme, teamsLightTheme } from '@fluentui/react-components'
-import { SpreadsheetComponent } from './components/speadsheet/index.tsx'
-import { MainTopPanelSpread } from './components/topPanelSpread/index.tsx'
 import Login from './components/loginPage/index.tsx'
 import { Drive } from './components/drive/index.tsx'
 import { auth } from './firebase/index.tsx'
@@ -11,6 +9,8 @@ import { ApiUserNode } from './api/ApiUser/index.ts'
 import { LocalStorageHelper } from './helpers/localstorageHelper.ts'
 import { UserProfile } from './users/index.ts'
 import { ProgressBarProvider } from './components/progressBar/progressContext.tsx'
+import { MainSpread } from './components/spread/index.tsx'
+import { activateLanguage } from './localization/localization.ts'
 function App() {
 
 
@@ -20,6 +20,8 @@ function App() {
 
   const [isAuth, setIsAuth] = useState(false);
 
+  const [currentLanguage, setCurrentLanguage] = useState('en');
+
   const changeAuth = () => {
     setIsAuth(!isAuth);
   }
@@ -27,6 +29,12 @@ function App() {
   const changeDriveMode = () => {
     console.log('changeDriveMode');
     setDriveMode(!driveMode);
+  }
+
+  const updateLanguage = (langCode: string) => {
+    console.log('updateLanguage', langCode);
+    activateLanguage(langCode);
+    setCurrentLanguage(langCode);
   }
   // Функция для изменения темы
   const toggleTheme = () => {
@@ -51,6 +59,8 @@ function App() {
   useEffect(() => {
     // init config
     AppConfiguration.initConfig(false);
+
+    activateLanguage(currentLanguage);
     // Listen for changes in the authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -97,25 +107,20 @@ function App() {
       changeDriveMode={changeDriveMode}
       changeTheme={toggleTheme}
       theme={theme}
+      updateLanguage={updateLanguage}
       />
       </ProgressBarProvider>
      )
     } else {
       return (
-        <FluentProvider 
-        theme={theme} 
-        style={{
-          height: '100vh',
-          width: '100vw',
-        }}
-        >
-          <MainTopPanelSpread 
-          changeTheme={toggleTheme}
-          changeDriveMode={changeDriveMode}
-          changeAuth={changeAuth}
-          />
-          <SpreadsheetComponent/>
-          </FluentProvider>
+       <MainSpread
+        changeAuth={changeAuth}
+        changeDriveMode={changeDriveMode}
+        changeTheme={toggleTheme}
+        theme={theme}
+        fileId={2}
+        src='files'
+        />
       )
     }
   }
