@@ -2,9 +2,15 @@ import {
   Apps24Regular,
   DarkTheme24Filled,
   Question24Regular,
-  MoldRegular
+  MoldRegular,
+  LocalLanguage24Regular
 } from "@fluentui/react-icons";
 import {
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuPopover,
+  MenuTrigger,
   Toolbar,
   ToolbarButton,
   ToolbarDivider,
@@ -16,6 +22,7 @@ import { SubscriptionPanel } from "../subscriptionPanel";
 import { logout } from "../../firebase";
 import { VersionHelper } from "../../helpers/versionHelper";
 import React from "react";
+import { getActiveLanguageDisplayName, getAvailableLanguagesUiList } from "../../localization/localization";
 
 export interface MainTopPanelProps extends ToolbarProps {
   /**
@@ -26,6 +33,8 @@ export interface MainTopPanelProps extends ToolbarProps {
  changeDriveMode?: () => void;
 
  changeAuth?: () => void;
+
+ updateLanguage?: (langCode: string) => void;
 }
 
 export const MainTopPanel = (props: MainTopPanelProps) => {
@@ -72,6 +81,43 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
     >
       Go-Spread
     </ToolbarButton>
+    <ToolbarButton>
+      {'Language: ' +  getActiveLanguageDisplayName()}
+    </ToolbarButton>
+    <Menu>
+      <MenuTrigger>
+        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
+      </MenuTrigger>
+
+      <MenuPopover>
+        <MenuList
+        onSelect={(value) => {
+          console.log("Selected language: ", value);
+          // props.updateLanguage && props.updateLanguage(value)
+        
+        }}
+        >
+          {getAvailableLanguagesUiList().map((language) => (
+            <MenuItem 
+            key={language.code}
+            onClick={() => {
+              console.log('CLICK language: ');
+              // alert('Selected language: ' + language.code)
+              if (props.updateLanguage) {
+                console.log('UPDATE language: ', language.code)
+                props.updateLanguage(language.code);
+
+              } else {
+                console.log('NOT DEFINED UPDATE language: ');
+              }
+             }}
+            >
+            {language.display}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </MenuPopover>
+    </Menu>
     <ToolbarButton
       aria-label="Sign Out"
       onClick={async () => {
@@ -101,19 +147,7 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
       open={openFeedback}
       closeDialog={closeFeedbackDialog}
      />
-    {/* <Menu>
-      <MenuTrigger>
-        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
-      </MenuTrigger>
-
-      <MenuPopover>
-        <MenuList>
-          {languages.map((language) => (
-            <MenuItem key={language}>{language}</MenuItem>
-          ))}
-        </MenuList>
-      </MenuPopover>
-    </Menu> */}
+    
 
     <ToolbarDivider />  
     <UserPanel/>

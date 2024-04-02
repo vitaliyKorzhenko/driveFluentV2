@@ -16,6 +16,7 @@ import { FilesGrid } from "../filesGrid";
 import { FilesExampleGrid } from "../filesGridExample";
 import { FilesTrashGrid } from "../filesGridTrash";
 import { IExampleFileNodeModel, IUserFileNodeModel } from "../../types/files";
+import { translate } from "../../localization/localization";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -55,19 +56,19 @@ export const FilesTabs = (props :  FilesTabsProps) => {
          onClick={() => setSelectedTab("myfiles")}
 
          >
-            MY FILES
+           {translate('drive.data', 'Data')}
         </Tab>
         <Tab icon={<CalendarMonth />} 
         value="examples"
         onClick={() => setSelectedTab("examples")}
         >
-           EXAMPLE
+          {translate('drive.examples', 'Examples')}
         </Tab>
         <Tab icon={<DeleteRegular />} 
         value="trash"
         onClick={() => setSelectedTab("trash")}
         >
-            TRASH
+          {translate('drive.trash', 'Trash')}
         </Tab>
       </>
     );

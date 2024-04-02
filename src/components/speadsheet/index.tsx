@@ -14,7 +14,7 @@ export const SpreadsheetComponent = () => {
     <Spreadsheet
       columnLabels={columnLabels}
       rowLabels={rowLabels}
-        data={data}
+      data={data}
     />
   );
 }

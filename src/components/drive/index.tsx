@@ -13,6 +13,8 @@ export interface DriveProps {
     changeTheme: () => void;
     changeDriveMode: () => void;
     changeAuth: () => void;
+    updateLanguage: (langCode: string) => void;
+
 }
 
 export const Drive = (props: DriveProps) => {
@@ -79,6 +81,7 @@ export const Drive = (props: DriveProps) => {
             <MainTopPanel
                 changeTheme={props.changeTheme}
                 changeDriveMode={props.changeDriveMode}
+                updateLanguage={props.updateLanguage}
             />
             <FilesTabs 
             examples={exampleFiles}
