@@ -8,6 +8,7 @@ import {
   } from "@fluentui/react-components";
   import type { ToolbarProps } from "@fluentui/react-components";
 import { CreateFileDialog } from "../createFileDialog";
+import { translate } from "../../localization/localization";
  
   export interface UserFilesToolbarProps extends ToolbarProps {
     /**
@@ -20,10 +21,10 @@ import { CreateFileDialog } from "../createFileDialog";
     <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
   
         <ToolbarButton
-            aria-label="StatPlus.io"
+            aria-label="Refresh"
             appearance="primary"
             icon={<Circle24Regular />}
-            title="Refresh"
+            title={translate('ui.refresh', 'Refresh')}
             onClick={() => {
                 console.log("CLICKED REFRESH 1111");
                 if (props.refreshFiles) {
@@ -32,7 +33,7 @@ import { CreateFileDialog } from "../createFileDialog";
                 }
             }}
             >
-                Refresh
+               {translate('ui.refresh', 'Refresh')}
             </ToolbarButton>
   
       <ToolbarDivider />

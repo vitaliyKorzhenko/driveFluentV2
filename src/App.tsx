@@ -19,8 +19,10 @@ function App() {
   const [driveMode, setDriveMode] = useState(true);
 
   const [isAuth, setIsAuth] = useState(false);
+  
+  let loclastrgLanguage = LocalStorageHelper.getCurrentLanguage() ? LocalStorageHelper.getCurrentLanguage() : 'en';
 
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(loclastrgLanguage);
 
   const changeAuth = () => {
     setIsAuth(!isAuth);
@@ -33,6 +35,9 @@ function App() {
 
   const updateLanguage = (langCode: string) => {
     console.log('updateLanguage', langCode);
+
+    //set code to local storage
+    LocalStorageHelper.setCurrentLanguage(langCode);
     activateLanguage(langCode);
     setCurrentLanguage(langCode);
   }
@@ -60,7 +65,7 @@ function App() {
     // init config
     AppConfiguration.initConfig(false);
 
-    activateLanguage(currentLanguage);
+    activateLanguage(currentLanguage ? currentLanguage : 'en');
     // Listen for changes in the authentication state
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {

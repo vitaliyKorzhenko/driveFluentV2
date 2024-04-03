@@ -52,7 +52,11 @@ const useStyles = makeStyles({
 });
 
 
-export const UserPanel = () => {
+export interface UserPanelProps {
+  changeAuth?: () => void;
+}
+
+export const UserPanel = (props: UserPanelProps) => {
   const styles = useStyles();
  
 
@@ -193,7 +197,9 @@ export const UserPanel = () => {
         />
       </div>
             <div>
-              <LogoutButton/>
+              <LogoutButton
+               changeAuth={props.changeAuth}
+              />
             </div>
           </div>
         </DrawerBody>

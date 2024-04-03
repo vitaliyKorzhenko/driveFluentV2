@@ -27,6 +27,7 @@ import React from "react";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { useProgressBar } from "../progressBar/progressContext";
 import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
+import { translate } from "../../localization/localization";
 
 
 
@@ -107,7 +108,7 @@ export const FilesGrid = (props: FilesGridProps) => {
         return a.file.label.localeCompare(b.file.label);
       },
       renderHeaderCell: () => {
-        return "File";
+        return translate('file.name', 'Name');
       },
       renderCell: (item) => {
         return (
@@ -131,7 +132,7 @@ export const FilesGrid = (props: FilesGridProps) => {
         return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
       },
       renderHeaderCell: () => {
-        return "Last updated";
+        return translate('file.date.mod', 'Last updated');
       },
       renderCell: (item) => {
         return (
@@ -152,7 +153,7 @@ export const FilesGrid = (props: FilesGridProps) => {
         return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
       },
       renderHeaderCell: () => {
-        return "File size";
+        return translate('file.size', 'Size');
       },
       renderCell: (item) => {
         return (
@@ -172,7 +173,7 @@ export const FilesGrid = (props: FilesGridProps) => {
     createTableColumn<Item>({
       columnId: "singleAction",
       renderHeaderCell: () => {
-        return "Single action";
+        return "";
       },
       renderCell: () => {
         return <Button
@@ -183,14 +184,14 @@ export const FilesGrid = (props: FilesGridProps) => {
   
         }}
          icon={<OpenRegular />}>
-          Open
+                 {translate('ui.label.openInBrowser', 'Open')}
           </Button>;
       },
     }),
     createTableColumn<Item>({
       columnId: "actions",
       renderHeaderCell: () => {
-        return "Actions";
+        return "";
       },
       renderCell: (item: Item) => {
         return (

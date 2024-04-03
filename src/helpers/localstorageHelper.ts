@@ -100,4 +100,14 @@ export class LocalStorageHelper {
     public static setUserId(userId: string) {
         this.setItem('userId', userId);
     }
+
+    //set current language to localstorage
+    public static setCurrentLanguage(language: string) {
+        this.setItem('currentLanguage', language);
+    }
+
+    //get current language from localstorage
+    public static getCurrentLanguage(): string | null {
+        return this.getItem('currentLanguage');
+    }
 }
