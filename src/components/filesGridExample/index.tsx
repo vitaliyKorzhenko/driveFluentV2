@@ -20,6 +20,7 @@ import {
   DataGridCellFocusMode,
 } from "@fluentui/react-components";
 import { IExampleFileNodeModel } from "../../types/files";
+import { translate } from "../../localization/localization";
 
 type FileCell = {
   label: string;
@@ -63,7 +64,7 @@ const columns: TableColumnDefinition<Item>[] = [
       return a.file.label.localeCompare(b.file.label);
     },
     renderHeaderCell: () => {
-      return "File";
+      return translate("file.name", 'Name');
     },
     renderCell: (item) => {
       return (
@@ -85,7 +86,7 @@ const columns: TableColumnDefinition<Item>[] = [
       return a.author.label.localeCompare(b.author.label);
     },
     renderHeaderCell: () => {
-      return "Author";
+      return translate("file.author", 'Author');
     },
     renderCell: (item) => {
       return (
@@ -110,7 +111,7 @@ const columns: TableColumnDefinition<Item>[] = [
         return a.description.label.localeCompare(b.description.label);
         },
         renderHeaderCell: () => {
-        return "Description";
+        return translate('file.description', 'Description');
         },
         renderCell: (item) => {
         return (
@@ -123,7 +124,7 @@ const columns: TableColumnDefinition<Item>[] = [
   createTableColumn<Item>({
     columnId: "singleAction",
     renderHeaderCell: () => {
-      return "Single action";
+      return "";
     },
     renderCell: () => {
       return <Button
@@ -134,7 +135,7 @@ const columns: TableColumnDefinition<Item>[] = [
 
       }}
        icon={<OpenRegular />}>
-        Open
+        {translate('ui.label.openInBrowser', 'Open')}
         </Button>;
     },
   }),

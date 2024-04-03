@@ -22,6 +22,7 @@ import { IUserFileNodeModel } from "../../types/files";
 import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { useProgressBar } from "../progressBar/progressContext";
+import { translate } from "../../localization/localization";
 
 
 
@@ -81,7 +82,7 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         return a.file.label.localeCompare(b.file.label);
       },
       renderHeaderCell: () => {
-        return "File";
+        return translate("file.name", 'Name');
       },
       renderCell: (item) => {
         return (
@@ -105,7 +106,8 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         return a.lastUpdated.timestamp - b.lastUpdated.timestamp;
       },
       renderHeaderCell: () => {
-        return "Last updated";
+        return translate('file.date.mod', 'Last updated');
+
       },
       renderCell: (item) => {
         return (
@@ -126,7 +128,7 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         return a.fileSize && b.fileSize? a.fileSize.size - b.fileSize.size : 0;
       },
       renderHeaderCell: () => {
-        return "File size";
+        return translate('file.size', 'Size');
       },
       renderCell: (item) => {
         return (
@@ -146,7 +148,7 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
     createTableColumn<Item>({
       columnId: "singleAction",
       renderHeaderCell: () => {
-        return "Single action";
+        return "";
       },
       renderCell: (item: Item) => {
         return <Button
@@ -172,7 +174,7 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
     createTableColumn<Item>({
       columnId: "actions",
       renderHeaderCell: () => {
-        return "Actions";
+        return "";
       },
       renderCell: (item: Item) => {
         return (

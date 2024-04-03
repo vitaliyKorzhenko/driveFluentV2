@@ -1,14 +1,23 @@
 //create function component for logout button use fluentv2 with icon and text
 import { SignOut24Regular } from "@fluentui/react-icons";
-import { CompoundButton, CompoundButtonProps } from "@fluentui/react-components";
+import { CompoundButton } from "@fluentui/react-components";
+import { logout } from "../../firebase";
 
-export const LogoutButton = (props: CompoundButtonProps) => (
+export interface LogoutButtonProps {
+  changeAuth?: () => void;
+}
+
+export const LogoutButton = (props: LogoutButtonProps) => (
   <CompoundButton
     icon={<SignOut24Regular />}
     appearance="outline"
     {...props}
     shape="circular"
+    onClick={async () => {
+      await logout();
+      props.changeAuth && props.changeAuth();
+    }}
   >
-    Logout
+    Sign Out
   </CompoundButton>
 );

@@ -19,6 +19,7 @@ import {
   } from "@fluentui/react-icons";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { UserProfile } from "../../users";
+import { translate } from "../../localization/localization";
 const useStyles = makeStyles({
     content: {
         display: "flex",
@@ -70,7 +71,8 @@ export const CreateFileDialog = (props: CreateFileDialogProps) => {
                 appearance="subtle"
                 icon={<Add24Regular/>}
                 onClick={() => setOpen(true)}
-                >Create File
+                >
+                    {translate('drive.create', 'Create')}
                 </Button>
             </DialogTrigger>
             <DialogSurface aria-describedby={undefined}>

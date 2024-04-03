@@ -19,10 +19,9 @@ import type { ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
-import { logout } from "../../firebase";
 import { VersionHelper } from "../../helpers/versionHelper";
 import React from "react";
-import { getActiveLanguageDisplayName, getAvailableLanguagesUiList } from "../../localization/localization";
+import { getActiveLanguageDisplayName, getAvailableLanguagesUiList, translate } from "../../localization/localization";
 
 export interface MainTopPanelProps extends ToolbarProps {
   /**
@@ -118,15 +117,6 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
         </MenuList>
       </MenuPopover>
     </Menu>
-    <ToolbarButton
-      aria-label="Sign Out"
-      onClick={async () => {
-        await logout();
-        props.changeAuth && props.changeAuth();
-      }}
-    >
-      Sign Out
-    </ToolbarButton>
     <SubscriptionPanel/>
 
     <ToolbarDivider />
@@ -141,7 +131,7 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
       onClick={openFeedbackDialog}
       icon={<Question24Regular />}
     >
-      Feedback
+      {translate("ui.label.feedback", 'Feedback')}
     </ToolbarButton>
      <FeedbackDialog 
       open={openFeedback}
@@ -150,7 +140,9 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
     
 
     <ToolbarDivider />  
-    <UserPanel/>
+    <UserPanel 
+    changeAuth={props.changeAuth}
+    />
   </Toolbar>
   );
 };
