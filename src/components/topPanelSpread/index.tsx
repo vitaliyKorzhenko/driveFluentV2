@@ -19,6 +19,7 @@ import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { CardsChildPanel } from "../cardsCommandPanel";
 import { logout } from "../../firebase";
+import { CardsPanel } from "../cardsBasicPanel";
 
 
 
@@ -35,6 +36,7 @@ export interface MainTopPanelProps extends ToolbarProps {
  changeTheme?: () => void;
  changeDriveMode?: () => void;
   changeAuth?: () => void;
+  isOpenCommnadPanel?: boolean;
 }
 
 export const MainTopPanelSpread = (props: MainTopPanelProps) => (
@@ -87,5 +89,6 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => (
     <ToolbarDivider />  
     <UserPanel/>
     <CardsChildPanel/>
+    <CardsPanel/>
   </Toolbar>
 );

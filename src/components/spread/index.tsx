@@ -14,12 +14,21 @@ export interface SpreadProps {
   src: string;
 }
 
-class MainSpread extends React.Component<SpreadProps> {
+export interface SpreadState {
+  isOpenCommnadPanel: boolean;
+  data: any[];
+}
+
+class MainSpread extends React.Component<SpreadProps, SpreadState> {
 
    
-
     constructor(props: SpreadProps) {
         super(props);
+
+        this.state = {
+            isOpenCommnadPanel: false,
+            data: []
+        };
     }
 
 
@@ -66,6 +75,7 @@ class MainSpread extends React.Component<SpreadProps> {
           changeTheme={this.props.changeTheme}
           changeDriveMode={this.props.changeDriveMode}
           changeAuth={this.props.changeAuth}
+          isOpenCommnadPanel={this.state.isOpenCommnadPanel}
         />
         <SpreadsheetComponent />
       </FluentProvider>

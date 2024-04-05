@@ -61,6 +61,7 @@ const useStyles = makeStyles({
 
 export interface BasicCardProps {
     name: string;
+    changeMode?: () => void;
 }
 
 export const BasicCard = (props: BasicCardProps ) => {
@@ -69,7 +70,15 @@ export const BasicCard = (props: BasicCardProps ) => {
   return (
     <div className={styles.main}>
       <section className={styles.section}>
-        <Card className={styles.card} orientation="horizontal">
+        <Card 
+        className={styles.card} 
+        orientation="horizontal"
+        onClick={() => {
+          if (props.changeMode)
+          props.changeMode();
+        
+        }}
+        >
           <CardPreview className={styles.horizontalCardImage}>
             <img
               className={styles.horizontalCardImage}

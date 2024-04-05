@@ -41,12 +41,12 @@ export const CommandCard = (props: CommandCardProps) => {
   return (
     <Card className={styles.card}>
       <CardHeader
-        image={
+        /*image={
           <img
             src={resolveAsset("avatar_elvia.svg")}
             alt="Elvia Atkins avatar picture"
           />
-        }
+        }*/
         header={
           <Body1>
             <h2>{props.title}</h2>
