@@ -14,13 +14,6 @@ import {
 } from "@fluentui/react-components";
 import { Subscriptions } from "../../types";
 
-const resolveAsset = (asset: string) => {
-  const ASSET_URL =
-    "https://raw.githubusercontent.com/microsoft/fluentui/master/packages/react-components/react-card/stories/assets/";
-
-  return `${ASSET_URL}${asset}`;
-};
-
 const useStyles = makeStyles({
   card: {
     ...shorthands.margin("auto"),
