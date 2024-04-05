@@ -120,7 +120,7 @@ export const CardsChildPanel = () => {
 
         <DrawerBody>
           <div className={styles.root}>
-      <div>
+            <div>
         {
             childCards.map((card: ChildCardProps) => {
                 return <CommandCard
@@ -135,12 +135,6 @@ export const CardsChildPanel = () => {
           </div>
         </DrawerBody>
       </OverlayDrawer>
-
-      <div className={styles.main}>
-        <Button appearance="primary" onClick={() => setOpen(true)}>
-          Commands
-        </Button>
-      </div>
     </div>
   );
 };
