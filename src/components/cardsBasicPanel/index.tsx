@@ -14,6 +14,7 @@ import { BasicCard } from "../basicCard";
 import { SeachCommandsInput } from "../seachCommandsInput";
 import { Subscriptions } from "../../types";
 import { CommandCard } from "../commandCard";
+import { ApiCommands } from "../../api/ApiCommands";
 
 const useStyles = makeStyles({
   root: {
@@ -141,6 +142,20 @@ export const CardsPanel = () => {
   </DrawerBody>
   }
 
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const basicCommands = await ApiCommands.findAllCommandsByLanguage('en');
+        console.log("COMMANDS", basicCommands); // Делайте что-то с полученными данными
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Обработка ошибки, если это необходимо
+      }
+    };
+
+    fetchData(); // Вызываем асинхронную функцию fetchData
+  }, []);
 
   function renderBodyForBasicCards (): JSX.Element {
     return <DrawerBody>

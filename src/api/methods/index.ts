@@ -68,6 +68,8 @@ export class MethodsHelper {
     public static createFeedbackNode: IMethod = { name: 'feedbacks', type: MethodType.POST, parameters: ['userId', 'feedback_text'] };
 
 
+    //commands methods
+    public static findBasicCommandsByLanguage: IMethod = { name: 'basiccommands/findBasicCommands', type: MethodType.POST, parameters: ['language'] };
 
 
     public static createAnalysNode : IMethod = { name: 'analyses', type: MethodType.POST, parameters: ['userId', 'cmIdd', 'status', 'prefsCorePascal', 'windowJSON', 'result'] };
