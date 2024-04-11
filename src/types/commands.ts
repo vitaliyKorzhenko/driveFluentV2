@@ -1,3 +1,5 @@
+import { Subscriptions } from ".";
+
 export interface BasicCommand {
     id: number;
     title: string;
@@ -5,7 +7,7 @@ export interface BasicCommand {
     language: string;
     isActive: boolean;
     groupId: string;
-    comands: Command[];
+    commands: Command[];
 }
 
 
@@ -19,4 +21,20 @@ export interface Command {
     subscription: string
     window: JSON;
     advancedwindow: JSON;
+}
+
+//parse string subscription to enum
+
+export function parseSubscription(subscription: string): Subscriptions {
+    switch (subscription) {
+        case "free":
+            return Subscriptions.FREE;
+        case "pro":
+            return Subscriptions.PRO;
+        case "prem":
+            return Subscriptions.PREMIUM;
+        default:
+            throw new Error("Invalid subscription");
+    }
+
 }

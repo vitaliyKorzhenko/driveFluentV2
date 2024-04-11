@@ -12,9 +12,9 @@ import {
 import { Dismiss24Regular, ArrowAutofitContent24Filled } from "@fluentui/react-icons";
 import { BasicCard } from "../basicCard";
 import { SeachCommandsInput } from "../seachCommandsInput";
-import { Subscriptions } from "../../types";
 import { CommandCard } from "../commandCard";
 import { ApiCommands } from "../../api/ApiCommands";
+import { BasicCommand, Command, parseSubscription } from "../../types/commands";
 
 const useStyles = makeStyles({
   root: {
@@ -49,10 +49,19 @@ export const CardsPanel = () => {
   const [customSize] = React.useState(400);
   const [isBasicMode, setIsBasicMode] = React.useState(true);
 
+  const [basicCommands, setBasicCommands] = React.useState<BasicCommand[]>([]); // Добавьте тип для данных, которые вы ожидаете получить
+
+  const [commands, setCommands] = React.useState<Command[]>([]); // Добавьте тип для данных, которые вы ожидаете получить
 
 
-  const changeMode = () => {
+  const changeMode = (basicCard?: BasicCommand) => {
+    console.log('changeMode', basicCard)
+    if (basicCard) {
+    setCommands(basicCard.commands);
     setIsBasicMode(!isBasicMode);
+    } else {
+      setIsBasicMode(!isBasicMode);
+    }
   }
 
   const onClickBack = () => {
@@ -63,76 +72,16 @@ export const CardsPanel = () => {
       setOpen(false)
     }
   }
-
-  const basicCardNames = [
-    "Basic",
-    "ANOVA/MV",
-    "Regression",
-    "Nonparametric",
-    "Time Series",
-    "Survival",
-    "Data",
-    "Charts",
-  ]
-
-   interface ChildCardProps {
-    title: string;
-    subcription: Subscriptions;
-    description: string;
-  
-  }
-
-
-  const childCards: ChildCardProps[] = [
-    {
-        title: "Descriptive Statistics",
-        subcription: Subscriptions.FREE,
-        description: "Descriptive Statistics"
-    },
-    {
-        title: "Descriptive Statistics (use group variable)",
-        subcription: Subscriptions.PRO,
-        description: "Descriptive Statistics (use group variable)"
-    },
-    {
-        title: 'One Sample T-Test',
-        subcription: Subscriptions.PRO,
-        description: 'One Sample T-Test'
-    },
-    {
-        title: 'One Sample T-Test for Mean',
-        subcription: Subscriptions.PRO,
-        description: 'One Sample T-Test for Mean'
-
-    },
-    {
-        title: 'Compare Means [T-Test]',
-        subcription: Subscriptions.PRO,
-        description: 'Compare Means [T-Test]'
-    },
-    {
-        title: 'Compare Means (use summarized data)',
-        subcription: Subscriptions.PRO,
-        description: 'Compare Means (use summarized data)'
-    },
-    {
-        title: 'Two-Sample z-Test for Means',
-        subcription: Subscriptions.PRO,
-        description: 'Two-Sample z-Test for Means'
-    }
-  ]
-
-
-  // 
+ // 
   function renderBodyForChildCards (): JSX.Element {
     return <DrawerBody>
       <div className={styles.root}>
         <div>
           {
-            childCards.map((card: ChildCardProps) => {
+            commands.map((card: Command) => {
               return <CommandCard
                 description={card.description}
-                subcription={card.subcription}
+                subcription={parseSubscription(card.subscription)}
                 title={card.title}
               />
             })
@@ -148,6 +97,7 @@ export const CardsPanel = () => {
       try {
         const basicCommands = await ApiCommands.findAllCommandsByLanguage('en');
         console.log("COMMANDS", basicCommands); // Делайте что-то с полученными данными
+        setBasicCommands(basicCommands);
       } catch (error) {
         console.error('Error fetching data:', error);
         // Обработка ошибки, если это необходимо
@@ -162,10 +112,10 @@ export const CardsPanel = () => {
       <div className={styles.root}>
         <div>
           {
-            basicCardNames.map((name) => {
+            basicCommands.map((card) => {
               return <BasicCard 
-              name={name}
-              changeMode = {changeMode}
+              name={card.title}
+              changeMode = {() => changeMode(card)}
               />
             })
           }
