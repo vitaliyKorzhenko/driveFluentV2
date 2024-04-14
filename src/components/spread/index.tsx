@@ -3,6 +3,7 @@ import { FluentProvider, Theme } from "@fluentui/react-components";
 import { MainTopPanelSpread } from "../topPanelSpread";
 import { SpreadsheetComponent } from "../speadsheet";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
+import { Command } from "../../types/commands";
 
 
 export interface SpreadProps {
@@ -17,6 +18,8 @@ export interface SpreadProps {
 export interface SpreadState {
   isOpenCommnadPanel: boolean;
   data: any[];
+  isOpenInputPanel: boolean;
+  selectedCommand: Command;
 }
 
 class MainSpread extends React.Component<SpreadProps, SpreadState> {
@@ -27,7 +30,9 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
 
         this.state = {
             isOpenCommnadPanel: false,
-            data: []
+            isOpenInputPanel: false,
+            data: [],
+            selectedCommand: {id: 0, title: '', description: '', visbilility: false, isenabled: false, commandIdOld: '', subscription: '', window: '', advancedwindow: ''}
         };
     }
 
@@ -60,7 +65,18 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
      }
    }
 
-  
+  //open input panel
+   openInputPanel = (card: Command) => {
+    console.log('openInputPanel', this.state.isOpenInputPanel)
+    console.log("COMMAND NOW", card)
+    this.setState({ isOpenInputPanel: true, selectedCommand: card});
+  }
+
+  //close input panel
+  closeInputPanel = () => {
+    console.log('closeInputPanel', this.state.isOpenInputPanel)
+    this.setState({ isOpenInputPanel: false });
+  }
 
   render() {
     return (
@@ -76,6 +92,11 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
           changeDriveMode={this.props.changeDriveMode}
           changeAuth={this.props.changeAuth}
           isOpenCommnadPanel={this.state.isOpenCommnadPanel}
+          isOpenInputPanel={this.state.isOpenInputPanel}
+          openInputPanel={this.openInputPanel}
+          closeInputPanel={this.closeInputPanel}
+          command={this.state.selectedCommand}
+
         />
         <SpreadsheetComponent />
       </FluentProvider>

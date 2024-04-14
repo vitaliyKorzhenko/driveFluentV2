@@ -13,6 +13,7 @@ import {
   CardHeader,
 } from "@fluentui/react-components";
 import { Subscriptions } from "../../types";
+import { Command } from "../../types/commands";
 
 const useStyles = makeStyles({
   card: {
@@ -26,6 +27,9 @@ export interface CommandCardProps {
     title: string;
     description: string;
     subcription: Subscriptions;
+    onClick?: () => void;
+    openInputPanel: (command: Command) => void;
+    coomandCard: Command;
 }
 
 export const CommandCard = (props: CommandCardProps) => {
@@ -84,7 +88,15 @@ export const CommandCard = (props: CommandCardProps) => {
             borderRadius: "20px",
             padding: "5px 20px"
         }}
-        icon={<ShareRegular fontSize={16} />}>Share
+        icon={<ShareRegular fontSize={16} />}
+        onClick={() => {
+         if (props.openInputPanel) {
+          console.log("props.coomandCard", props.coomandCard);
+          props.openInputPanel(props.coomandCard);
+         }
+        }}
+        >
+          Open
         </Button>
       </CardFooter>
     </Card>
