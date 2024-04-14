@@ -42,8 +42,10 @@ const useStyles = makeStyles({
   },
 });
 
-
-export const CardsPanel = () => {
+export interface CardsPanelProps {
+  openInputPanel: (command: Command) => void;
+}
+export const CardsPanel = (props: CardsPanelProps) => {
   const styles = useStyles();
   const [open, setOpen] = React.useState(false);
   const [customSize] = React.useState(400);
@@ -83,6 +85,13 @@ export const CardsPanel = () => {
                 description={card.description}
                 subcription={parseSubscription(card.subscription)}
                 title={card.title}
+                onClick={() => {
+                  console.log('onClick', card);
+                  const window = JSON.parse(card.window);
+                  console.log('window', window);
+                }}
+                openInputPanel={props.openInputPanel}
+                coomandCard={card}
               />
             })
           }

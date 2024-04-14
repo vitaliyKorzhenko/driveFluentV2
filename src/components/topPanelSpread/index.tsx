@@ -17,9 +17,10 @@ import {
 import type { ToolbarProps } from "@fluentui/react-components";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
-import { CardsChildPanel } from "../cardsCommandPanel";
 import { logout } from "../../firebase";
 import { CardsPanel } from "../cardsBasicPanel";
+import { InputPanel } from "../inputPanel";
+import { Command } from "../../types/commands";
 
 
 
@@ -33,13 +34,20 @@ export interface MainTopPanelProps extends ToolbarProps {
   /**
    * The title of the application.
    */
- changeTheme?: () => void;
- changeDriveMode?: () => void;
+  changeTheme?: () => void;
+  changeDriveMode?: () => void;
   changeAuth?: () => void;
   isOpenCommnadPanel?: boolean;
+  isOpenInputPanel: boolean;
+  openInputPanel: (currentCommand: Command) => void;
+  closeInputPanel: () => void;
+  command: Command
+  
 }
 
 export const MainTopPanelSpread = (props: MainTopPanelProps) => (
+
+
   <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
 
     <ToolbarButton
@@ -88,7 +96,14 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => (
       </Menu> 
     <ToolbarDivider />  
     <UserPanel/>
-    <CardsChildPanel/>
-    <CardsPanel/>
+    <CardsPanel
+    openInputPanel={props.openInputPanel}
+    />
+    <InputPanel 
+      isOpen={props.isOpenInputPanel} 
+      closeInputPanel={props.closeInputPanel}
+      command = {props.command}
+    />
+
   </Toolbar>
 );

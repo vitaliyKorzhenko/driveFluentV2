@@ -19,8 +19,8 @@ export interface Command {
     isenabled: boolean;
     commandIdOld: string;
     subscription: string
-    window: JSON;
-    advancedwindow: JSON;
+    window: string;
+    advancedwindow: string;
 }
 
 //parse string subscription to enum
