@@ -4,9 +4,16 @@ import {
   DrawerHeaderTitle,
   OverlayDrawer,
   Button,
+  Tab,
+  TabList,
 } from "@fluentui/react-components";
+import {
+  Calendar24Regular,
+  DocumentRegular,
+} from "@fluentui/react-icons";
 import { Dismiss24Regular } from "@fluentui/react-icons";
 import { Command } from "../../types/commands";
+import { translate } from "../../localization/localization";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -16,8 +23,10 @@ export interface InputPanelProps {
 
 export const InputPanel = (props: InputPanelProps) => {
   const [open, setOpen] = React.useState(props.isOpen);
-  const [customSize] = React.useState(400);
+  const [customSize] = React.useState(600);
   const [currentCommand, setCurrentCommand] = React.useState<Command>(props.command); // Добавьте тип для данных, которые вы ожидаете получить
+
+  const [selectedTab, setSelectedTab] = React.useState("Variables");
 
   console.log('InputPanel', props.isOpen, props.command);
   
@@ -28,6 +37,28 @@ export const InputPanel = (props: InputPanelProps) => {
   , [props.isOpen, props.command]);
 
  
+
+  const renderTabs = () => {
+    return (
+      <>
+        <Tab
+        style = {{color: 'black', padding: '10px'}}
+         icon={<DocumentRegular />} value="variables"
+         onClick={() => setSelectedTab("variables")}
+
+         >
+           {translate('ui.tab.variables', 'Variables')}
+        </Tab>
+        <Tab icon={<Calendar24Regular />} 
+        value="examples"
+        onClick={() => setSelectedTab("Help")}
+        >
+          {translate('ui.label.help', 'Help')}
+        </Tab>
+      </>
+    );
+  };
+
   return (
     <div>
       <OverlayDrawer
@@ -54,16 +85,23 @@ export const InputPanel = (props: InputPanelProps) => {
             }
           >
           </DrawerHeaderTitle>
+          <h3>{currentCommand.title}</h3>
         </DrawerHeader>
+        <TabList defaultSelectedValue="myfiles">{renderTabs()}
+            
+        </TabList>
             {
-              currentCommand ? 
-              <div>
-                <h1>{currentCommand.title}</h1>
-                <p>{currentCommand.description}</p>
-              </div> :
-              <div>
-                <h1>Command not found</h1>
-              </div>
+                selectedTab == "variables" ?
+                <div>
+                    <h1>Variables</h1>
+                </div> :
+                selectedTab == "Help" ?
+                <div>
+                    <h1>Help</h1>
+                </div> :
+                <div>
+                    <h1>Variables</h1>
+                </div>
             }
       
       </OverlayDrawer>
