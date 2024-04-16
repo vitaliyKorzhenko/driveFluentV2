@@ -1,19 +1,26 @@
 import * as React from "react";
 import {
   DrawerHeader,
-  DrawerHeaderTitle,
   OverlayDrawer,
   Button,
   Tab,
   TabList,
+  Text,
+  Label,
+  CompoundButton,
 } from "@fluentui/react-components";
 import {
-  Calendar24Regular,
-  DocumentRegular,
+  Settings24Filled,
+  Options24Filled,
+  ChatHelp24Regular,
+  ArrowStepBackRegular,
+  Run24Regular,
+  BracesVariable24Regular
 } from "@fluentui/react-icons";
-import { Dismiss24Regular } from "@fluentui/react-icons";
 import { Command } from "../../types/commands";
 import { translate } from "../../localization/localization";
+import { ColumnsFor } from "./columnsFor";
+import { HeadersSelect } from "./headers";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -24,36 +31,47 @@ export interface InputPanelProps {
 export const InputPanel = (props: InputPanelProps) => {
   const [open, setOpen] = React.useState(props.isOpen);
   const [customSize] = React.useState(600);
-  const [currentCommand, setCurrentCommand] = React.useState<Command>(props.command); // Добавьте тип для данных, которые вы ожидаете получить
 
   const [selectedTab, setSelectedTab] = React.useState("Variables");
 
   console.log('InputPanel', props.isOpen, props.command);
-  
+
   React.useEffect(() => {
     setOpen(props.isOpen);
-    setCurrentCommand(props.command);
+    //setCurrentCommand(props.command);
   }
-  , [props.isOpen, props.command]);
+    , [props.isOpen, props.command]);
 
- 
+
 
   const renderTabs = () => {
     return (
       <>
         <Tab
-        style = {{color: 'black', padding: '10px'}}
-         icon={<DocumentRegular />} value="variables"
-         onClick={() => setSelectedTab("variables")}
+          style={{ color: 'black', padding: '10px' }}
+          icon={<BracesVariable24Regular />} value="variables"
+          onClick={() => setSelectedTab("variables")}
 
-         >
-           {translate('ui.tab.variables', 'Variables')}
+        >
+          {translate('ui.tab.variables', 'Variables')}
         </Tab>
-        <Tab icon={<Calendar24Regular />} 
-        value="examples"
-        onClick={() => setSelectedTab("Help")}
+        <Tab icon={<ChatHelp24Regular />}
+          value="help"
+          onClick={() => setSelectedTab("Help")}
         >
           {translate('ui.label.help', 'Help')}
+        </Tab>
+        <Tab icon={<Options24Filled />}
+          value="options"
+          onClick={() => setSelectedTab("Options")}
+        >
+          {translate('ui.label.options', 'Options')}
+        </Tab>
+        <Tab icon={<Settings24Filled />}
+          value="preferences"
+          onClick={() => setSelectedTab("Preferences")}
+        >
+          {translate('ui.label.prefernces', 'Preferences')}
         </Tab>
       </>
     );
@@ -71,39 +89,76 @@ export const InputPanel = (props: InputPanelProps) => {
         style={{ width: `${customSize}px` }}
       >
         <DrawerHeader>
-          <DrawerHeaderTitle
-            action={
-              <Button
-                appearance="subtle"
-                aria-label="Close"
-                icon={<Dismiss24Regular />}
-                onClick={() => {
-                  setOpen(false);
-                  props.closeInputPanel();
-                }}
-              />
-            }
-          >
-          </DrawerHeaderTitle>
-          <h3>{currentCommand.title}</h3>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between', // Распределение элементов по ширине
+            alignItems: 'center', // Выравнивание элементов по вертикали
+            padding: '10px'
+          }}>
+            <Button size="small"
+              icon={<ArrowStepBackRegular />}
+              onClick={() => {
+                props.closeInputPanel();
+              }}
+              style={{ marginRight: "10px" }}
+            >
+              {translate('ui.button.back', 'Back')}
+            </Button>
+            <Label size='large' weight="semibold">{props.command.title}</Label>
+            <CompoundButton
+              icon={<Run24Regular />}
+              appearance="outline"
+              shape="circular"
+              style={{
+                backgroundColor: "#1E90FF",
+                color: "white",
+              }}
+            >
+              {translate('ui.button.run', 'Run')}
+            </CompoundButton>
+          </div>
+
         </DrawerHeader>
         <TabList defaultSelectedValue="myfiles">{renderTabs()}
-            
+
         </TabList>
-            {
-                selectedTab == "variables" ?
-                <div>
-                    <h1>Variables</h1>
-                </div> :
-                selectedTab == "Help" ?
-                <div>
-                    <h1>Help</h1>
-                </div> :
-                <div>
-                    <h1>Variables</h1>
+        {
+          selectedTab == "variables" ?
+            <div style={
+              {
+                display: 'flex',
+                margin: '10px',
+                padding: '10px',
+
+              }
+            } >
+
+              <ColumnsFor />
+              <HeadersSelect />
+            </div> :
+            selectedTab == "Help" ?
+              <div>
+                <div style={{ padding: '10px' }}>
+                  <Text size={500}>
+                    {props.command.description}
+                  </Text>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '10px',
+                  }}>
+                    <Button size="large">
+                      {translate('ui.button.help', 'Help')}
+                    </Button>
+                  </div>
                 </div>
-            }
-      
+
+              </div> :
+              <div>
+                <h1>Variables</h1>
+              </div>
+        }
+
       </OverlayDrawer>
     </div>
   );
