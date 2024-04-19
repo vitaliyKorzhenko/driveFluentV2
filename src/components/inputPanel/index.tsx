@@ -21,6 +21,7 @@ import { Command } from "../../types/commands";
 import { translate } from "../../localization/localization";
 import { ColumnsFor } from "./columnsFor";
 import { HeadersSelect } from "./headers";
+import VariablesSection from "./variablesSection";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -77,6 +78,39 @@ export const InputPanel = (props: InputPanelProps) => {
     );
   };
 
+
+  //render Variables
+
+  const renderVariables = (): JSX.Element => {
+    return (
+      <>
+        <div style={{
+          display: 'flex',
+          margin: '10px',
+          padding: '10px',
+          width: '90%',
+        }}>
+          <ColumnsFor />
+          <div style={{ marginLeft: 'auto' }}>
+            <HeadersSelect />
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            margin: '10px',
+            width: '100%',
+
+          }}
+        >
+          <VariablesSection
+            window={props.command.window}
+          />
+        </div>
+      </>
+    )
+  }
+
   return (
     <div>
       <OverlayDrawer
@@ -119,23 +153,13 @@ export const InputPanel = (props: InputPanelProps) => {
           </div>
 
         </DrawerHeader>
+
         <TabList defaultSelectedValue="myfiles">{renderTabs()}
 
         </TabList>
         {
           selectedTab == "variables" ?
-            <div style={
-              {
-                display: 'flex',
-                margin: '10px',
-                padding: '10px',
-
-              }
-            } >
-
-              <ColumnsFor />
-              <HeadersSelect />
-            </div> :
+            renderVariables() :
             selectedTab == "Help" ?
               <div>
                 <div style={{ padding: '10px' }}>

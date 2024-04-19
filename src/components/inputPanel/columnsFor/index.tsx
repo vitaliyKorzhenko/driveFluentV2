@@ -14,7 +14,14 @@ export const ColumnsFor = () => {
     <>
     <div>
       <Label weight="semibold">{translate('ui.label.columnsfor', 'Columns For')}</Label>
-      <Select defaultValue="sheet1" id={selectId}>
+      <Select 
+      defaultValue="sheet1" 
+      id={selectId}
+      style={{ 
+        width: '100%',
+        minWidth: '250px',
+      }}
+      >
         {sheetOptions.map((option) => (
           <option key={option.key} value={option.key}>
             {option.text}

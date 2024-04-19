@@ -13,7 +13,10 @@ export const HeadersSelect = () => {
     <>
     <div>
     <Label weight="semibold">{translate('ui.label.headers', 'Headers')}</Label>
-      <Select defaultValue="sheet1" id={selectId}>
+      <Select 
+      defaultValue="sheet1" id={selectId}
+      style={{ width: "250px" }}
+      >
         {headerOptions.map((option) => (
           <option key={option.key} value={option.key}>
             {option.text}
