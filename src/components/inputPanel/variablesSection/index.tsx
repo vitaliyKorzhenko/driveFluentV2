@@ -1,7 +1,7 @@
 import React from 'react';
 import { IWindowItem } from '../../../types/window';
 import { VarRangeMulti } from '../varRangeMulti';
-import VarRangeSingle from '../variablesInput';
+import VarRangeSingle from '../varRangeSingle';
 import { Link } from '@fluentui/react-components';
 import {
     Question24Regular

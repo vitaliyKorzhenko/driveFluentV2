@@ -1,26 +1,25 @@
-import { Label, Select } from '@fluentui/react-components';
+import { Select } from '@fluentui/react-components';
 import React from 'react';
+import { IOptionItem } from '../../../types/options';
 
-interface VariablesInputProps {
-    size: number;
-    multiple: boolean;
-    defaultValue: string;
-    options: { key: string; text: string }[];
-    label: string;
-    description: string;
+interface OptionListProps {
+   option: IOptionItem
 }
 
 //state interface
 
-interface VariablesInputState {
+interface OptionListState {
+    optionValues: string[];
     selectedValue: string;
 }
 
-class VarRangeSingle extends React.Component<VariablesInputProps, VariablesInputState> {
-    constructor(props: VariablesInputProps) {
+class OptionList extends React.Component<OptionListProps, OptionListState> {
+    constructor(props: OptionListProps) {
+        let values: string[] = props.option.value.split('\\n')
         super(props);
         this.state = {
-            selectedValue: props.defaultValue,
+           optionValues: values,
+           selectedValue: values[0],
         };
 
     }
@@ -31,7 +30,8 @@ class VarRangeSingle extends React.Component<VariablesInputProps, VariablesInput
             <div style={{
                 width: '100%',
             }}>
-                <Label weight="semibold">{this.props.label}</Label>
+               
+   
                 <Select
                     value={this.state.selectedValue}
                     style={{
@@ -41,15 +41,16 @@ class VarRangeSingle extends React.Component<VariablesInputProps, VariablesInput
                    // multiple={this.props.multiple}
                     onChange={(event) => this.setState({ selectedValue: event.target.value })}
                 >
-                    {this.props.options.map((option) => (
-                        <option key={option.key} value={option.key}>
-                            {option.text}
+                    {this.state.optionValues.map((option) => (
+                        <option key={option} value={option}>
+                            {option}
                         </option>
                     ))}
                 </Select>
             </div>
         );
-    }
+ }
 }
 
-export default VarRangeSingle;
+
+export default OptionList;
