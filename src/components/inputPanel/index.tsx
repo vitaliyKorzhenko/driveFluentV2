@@ -22,6 +22,7 @@ import { translate } from "../../localization/localization";
 import { ColumnsFor } from "./columnsFor";
 import { HeadersSelect } from "./headers";
 import VariablesSection from "./variablesSection";
+import OptionSections from "./optionsSection";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -111,6 +112,28 @@ export const InputPanel = (props: InputPanelProps) => {
     )
   }
 
+
+  //render Options
+
+  const renderOptions = (): JSX.Element => {
+    return (
+      <>
+        <div
+          style={{
+            display: 'flex',
+            margin: '10px',
+            width: '100%',
+
+          }}
+        >
+          <OptionSections
+            window={props.command.advancedwindow}
+          />
+        </div>
+      </>
+    )
+  }
+
   return (
     <div>
       <OverlayDrawer
@@ -178,9 +201,12 @@ export const InputPanel = (props: InputPanelProps) => {
                 </div>
 
               </div> :
+              selectedTab == "Options" ?
+              renderOptions() :
               <div>
-                <h1>Variables</h1>
+                <h3> Preferences</h3>
               </div>
+              
         }
 
       </OverlayDrawer>
