@@ -2,6 +2,8 @@ import React from 'react';
 import preferences from '../../../helpers/preferences.json';
 import OptionSections from '../outputOptions';
 import { IPreferencesOptions } from '../types';
+import NumericFormatSections from '../numericFormatOptions';
+import PreferencesStatisticsSection from '../prefsStatistics';
 
 interface PreferencesOptionsSection {
 
@@ -10,6 +12,10 @@ interface PreferencesOptionsSection {
 const PrefsTab: React.FC<PreferencesOptionsSection> = ({  }) => {
 
     const outOptions = preferences.sections.filter((section) => section.name == 'Output Options');
+
+    const numericFormatOptions = preferences.sections.filter((section) => section.name == 'Numeric Format');
+
+    const statisticsOptions = preferences.sections.filter((section) => section.name == 'Statistics');
 
     console.log('outOptions', outOptions[0]);
 
@@ -33,6 +39,16 @@ const PrefsTab: React.FC<PreferencesOptionsSection> = ({  }) => {
             name={outOptions[0].name}
             items={parseItemsFromJsonToPrefOptions(outOptions[0])}
            />
+           <NumericFormatSections
+            name={numericFormatOptions[0].name}
+            items={parseItemsFromJsonToPrefOptions(numericFormatOptions[0])
+            }
+            />
+            <PreferencesStatisticsSection
+            name={statisticsOptions[0].name}
+            items={parseItemsFromJsonToPrefOptions(statisticsOptions[0])
+            }
+            />
         </div>
     );
 };

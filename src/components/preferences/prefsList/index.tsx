@@ -3,12 +3,12 @@ import { Label, Select } from "@fluentui/react-components";
 import { IPreferencesOptions } from "../types";
 
 
-interface IPrefFontProps {
+interface IPrefsListProps {
   option: IPreferencesOptions;
 }
 
 
-export const PrefFont = (props: IPrefFontProps) => {
+export const PrefsList = (props: IPrefsListProps) => {
   const [selectedValue, setSelectedValue] = React.useState<string>(props.option.value);
 
 
@@ -25,7 +25,7 @@ export const PrefFont = (props: IPrefFontProps) => {
         }}
       >
         {
-          props.option.select.split('\\n').map((item: string) => {
+          props.option.value.split('\\n').map((item: string) => {
             return <option key={item} value={item}>{item}</option>
           })
         }
