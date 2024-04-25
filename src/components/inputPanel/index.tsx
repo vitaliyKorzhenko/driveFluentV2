@@ -23,6 +23,7 @@ import { ColumnsFor } from "./columnsFor";
 import { HeadersSelect } from "./headers";
 import VariablesSection from "./variablesSection";
 import OptionSections from "./optionsSection";
+import PrefsTab from "../preferences/prefsTab";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -203,9 +204,16 @@ export const InputPanel = (props: InputPanelProps) => {
               </div> :
               selectedTab == "Options" ?
               renderOptions() :
-              <div>
-                <h3> Preferences</h3>
+              selectedTab == 'Preferences' ?
+              <div 
+              style={{
+                width: '100%',
+
+              }}
+              >
+               <PrefsTab />
               </div>
+              : <></>
               
         }
 
