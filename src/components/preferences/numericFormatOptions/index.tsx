@@ -1,16 +1,15 @@
 import React from 'react';
 import { Divider } from '@fluentui/react-components';
 import { IPreferencesOptions } from '../types';
-import { PrefFont } from '../prefFont';
-import { PrefFontSize } from '../prefFontSize';
 import { PrefsCheckBox } from '../prefsCheckBox';
+import { PrefsFormatDecimal } from '../prefsFormatdecimal';
 
 interface PreferencesOptionsSection {
     name: string;
     items: IPreferencesOptions[];
 }
 
-const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
+const NumericFormatSections: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
    
 
    
@@ -29,21 +28,18 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
                 }}
                 >
                     {
-                        item.nodename == 'font' ?
-                        <PrefFont 
-                        option={item}
-                        />
-                        :
-                        item.nodename == 'fontsize' ?
-                        <PrefFontSize
-                        option={item}
-                        />
-                        :
                         item.nodename == 'checkbox' ?
                         <PrefsCheckBox
                         item={item}
                         />
                         :
+                        item.nodename == 'formatdecimal' ?
+
+                        <PrefsFormatDecimal
+                        option={item}
+                        /> 
+                        :
+        
                         <></>
                     }
                 </div>
@@ -52,4 +48,4 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
     );
 };
 
-export default OptionSections;
+export default NumericFormatSections;

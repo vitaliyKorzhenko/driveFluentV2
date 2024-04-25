@@ -1,16 +1,15 @@
 import React from 'react';
 import { Divider } from '@fluentui/react-components';
 import { IPreferencesOptions } from '../types';
-import { PrefFont } from '../prefFont';
-import { PrefFontSize } from '../prefFontSize';
-import { PrefsCheckBox } from '../prefsCheckBox';
+import { PrefsList } from '../prefsList';
+import { PrefsNumberInt } from '../prefsNumberInt';
 
 interface PreferencesOptionsSection {
     name: string;
     items: IPreferencesOptions[];
 }
 
-const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
+const PreferencesStatisticsSection: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
    
 
    
@@ -25,25 +24,22 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
                 <div key={index}
                 style={{
                     width: '90%',
-                    padding: '5px',
+                    padding: '10px',
                 }}
                 >
                     {
-                        item.nodename == 'font' ?
-                        <PrefFont 
-                        option={item}
+                        item.nodename == 'list' ?
+                        <PrefsList
+                            option={item}
                         />
                         :
-                        item.nodename == 'fontsize' ?
-                        <PrefFontSize
-                        option={item}
-                        />
+                        item.nodename == 'numberint'
+                        ?
+                        <PrefsNumberInt
+                            option={item}
+                            />
                         :
-                        item.nodename == 'checkbox' ?
-                        <PrefsCheckBox
-                        item={item}
-                        />
-                        :
+                        
                         <></>
                     }
                 </div>
@@ -52,4 +48,4 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
     );
 };
 
-export default OptionSections;
+export default PreferencesStatisticsSection;

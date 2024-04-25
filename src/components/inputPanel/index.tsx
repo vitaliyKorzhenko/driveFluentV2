@@ -35,7 +35,7 @@ export const InputPanel = (props: InputPanelProps) => {
   const [open, setOpen] = React.useState(props.isOpen);
   const [customSize] = React.useState(600);
 
-  const [selectedTab, setSelectedTab] = React.useState("Variables");
+  const [selectedTab, setSelectedTab] = React.useState("variables");
 
   console.log('InputPanel', props.isOpen, props.command);
 
@@ -51,7 +51,7 @@ export const InputPanel = (props: InputPanelProps) => {
     return (
       <>
         <Tab
-          style={{ color: 'black', padding: '10px' }}
+          style={{ color: 'black' }}
           icon={<BracesVariable24Regular />} value="variables"
           onClick={() => setSelectedTab("variables")}
 
@@ -151,7 +151,7 @@ export const InputPanel = (props: InputPanelProps) => {
             display: 'flex',
             justifyContent: 'space-between', // Распределение элементов по ширине
             alignItems: 'center', // Выравнивание элементов по вертикали
-            padding: '10px'
+            // padding: '10px'
           }}>
             <Button size="small"
               icon={<ArrowStepBackRegular />}

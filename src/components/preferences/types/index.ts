@@ -4,5 +4,7 @@ export interface IPreferencesOptions {
     name: string;
     select: string;
     returnname: string;
+    min?: number;
+    max?: number;
 }
 
