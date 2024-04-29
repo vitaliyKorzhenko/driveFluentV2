@@ -1,6 +1,6 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-import { FluentProvider, webLightTheme, webDarkTheme, teamsDarkTheme, teamsHighContrastTheme, teamsLightTheme } from '@fluentui/react-components'
+import { FluentProvider, webLightTheme, webDarkTheme, teamsDarkTheme, teamsLightTheme } from '@fluentui/react-components'
 import Login from './components/loginPage/index.tsx'
 import { Drive } from './components/drive/index.tsx'
 import { auth } from './firebase/index.tsx'
@@ -46,16 +46,13 @@ function App() {
     // Переключайте между темами при каждом вызове
     //randomTheme();
     //setTheme((prevTheme) => (prevTheme === teamsDarkTheme ? teamsLightTheme : teamsDarkTheme));
-    let randomTheme = Math.floor(Math.random() * 3);
+    let randomTheme = Math.floor(Math.random() * 2);
     switch (randomTheme) {
       case 0:
         setTheme((prevTheme) => (prevTheme === webDarkTheme ? webLightTheme : webDarkTheme));
         break;
       case 1:
         setTheme((prevTheme) => (prevTheme === teamsDarkTheme ? teamsLightTheme : teamsDarkTheme));
-        break;
-      case 2:
-        setTheme((prevTheme) => (prevTheme === teamsHighContrastTheme ? webLightTheme : teamsHighContrastTheme));
         break;
     }
   };
@@ -106,6 +103,7 @@ function App() {
   } else {
     if (driveMode) {
      return (
+      <FluentProvider theme={theme}>
       <ProgressBarProvider>
       <Drive
       changeAuth={changeAuth}
@@ -115,6 +113,7 @@ function App() {
       updateLanguage={updateLanguage}
       />
       </ProgressBarProvider>
+      </FluentProvider>
      )
     } else {
       return (

@@ -45,6 +45,7 @@ const useStyles = makeStyles({
 });
 
 
+
 export const SubscriptionPanel = () => {
   const styles = useStyles();
  
@@ -68,6 +69,7 @@ export const SubscriptionPanel = () => {
               <Button
                 appearance="subtle"
                 aria-label="Close"
+                color="white"
                 icon={<Dismiss24Regular />}
                 onClick={() => setOpen(false)}
               />
@@ -91,6 +93,7 @@ export const SubscriptionPanel = () => {
       <ToolbarButton
       aria-label="Subscription"
       onClick={() => setOpen(true)}
+      color="white"
       icon={<TextSubscript24Filled />}
     >
       FREE

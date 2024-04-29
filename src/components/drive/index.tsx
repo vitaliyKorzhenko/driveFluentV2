@@ -76,18 +76,23 @@ export const Drive = (props: DriveProps) => {
             style={{
                 height: '100vh',
                 width: '100vw',
+                // padding: '0px',
+                // margin: '0px',
+                
             }}
         >
             <MainTopPanel
                 changeTheme={props.changeTheme}
                 changeDriveMode={props.changeDriveMode}
                 updateLanguage={props.updateLanguage}
+                theme={props.theme}
             />
             <FilesTabs 
             examples={exampleFiles}
             userFiles={userFiles}
             refreshFiles={fetchUserFiles}
             trashFiles={trashedUserFiles}
+            changeDriveMode={props.changeDriveMode}
              />
               <Progress/>
         </FluentProvider>
