@@ -45,6 +45,7 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
 export interface FilesGridProps {
   files: IUserFileNodeModel[],
   refreshFiles?: () => void;
+  changeDriveMode?: () => void;
 }
 
 function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
@@ -183,7 +184,11 @@ export const FilesGrid = (props: FilesGridProps) => {
           color: "#1E90FF",
   
         }}
-         icon={<OpenRegular />}>
+         icon={<OpenRegular />}
+         onClick={() => {
+          props.changeDriveMode && props.changeDriveMode();
+         }}
+         >
                  {translate('ui.label.openInBrowser', 'Open')}
           </Button>;
       },

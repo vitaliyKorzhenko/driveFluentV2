@@ -12,6 +12,7 @@ import {
   TableHeaderCell,
   TableCellLayout,
   Button,
+  tokens,
 } from "@fluentui/react-components";
 
 const items = [
@@ -33,12 +34,12 @@ const items = [
     premium: {label: "Non-Parametric Statistics", icon: <CheckmarkCircle24Regular style={{color: 'green'}} />},
   },
   {
-    pro: {label: "Time Series & Survival Analysis", icon: <CheckmarkCircle24Regular style={{color: 'green'}}/>},
-    premium: {label: "Time Series & Survival Analysis", icon: <Dismiss24Regular style={{color: 'red'}}/>},
+    pro: {label: "Time Series & Survival Analysis", icon: <CheckmarkCircle24Regular style={{color: 'red'}}/>},
+    premium: {label: "Time Series & Survival Analysis", icon: <Dismiss24Regular style={{color: 'green'}}/>},
   },
   {
-    pro: {label: "Feature on request", icon: <CheckmarkCircle24Regular style={{color: 'green'}}/>},
-    premium: {label: "Feature on request", icon: <Dismiss24Regular style={{color: 'red'}}/>}
+    pro: {label: "Feature on request", icon: <CheckmarkCircle24Regular style={{color: 'red'}}/>},
+    premium: {label: "Feature on request", icon: <Dismiss24Regular style={{color: 'green'}}/>}
 
   },
 ];
@@ -68,7 +69,8 @@ export const TablePrices = () => {
             <TableHeaderCell key={column.columnKey} 
             style={{
                 backgroundColor: '#1E90FF',
-                color: 'white'
+                fontWeight: 'bold',
+                color: "white"
                 
             }}
             >
@@ -82,12 +84,23 @@ export const TablePrices = () => {
           <TableRow key={item.pro.label}>
 
             <TableCell>
-              <TableCellLayout media={item.pro.icon}>
+              <TableCellLayout 
+              media={item.pro.icon} 
+              style={{
+                //fontWeight: 'bold',
+                color: tokens.colorBrandBackgroundSelected
+              }}
+              >
                 {item.pro.label}
               </TableCellLayout>
             </TableCell>
             <TableCell>
-              <TableCellLayout media={item.premium.icon}>
+              <TableCellLayout media={item.premium.icon} 
+              style={{
+                //fontWeight: 'bold',
+                color: tokens.colorBrandBackgroundSelected
+              }}
+              >
                 {item.premium.label}
               </TableCellLayout>
             </TableCell>
@@ -102,7 +115,8 @@ export const TablePrices = () => {
                       style={{
                         backgroundColor: '#1E90FF',
                         color: 'white',
-                        width: '100%'
+                        width: '100%',
+                        fontWeight: 'bold'
                       }}
                       >
                         {buttonItem.pro.label}

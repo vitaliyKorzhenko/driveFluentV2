@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    ...shorthands.padding("50px", "20px"),
+    ...shorthands.padding("2px", "2px"),
     rowGap: "20px",
     width: "100%",
     height: "100%",
@@ -38,6 +38,7 @@ export interface FilesTabsProps {
   userFiles: IUserFileNodeModel[];
   trashFiles: IUserFileNodeModel[];
   refreshFiles: () => void;
+  changeDriveMode: () => void;
 }
 
 export const FilesTabs = (props :  FilesTabsProps) => {
@@ -83,6 +84,7 @@ export const FilesTabs = (props :  FilesTabsProps) => {
             <FilesGrid
             files={props.userFiles}
             refreshFiles={props.refreshFiles}
+            changeDriveMode={props.changeDriveMode}
              /> :
             selectedTab == "examples" ?
             <FilesExampleGrid files={props.examples}  /> :

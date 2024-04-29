@@ -2,10 +2,10 @@ import {
   Apps24Regular,
   DarkTheme24Filled,
   Question24Regular,
-  MoldRegular,
   LocalLanguage24Regular
 } from "@fluentui/react-icons";
 import {
+  Label,
   Menu,
   MenuItem,
   MenuList,
@@ -15,13 +15,13 @@ import {
   ToolbarButton,
   ToolbarDivider,
 } from "@fluentui/react-components";
-import type { ToolbarProps } from "@fluentui/react-components";
+import type { Theme, ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
 import { VersionHelper } from "../../helpers/versionHelper";
 import React from "react";
-import { getActiveLanguageDisplayName, getAvailableLanguagesUiList, translate } from "../../localization/localization";
+import { getAvailableLanguagesUiList, translate } from "../../localization/localization";
 
 export interface MainTopPanelProps extends ToolbarProps {
   /**
@@ -34,6 +34,9 @@ export interface MainTopPanelProps extends ToolbarProps {
  changeAuth?: () => void;
 
  updateLanguage?: (langCode: string) => void;
+
+ theme: Partial<Theme>;
+
 }
 
 export const MainTopPanel = (props: MainTopPanelProps) => {
@@ -50,7 +53,8 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
 
   return (
 
-  <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
+  <Toolbar aria-label="Default" {...props} style={{backgroundColor: props.theme.colorBrandBackground}}>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
 
     <ToolbarButton
       aria-label="StatPlus.io"
@@ -58,31 +62,13 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
       icon={<Apps24Regular />}
       title="StatPlus.io"
     >
-     { 'StatPlus.io'}
+     { 'StatPlus.io '}
+     <Label style={{color: 'red'}}>{'v' + VersionHelper.getVersion()}</Label>
     </ToolbarButton>
-    <ToolbarButton
-    color="red"
-    style={{
-      color: 'red'
-    }}
-    >
-      { 'v' + VersionHelper.getVersion()}
-    </ToolbarButton>
-    <ToolbarButton
-    icon={<MoldRegular/>}
-    onClick={
-      () => {
-        if (props.changeDriveMode)
-        props.changeDriveMode();  
-      
-      }
-    }
-    >
-      Go-Spread
-    </ToolbarButton>
-    <ToolbarButton>
-      {'Language: ' +  getActiveLanguageDisplayName()}
-    </ToolbarButton>
+    <SubscriptionPanel/>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+
     <Menu>
       <MenuTrigger>
         <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
@@ -117,7 +103,7 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
         </MenuList>
       </MenuPopover>
     </Menu>
-    <SubscriptionPanel/>
+  
 
     <ToolbarDivider />
     <ToolbarButton
@@ -143,6 +129,7 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
     <UserPanel 
     changeAuth={props.changeAuth}
     />
+    </div>
   </Toolbar>
   );
 };
