@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { FluentProvider, Theme } from "@fluentui/react-components";
 import { MainTopPanel } from "../topPanel";
 import { FilesTabs } from "../filesTab";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
@@ -9,11 +8,11 @@ import { useProgressBar } from "../progressBar/progressContext"; // Импорт
 import { Progress } from "../progressBar";
 
 export interface DriveProps {
-    theme: Partial<Theme>;
     changeTheme: () => void;
     changeDriveMode: () => void;
     changeAuth: () => void;
     updateLanguage: (langCode: string) => void;
+    setFileNameHandler: (name: string) => void;
 
 }
 
@@ -71,8 +70,7 @@ export const Drive = (props: DriveProps) => {
     }, []);
 
     return (
-        <FluentProvider
-            theme={props.theme}
+        <div
             style={{
                 height: '100vh',
                 width: '100vw',
@@ -85,7 +83,6 @@ export const Drive = (props: DriveProps) => {
                 changeTheme={props.changeTheme}
                 changeDriveMode={props.changeDriveMode}
                 updateLanguage={props.updateLanguage}
-                theme={props.theme}
             />
             <FilesTabs 
             examples={exampleFiles}
@@ -93,9 +90,10 @@ export const Drive = (props: DriveProps) => {
             refreshFiles={fetchUserFiles}
             trashFiles={trashedUserFiles}
             changeDriveMode={props.changeDriveMode}
+            setFileNameHandler={props.setFileNameHandler}
              />
               <Progress/>
-        </FluentProvider>
+        </div>
     );
 };
 

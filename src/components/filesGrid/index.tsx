@@ -46,6 +46,7 @@ export interface FilesGridProps {
   files: IUserFileNodeModel[],
   refreshFiles?: () => void;
   changeDriveMode?: () => void;
+  setFileNameHandler: (name: string) => void;
 }
 
 function parseNodeModelsToItems(files: IUserFileNodeModel[]): Item[] {
@@ -176,7 +177,7 @@ export const FilesGrid = (props: FilesGridProps) => {
       renderHeaderCell: () => {
         return "";
       },
-      renderCell: () => {
+      renderCell: (item: Item) => {
         return <Button
         style={{
           width: "100%",
@@ -186,6 +187,7 @@ export const FilesGrid = (props: FilesGridProps) => {
         }}
          icon={<OpenRegular />}
          onClick={() => {
+          props.setFileNameHandler && props.setFileNameHandler(item.file.label);
           props.changeDriveMode && props.changeDriveMode();
          }}
          >

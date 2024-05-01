@@ -24,6 +24,12 @@ function App() {
 
   const [currentLanguage, setCurrentLanguage] = useState(loclastrgLanguage);
 
+  const [fileName, setFileName] = useState('Test FileName');
+
+  const setFileNameHandler = (name: string) => {
+    setFileName(name);
+  }
+
   const changeAuth = () => {
     setIsAuth(!isAuth);
   }
@@ -109,22 +115,25 @@ function App() {
       changeAuth={changeAuth}
       changeDriveMode={changeDriveMode}
       changeTheme={toggleTheme}
-      theme={theme}
       updateLanguage={updateLanguage}
+      setFileNameHandler={setFileNameHandler}
+
       />
       </ProgressBarProvider>
       </FluentProvider>
      )
     } else {
       return (
-       <MainSpread
+      <FluentProvider theme={theme}>
+        <MainSpread
         changeAuth={changeAuth}
         changeDriveMode={changeDriveMode}
         changeTheme={toggleTheme}
-        theme={theme}
         fileId={2}
+        fileName={fileName}
         src='files'
         />
+      </FluentProvider>
       )
     }
   }

@@ -14,8 +14,9 @@ import {
   Toolbar,
   ToolbarButton,
   ToolbarDivider,
+  tokens
 } from "@fluentui/react-components";
-import type { Theme, ToolbarProps } from "@fluentui/react-components";
+import type { ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
 import { UserPanel } from "../userPanel";
 import { SubscriptionPanel } from "../subscriptionPanel";
@@ -35,8 +36,6 @@ export interface MainTopPanelProps extends ToolbarProps {
 
  updateLanguage?: (langCode: string) => void;
 
- theme: Partial<Theme>;
-
 }
 
 export const MainTopPanel = (props: MainTopPanelProps) => {
@@ -53,7 +52,7 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
 
   return (
 
-  <Toolbar aria-label="Default" {...props} style={{backgroundColor: props.theme.colorBrandBackground}}>
+  <Toolbar aria-label="Default" {...props} style={{backgroundColor: tokens.colorBrandBackground}}>
   <div style={{ display: 'flex', alignItems: 'center' }}>
 
     <ToolbarButton
