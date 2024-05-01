@@ -1,5 +1,4 @@
 import React from "react";
-import { FluentProvider, Theme } from "@fluentui/react-components";
 import { MainTopPanelSpread } from "../topPanelSpread";
 import { SpreadsheetComponent } from "../speadsheet";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
@@ -7,12 +6,12 @@ import { Command } from "../../types/commands";
 
 
 export interface SpreadProps {
-  theme: Partial<Theme>;
   changeTheme: () => void;
   changeDriveMode: () => void;
   changeAuth: () => void;
   fileId: number;
   src: string;
+  fileName: string;
 }
 
 export interface SpreadState {
@@ -80,8 +79,7 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
 
   render() {
     return (
-      <FluentProvider
-        theme={this.props.theme}
+      <div
         style={{
           height: '100vh',
           width: '100vw',
@@ -96,10 +94,11 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
           openInputPanel={this.openInputPanel}
           closeInputPanel={this.closeInputPanel}
           command={this.state.selectedCommand}
+          fileName={this.props.fileName}
 
         />
         <SpreadsheetComponent />
-      </FluentProvider>
+      </div>
     );
   }
 

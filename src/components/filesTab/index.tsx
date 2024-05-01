@@ -39,6 +39,7 @@ export interface FilesTabsProps {
   trashFiles: IUserFileNodeModel[];
   refreshFiles: () => void;
   changeDriveMode: () => void;
+  setFileNameHandler: (name: string) => void;
 }
 
 export const FilesTabs = (props :  FilesTabsProps) => {
@@ -85,6 +86,7 @@ export const FilesTabs = (props :  FilesTabsProps) => {
             files={props.userFiles}
             refreshFiles={props.refreshFiles}
             changeDriveMode={props.changeDriveMode}
+            setFileNameHandler={props.setFileNameHandler}
              /> :
             selectedTab == "examples" ?
             <FilesExampleGrid files={props.examples}  /> :

@@ -9,7 +9,7 @@ import {
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
-import { Dismiss24Regular, ArrowAutofitContent24Filled } from "@fluentui/react-icons";
+import { Dismiss24Regular, ArrowAutofitContent24Filled, List24Filled } from "@fluentui/react-icons";
 import { BasicCard } from "../basicCard";
 import { SeachCommandsInput } from "../seachCommandsInput";
 import { CommandCard } from "../commandCard";
@@ -179,8 +179,12 @@ export const CardsPanel = (props: CardsPanelProps) => {
       </OverlayDrawer>
 
       <div className={styles.main}>
-        <Button appearance="primary" onClick={() => setOpen(true)}>
-          Open Commands
+        <Button 
+        appearance="primary" 
+        onClick={() => setOpen(true)}
+        icon={<List24Filled/>}
+        >
+           Commands
         </Button>
       </div>
     </div>

@@ -2,33 +2,24 @@ import {
   Apps24Regular,
   DarkTheme24Filled,
   Question24Regular,
-  MoldRegular
 } from "@fluentui/react-icons";
 import {
   Toolbar,
   ToolbarButton,
   ToolbarDivider,
-  Menu,
-  MenuTrigger,
-  MenuPopover,
-  MenuList,
-  MenuItem,
+  tokens,
+  Label,
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
 import { UserPanel } from "../userPanel";
-import { SubscriptionPanel } from "../subscriptionPanel";
-import { logout } from "../../firebase";
 import { CardsPanel } from "../cardsBasicPanel";
 import { InputPanel } from "../inputPanel";
 import { Command } from "../../types/commands";
+import { VersionHelper } from "../../helpers/versionHelper";
+import { translate } from "../../localization/localization";
+import React from "react";
+import { FeedbackDialog } from "../feedbackDialog";
 
-
-
-const additionalItems: string[] = [
-  'About',
-  'Feedback',
-];
-  
 
 export interface MainTopPanelProps extends ToolbarProps {
   /**
@@ -42,68 +33,72 @@ export interface MainTopPanelProps extends ToolbarProps {
   openInputPanel: (currentCommand: Command) => void;
   closeInputPanel: () => void;
   command: Command
-  
+  fileName: string;
+
 }
 
-export const MainTopPanelSpread = (props: MainTopPanelProps) => (
+export const MainTopPanelSpread = (props: MainTopPanelProps) => {
 
+  const [openFeedback, setOpenFeedback] = React.useState(false);
 
-  <Toolbar aria-label="Default" {...props} style={{backgroundColor: '#1E90FF#1E90FF'}}>
+  const openFeedbackDialog = () => {
+    setOpenFeedback(true);
+  }
 
-    <ToolbarButton
-      aria-label="StatPlus.io"
-      appearance="primary"
-      icon={<Apps24Regular />}
-      title="StatPlus.io"
-    >
-      StatPlus.io
-    </ToolbarButton>
-    <ToolbarButton
-    icon={<MoldRegular/>}
-    onClick={props.changeDriveMode}
-    >
-      Go-DRIVE
-      </ToolbarButton>
-      <ToolbarButton
-      aria-label="Sign Out"
-      onClick={async () => {
-        await logout();
-        props.changeAuth && props.changeAuth();
-      }}
-    >
-      Sign Out
-    </ToolbarButton>
-    <SubscriptionPanel/>
+  const closeFeedbackDialog = () => {
+    setOpenFeedback(false);
+  }
 
-    <ToolbarDivider />
-    <ToolbarButton
-      aria-label="Dark Theme"
-      icon={<DarkTheme24Filled />}
-      onClick={props.changeTheme}
+  return (
+    <Toolbar aria-label="Default" {...props} style={{ backgroundColor: tokens.colorBrandBackground }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
 
-    />
-    <Menu>
-      <MenuTrigger>
-        <ToolbarButton aria-label="Help" icon={<Question24Regular />} />
-      </MenuTrigger>
-        <MenuPopover>
-          <MenuList>
-            {additionalItems.map((item) => (
-              <MenuItem key={item}>{item}</MenuItem>
-            ))}
-          </MenuList>
-        </MenuPopover>
-      </Menu> 
-    <ToolbarDivider />  
-    <UserPanel/>
-    <CardsPanel
-    openInputPanel={props.openInputPanel}
-    />
-    <InputPanel 
-      isOpen={props.isOpenInputPanel} 
-      closeInputPanel={props.closeInputPanel}
-      command = {props.command}
-    />
+        <ToolbarButton
+          aria-label="StatPlus.io"
+          appearance="primary"
+          icon={<Apps24Regular />}
+          title="StatPlus.io"
+          onClick={() => {
+            props.changeDriveMode && props.changeDriveMode();
+          }}
+        >
+          {'StatPlus.io '}
+          <Label style={{ color: 'red' }}>{'v' + VersionHelper.getVersion()}</Label>
+        </ToolbarButton>
+        <Label> {props.fileName}</Label>
+        <ToolbarButton
+          aria-label="Feedback"
+          onClick={openFeedbackDialog}
+          icon={<Question24Regular />}
+        >
 
-  </Toolbar>
-);
+          {translate("ui.label.feedback", 'Feedback')}
+        </ToolbarButton>
+        <FeedbackDialog
+          open={openFeedback}
+          closeDialog={closeFeedbackDialog}
+        />
+        {/* <SubscriptionPanel/> */}
+      </div>
+      <ToolbarDivider />
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+        <CardsPanel
+          openInputPanel={props.openInputPanel}
+        />
+        <ToolbarButton
+          aria-label="Dark Theme"
+          icon={<DarkTheme24Filled />}
+          onClick={props.changeTheme}
+
+        />
+        <ToolbarDivider />
+        <UserPanel />
+        <InputPanel
+          isOpen={props.isOpenInputPanel}
+          closeInputPanel={props.closeInputPanel}
+          command={props.command}
+        />
+      </div>
+    </Toolbar>
+  )
+}
