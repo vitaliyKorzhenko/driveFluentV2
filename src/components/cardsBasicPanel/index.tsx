@@ -8,10 +8,11 @@ import {
   tokens,
   makeStyles,
   shorthands,
+  Input,
+  ButtonProps,
 } from "@fluentui/react-components";
-import { Dismiss24Regular, ArrowAutofitContent24Filled, List24Filled } from "@fluentui/react-icons";
+import { Dismiss24Regular, List24Filled, SearchRegular, ArrowLeft24Regular } from "@fluentui/react-icons";
 import { BasicCard } from "../basicCard";
-import { SeachCommandsInput } from "../seachCommandsInput";
 import { CommandCard } from "../commandCard";
 import { ApiCommands } from "../../api/ApiCommands";
 import { BasicCommand, Command, parseSubscription } from "../../types/commands";
@@ -55,6 +56,7 @@ export const CardsPanel = (props: CardsPanelProps) => {
 
   const [commands, setCommands] = React.useState<Command[]>([]); // Добавьте тип для данных, которые вы ожидаете получить
 
+  const [searhValue, setSearchValue] = React.useState<string>('');
 
   const changeMode = (basicCard?: BasicCommand) => {
     console.log('changeMode', basicCard)
@@ -100,6 +102,41 @@ export const CardsPanel = (props: CardsPanelProps) => {
   </DrawerBody>
   }
 
+  const MicButton: React.FC<ButtonProps> = (props) => {
+    return (
+      <Button
+        {...props}
+        appearance="transparent"
+        icon={<SearchRegular />}
+        size="small"
+      />
+    );
+  };
+
+  const searchCommands = (search: string) => {
+    //get all child commands where title includes search or description includes search
+    //for each all basic commands that have child commands
+    if (search && search.length > 0) {
+    let resultCommands = [];
+    for (let i = 0; i < basicCommands.length; i++) {
+      const basicCommand = basicCommands[i];
+      const childCommands = basicCommand.commands;
+      for (let j = 0; j < childCommands.length; j++) {
+        const childCommand = childCommands[j];
+        if (childCommand.title.includes(search) || childCommand.description.includes(search)) {
+          //add to result
+          resultCommands.push(childCommand);
+        }
+      }
+      setCommands(resultCommands);
+      setIsBasicMode(false);
+    }
+  } else {
+    setCommands([]);
+    setIsBasicMode(true);
+  }
+  }
+
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -125,6 +162,7 @@ export const CardsPanel = (props: CardsPanelProps) => {
               return <BasicCard 
               name={card.title}
               changeMode = {() => changeMode(card)}
+              coutCommands={card.commands.length}
               />
             })
           }
@@ -153,8 +191,10 @@ export const CardsPanel = (props: CardsPanelProps) => {
             }
           >
          <Button size="small" 
-         icon={<ArrowAutofitContent24Filled 
+         icon={<ArrowLeft24Regular 
           />}
+          appearance="subtle"
+
           onClick={() => {
             console.log('onClickBack', isBasicMode);
             onClickBack()
@@ -167,7 +207,24 @@ export const CardsPanel = (props: CardsPanelProps) => {
             >
             back
         </Button>
-           <SeachCommandsInput/>
+        <Input
+        autoFocus={true}
+          contentAfter={<MicButton 
+            onClick={() => {
+              searchCommands(searhValue)
+            }}
+            aria-label="Enter commands" />}
+          value={searhValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          style={{ width: "100%", maxWidth: '230px' }}
+          placeholder="Enter commands"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              searchCommands(searhValue)
+            }
+          
+          }}
+        />
           </DrawerHeaderTitle>
         </DrawerHeader>
 
