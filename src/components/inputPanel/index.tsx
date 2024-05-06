@@ -68,13 +68,13 @@ export const InputPanel = (props: InputPanelProps) => {
           value="options"
           onClick={() => setSelectedTab("Options")}
         >
-          {translate('ui.label.options', 'Options')}
+          {translate('ui.tab.options', 'Options')}
         </Tab>
         <Tab icon={<Settings24Filled />}
           value="preferences"
           onClick={() => setSelectedTab("Preferences")}
         >
-          {translate('ui.label.prefernces', 'Preferences')}
+          {translate('ui.tab.preferences', 'Preferences')}
         </Tab>
       </>
     );
@@ -160,7 +160,7 @@ export const InputPanel = (props: InputPanelProps) => {
               }}
               style={{ marginRight: "10px" }}
             >
-              {translate('ui.button.back', 'Back')}
+              {translate('ui.label.back', 'Back')}
             </Button>
             <Label size='large' weight="semibold">{props.command.title}</Label>
             <CompoundButton
@@ -172,7 +172,7 @@ export const InputPanel = (props: InputPanelProps) => {
                 color: "white",
               }}
             >
-              {translate('ui.button.run', 'Run')}
+              {translate('ui.label.run', 'Run')}
             </CompoundButton>
           </div>
 
