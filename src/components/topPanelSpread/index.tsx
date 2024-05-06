@@ -2,6 +2,7 @@ import {
   Apps24Regular,
   DarkTheme24Filled,
   Question24Regular,
+  LocalLanguage24Regular
 } from "@fluentui/react-icons";
 import {
   Toolbar,
@@ -9,6 +10,11 @@ import {
   ToolbarDivider,
   tokens,
   Label,
+  MenuPopover,
+  MenuList,
+  MenuItem,
+  Menu,
+  MenuTrigger,
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
 import { UserPanel } from "../userPanel";
@@ -16,7 +22,7 @@ import { CardsPanel } from "../cardsBasicPanel";
 import { InputPanel } from "../inputPanel";
 import { Command } from "../../types/commands";
 import { VersionHelper } from "../../helpers/versionHelper";
-import { translate } from "../../localization/localization";
+import { getAvailableLanguagesUiList, translate } from "../../localization/localization";
 import React from "react";
 import { FeedbackDialog } from "../feedbackDialog";
 
@@ -34,6 +40,8 @@ export interface MainTopPanelProps extends ToolbarProps {
   closeInputPanel: () => void;
   command: Command
   fileName: string;
+  updateLanguage: (langCode: string) => void;
+
 
 }
 
@@ -91,6 +99,41 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
           onClick={props.changeTheme}
 
         />
+          <Menu>
+      <MenuTrigger>
+        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
+      </MenuTrigger>
+
+      <MenuPopover>
+        <MenuList
+        onSelect={(value) => {
+          console.log("Selected language: ", value);
+          // props.updateLanguage && props.updateLanguage(value)
+        
+        }}
+        >
+          {getAvailableLanguagesUiList().map((language) => (
+            <MenuItem 
+            key={language.code}
+            onClick={() => {
+              console.log('CLICK language: ');
+              // alert('Selected language: ' + language.code)
+              if (props.updateLanguage) {
+                console.log('UPDATE language: ', language.code)
+                props.updateLanguage(language.code);
+
+              } else {
+                console.log('NOT DEFINED UPDATE language: ');
+              }
+             }}
+            >
+            {language.display}
+            </MenuItem>
+          ))}
+        </MenuList>
+      </MenuPopover>
+    </Menu>
+        
         <ToolbarDivider />
         <UserPanel />
         <InputPanel

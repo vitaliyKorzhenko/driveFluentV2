@@ -5,8 +5,8 @@ export const HeadersSelect = () => {
   const selectId = useId();
 
   const headerOptions = [
-    { key: "noheaders", text: "No Headers" },
-    { key: "nameinfirstrow", text: "Name in first row" },
+    { key: "noheaders", text: translate("ui.addrange.label.nolabels", "No headers")},
+    { key: "nameinfirstrow", text: translate("ui.addrange.label.labels", "Labels in first row")},
   ];
 
   return (

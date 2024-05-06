@@ -9,6 +9,7 @@ import {
 import { ShareRegular, InfoRegular, KeyCommand24Regular, ListRtl20Regular } from "@fluentui/react-icons";
 
 import { Card, CardHeader } from "@fluentui/react-components";
+import { translate } from "../../localization/localization";
 
 
 
@@ -55,7 +56,9 @@ export const BasicCard = (props: BasicCardProps ) => {
             borderRadius: "20px",
             padding: "5px 20px"
          }}
-         icon={<InfoRegular fontSize={16} />}>Info</Button>
+         icon={<InfoRegular fontSize={16} />}>
+          {translate('ui.label.info', 'Info')}
+         </Button>
         <Button 
         style={{
             backgroundColor: "#1C1C1C",

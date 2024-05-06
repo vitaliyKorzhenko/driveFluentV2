@@ -16,6 +16,7 @@ import {
     SelectObject20Filled,
     AddSquareRegular,
 } from "@fluentui/react-icons";
+import { translate } from "../../../localization/localization";
 
 const useStyles = makeStyles({
     root: {
@@ -115,14 +116,14 @@ export const VarRangeMulti = (props: Partial<VarRangeMultiProps>) => {
             icon={<SelectObject20Filled />}
             style={{ marginRight: '2px' }} // Небольшой отступ между кнопками
         >
-            Cols
+        {translate('ui.range.cols', 'Cols')}
         </Button>
         <Button 
             size="medium"
             appearance="subtle"
             icon={<AddSquareRegular />}
         >
-            Range
+        {translate('ui.range.range', 'Range')}
         </Button>
     </div>
 </div>

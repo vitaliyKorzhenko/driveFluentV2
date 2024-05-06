@@ -132,6 +132,7 @@ function App() {
         fileId={2}
         fileName={fileName}
         src='files'
+        updateLanguage={updateLanguage}
         />
       </FluentProvider>
       )

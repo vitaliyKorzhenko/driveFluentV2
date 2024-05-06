@@ -16,6 +16,7 @@ import { BasicCard } from "../basicCard";
 import { CommandCard } from "../commandCard";
 import { ApiCommands } from "../../api/ApiCommands";
 import { BasicCommand, Command, parseSubscription } from "../../types/commands";
+import { translate } from "../../localization/localization";
 
 const useStyles = makeStyles({
   root: {
@@ -205,7 +206,7 @@ export const CardsPanel = (props: CardsPanelProps) => {
           
           }}
             >
-            back
+            {translate("ui.label.back", 'Back')}
         </Button>
         <Input
         autoFocus={true}
@@ -213,11 +214,11 @@ export const CardsPanel = (props: CardsPanelProps) => {
             onClick={() => {
               searchCommands(searhValue)
             }}
-            aria-label="Enter commands" />}
+            aria-label={translate('ui.label.search', 'Search')} />}
           value={searhValue}
           onChange={(e) => setSearchValue(e.target.value)}
           style={{ width: "100%", maxWidth: '230px' }}
-          placeholder="Enter commands"
+          placeholder={translate('ui.label.search', 'Search')}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               searchCommands(searhValue)
@@ -241,7 +242,7 @@ export const CardsPanel = (props: CardsPanelProps) => {
         onClick={() => setOpen(true)}
         icon={<List24Filled/>}
         >
-           Commands
+         {translate("ui.label.commands", 'Commands')}
         </Button>
       </div>
     </div>

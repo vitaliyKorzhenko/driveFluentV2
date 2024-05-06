@@ -14,6 +14,7 @@ import {
 } from "@fluentui/react-components";
 import { Subscriptions } from "../../types";
 import { Command } from "../../types/commands";
+import { translate } from "../../localization/localization";
 
 const useStyles = makeStyles({
   card: {
@@ -80,7 +81,9 @@ export const CommandCard = (props: CommandCardProps) => {
             borderRadius: "20px",
             padding: "5px 20px"
          }}
-         icon={<InfoRegular fontSize={16} />}>Info</Button>
+         icon={<InfoRegular fontSize={16} />}>
+          {translate('ui.label.info', 'Info')}
+         </Button>
         <Button 
         style={{
             backgroundColor: "#1C1C1C",
@@ -92,6 +95,7 @@ export const CommandCard = (props: CommandCardProps) => {
         onClick={() => {
          if (props.openInputPanel) {
           console.log("props.coomandCard", props.coomandCard);
+          console.log('ADwanced Window', JSON.parse(props.coomandCard.window));
           props.openInputPanel(props.coomandCard);
          }
         }}

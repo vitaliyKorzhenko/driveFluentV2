@@ -12,6 +12,7 @@ export interface SpreadProps {
   fileId: number;
   src: string;
   fileName: string;
+  updateLanguage: (langCode: string) => void;
 }
 
 export interface SpreadState {
@@ -95,6 +96,7 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
           closeInputPanel={this.closeInputPanel}
           command={this.state.selectedCommand}
           fileName={this.props.fileName}
+          updateLanguage={this.props.updateLanguage}
 
         />
         <SpreadsheetComponent />
