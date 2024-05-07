@@ -2,10 +2,7 @@ import React from 'react';
 import { IWindowItem } from '../../../types/window';
 import { VarRangeMulti } from '../varRangeMulti';
 import VarRangeSingle from '../varRangeSingle';
-import { Link } from '@fluentui/react-components';
-import {
-    Question24Regular
-  } from "@fluentui/react-icons";
+
 interface VariablesSectionProps {
     window: string;
 }
@@ -57,8 +54,7 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({ window }) => {
             alignItems: 'center', 
             margin: '40px' 
         }}>
-            <Question24Regular  type='primary'/>
-                     <Link >How to use this window</Link>
+            
 
         </div>
         </div>

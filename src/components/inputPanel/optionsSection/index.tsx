@@ -1,22 +1,17 @@
 import React from 'react';
 import { Link } from '@fluentui/react-components';
 import {
-    Question24Regular
+    ClearFormatting24Regular
   } from "@fluentui/react-icons";
 import { IOptionItem } from '../../../types/options';
 import OptionList from '../optionList';
 import { OptionCheckbox } from '../optionCheckbox';
 import { OptionNumberInput } from '../optionNumberInput';
 interface VariablesSectionProps {
-    window: string;
+    items: IOptionItem[];
 }
 
-const OptionSections: React.FC<VariablesSectionProps> = ({ window }) => {
-    const parsedWindow = JSON.parse(window);
-
-    console.log('PARSED WINDOW', parsedWindow)
-    const items: IOptionItem[] = parsedWindow.items;
-
+const OptionSections: React.FC<VariablesSectionProps> = ({ items }) => {
    
     console.log('VAR RANGE ITEMS', items);
 
@@ -41,7 +36,7 @@ const OptionSections: React.FC<VariablesSectionProps> = ({ window }) => {
                 option={item}
             />
             :
-            item.nodename == "number" ?
+            item.nodename == "number" || item.nodename == 'numberint' ?
             <OptionNumberInput
                 option={item}
             />
@@ -56,8 +51,8 @@ const OptionSections: React.FC<VariablesSectionProps> = ({ window }) => {
             alignItems: 'center', 
             margin: '40px' 
         }}>
-            <Question24Regular  type='primary'/>
-                     <Link >How to use this window</Link>
+            <ClearFormatting24Regular  type='primary'/>
+                     <Link >Reset Options</Link>
 
         </div>
         </div>

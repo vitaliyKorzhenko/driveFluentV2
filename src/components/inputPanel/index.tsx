@@ -24,6 +24,7 @@ import { HeadersSelect } from "./headers";
 import VariablesSection from "./variablesSection";
 import OptionSections from "./optionsSection";
 import PrefsTab from "../preferences/prefsTab";
+import { IOptionItem } from "../../types/options";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -47,7 +48,41 @@ export const InputPanel = (props: InputPanelProps) => {
 
 
 
+  const parseOptionAdditionTabs = () => {
+    let optionTabs: {tab: string, items: IOptionItem[]}[] = [];
+    if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) 
+    {
+    let advancedwindow = JSON.parse(props.command.advancedwindow);
+    if (advancedwindow) {
+      const items: IOptionItem[] = advancedwindow.items;
+      //loop for items
+      items.forEach((item) => {
+        if (item.tab &&  item.tab != '') {
+          let tab = optionTabs.find((tab) => tab.tab == item.tab);
+          if (tab) {
+            tab.items.push(item);
+          } else {
+            optionTabs.push({tab: item.tab, items: [item]});
+        }
+      } else {
+        //add to default tab Options
+        let tab = optionTabs.find((tab) => tab.tab == 'Options');
+        if (tab) {
+          tab.items.push(item);
+        } else {
+          optionTabs.push({tab: 'Options', items: [item]});
+        }
+      }
+      });
+    }
+  }
+    return optionTabs;
+  };
+
   const renderTabs = () => {
+
+    const optionTabs = parseOptionAdditionTabs();
+    console.log('optionTabs', optionTabs);
     return (
       <>
         <Tab
@@ -64,12 +99,18 @@ export const InputPanel = (props: InputPanelProps) => {
         >
           {translate('ui.label.help', 'Help')}
         </Tab>
-        <Tab icon={<Options24Filled />}
-          value="options"
-          onClick={() => setSelectedTab("Options")}
-        >
-          {translate('ui.tab.options', 'Options')}
-        </Tab>
+       {
+          optionTabs.map((optionTab) => {
+            return (
+              <Tab icon={<Options24Filled />}
+                value={optionTab.tab}
+                onClick={() => setSelectedTab(optionTab.tab)}
+              >
+                {optionTab.tab}
+              </Tab>
+            );
+          })
+       }
         <Tab icon={<Settings24Filled />}
           value="preferences"
           onClick={() => setSelectedTab("Preferences")}
@@ -116,7 +157,12 @@ export const InputPanel = (props: InputPanelProps) => {
 
   //render Options
 
-  const renderOptions = (): JSX.Element => {
+  const renderOptions = (tabName: string): JSX.Element => {
+    const options = parseOptionAdditionTabs();
+    const selectedOptions = options.find((option) => option.tab == tabName);
+    if (!selectedOptions) {
+      return <></>;
+    }
     return (
       <>
         <div
@@ -128,7 +174,7 @@ export const InputPanel = (props: InputPanelProps) => {
           }}
         >
           <OptionSections
-            window={props.command.advancedwindow}
+            items={selectedOptions.items}
           />
         </div>
       </>
@@ -202,8 +248,7 @@ export const InputPanel = (props: InputPanelProps) => {
                 </div>
 
               </div> :
-              selectedTab == "Options" ?
-              renderOptions() :
+  
               selectedTab == 'Preferences' ?
               <div 
               style={{
@@ -213,7 +258,7 @@ export const InputPanel = (props: InputPanelProps) => {
               >
                <PrefsTab />
               </div>
-              : <></>
+              : renderOptions(selectedTab)
               
         }
 
