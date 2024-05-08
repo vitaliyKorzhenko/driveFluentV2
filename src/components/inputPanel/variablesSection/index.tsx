@@ -2,6 +2,8 @@ import React from 'react';
 import { IWindowItem } from '../../../types/window';
 import { VarRangeMulti } from '../varRangeMulti';
 import VarRangeSingle from '../varRangeSingle';
+import ConstsubstituteRange from '../constsubstituteRange';
+import { CellRange } from '../cellRange';
 
 interface VariablesSectionProps {
     window: string;
@@ -9,15 +11,21 @@ interface VariablesSectionProps {
 
 const VariablesSection: React.FC<VariablesSectionProps> = ({ window }) => {
     const parsedWindow = JSON.parse(window);
-    const items: IWindowItem[] = parsedWindow.items.filter((item: IWindowItem) => item.nodename === 'VarRange');
-
+    console.log('ALL WINDOW', parsedWindow);
+    const allItems: IWindowItem[] = parsedWindow.items;
+    console.log('first item constsubstitute', allItems[0])
+    const items: IWindowItem[] = allItems.filter((item: IWindowItem) => { return ((item.nodename == 'VarRange' || item.nodename == 'VarRangeText') && !item.constsubstitute)});
+    console.log('VAR RANGE ITEMS', items);
+    const constsubstituteItems: IWindowItem[] = parsedWindow.items.filter((item: IWindowItem) =>{ return (item.nodename == 'VarRange' || item.nodename == 'VarRangeText') && item.constsubstitute && item.constsubstitute == true});
+    console.log('CONST SUB ITEMS', constsubstituteItems);
+    //cell items
+    const cellItems: IWindowItem[] = allItems.filter((item: IWindowItem) => { return item.nodename == 'Cell' });
     const testOptions = [
         { key: '1', text: 'A' },
         { key: '2', text: 'B' },
         { key: '3', text: 'C' },
     ];
 
-    console.log('VAR RANGE ITEMS', items);
 
     return (
         <div style={{
@@ -47,16 +55,44 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({ window }) => {
                     />
             }
                 </div>
-            ))}
-             <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            margin: '40px' 
-        }}>
             
+            
+            ))}
 
-        </div>
+
+            {
+                constsubstituteItems.map((item: IWindowItem, index: number) => (
+                    <div key={index}
+                    style={{
+                        width: '90%',
+                        padding: '10px',
+                    }}
+                    >
+                        <ConstsubstituteRange
+                            size={200}
+                            multiple={item.multi}
+                            defaultValue="1"
+                            options={testOptions}
+                            label={item.label}
+                            description={item.description}
+                        />
+                </div>
+                ))
+            } 
+            {
+                cellItems.map((item: IWindowItem, index: number) => (
+                    <div key={index}
+                    style={{
+                        width: '90%',
+                        padding: '10px',
+                    }}
+                    >
+                       <CellRange
+                          item={item}
+                        />
+                </div>
+                ))
+            }   
         </div>
     );
 };

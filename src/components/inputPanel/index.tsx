@@ -82,7 +82,6 @@ export const InputPanel = (props: InputPanelProps) => {
   const renderTabs = () => {
 
     const optionTabs = parseOptionAdditionTabs();
-    console.log('optionTabs', optionTabs);
     return (
       <>
         <Tab
@@ -92,12 +91,6 @@ export const InputPanel = (props: InputPanelProps) => {
 
         >
           {translate('ui.tab.variables', 'Variables')}
-        </Tab>
-        <Tab icon={<ChatHelp24Regular />}
-          value="help"
-          onClick={() => setSelectedTab("Help")}
-        >
-          {translate('ui.label.help', 'Help')}
         </Tab>
        {
           optionTabs.map((optionTab) => {
@@ -111,6 +104,12 @@ export const InputPanel = (props: InputPanelProps) => {
             );
           })
        }
+        <Tab icon={<ChatHelp24Regular />}
+          value="help"
+          onClick={() => setSelectedTab("Help")}
+        >
+          {translate('ui.label.help', 'Help')}
+        </Tab>
         <Tab icon={<Settings24Filled />}
           value="preferences"
           onClick={() => setSelectedTab("Preferences")}
@@ -231,9 +230,9 @@ export const InputPanel = (props: InputPanelProps) => {
           selectedTab == "variables" ?
             renderVariables() :
             selectedTab == "Help" ?
-              <div>
+              <div style={{padding: '5px', margin: '5px'}}>
                 <div style={{ padding: '10px' }}>
-                  <Text size={500}>
+                  <Text size={400}>
                     {props.command.description}
                   </Text>
                   <div style={{
@@ -241,7 +240,11 @@ export const InputPanel = (props: InputPanelProps) => {
                     justifyContent: 'center',
                     marginTop: '10px',
                   }}>
-                    <Button size="large">
+                    <Button 
+                    size="large" 
+                    style={{width: '100%'}}
+                    icon={<ChatHelp24Regular />}
+                    >
                       {translate('ui.button.help', 'Help')}
                     </Button>
                   </div>
