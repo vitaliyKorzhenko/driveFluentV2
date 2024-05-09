@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 });
 
 
-export interface OptionNumberInputProps {
+export interface OptionStringInputProps {
     option: IOptionItem;
 }
 
@@ -43,7 +43,7 @@ const ClearButton: React.FC<ButtonProps> = (props) => {
   );
 };
 
-export const OptionNumberInput = (props: OptionNumberInputProps) => {
+export const OptionStringInput = (props: OptionStringInputProps) => {
   const styles = useStyles();
 
   const afterId = useId("content-after");
@@ -56,7 +56,6 @@ export const OptionNumberInput = (props: OptionNumberInputProps) => {
         <div>
         <Label htmlFor={afterId}>{props.option.name}</Label>
         <Input
-        type="number"
           contentAfter={<ClearButton aria-label="clear" />}
           id={afterId}
          value={value}

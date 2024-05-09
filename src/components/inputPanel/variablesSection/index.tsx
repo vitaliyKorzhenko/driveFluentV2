@@ -11,13 +11,9 @@ interface VariablesSectionProps {
 
 const VariablesSection: React.FC<VariablesSectionProps> = ({ window }) => {
     const parsedWindow = JSON.parse(window);
-    console.log('ALL WINDOW', parsedWindow);
     const allItems: IWindowItem[] = parsedWindow.items;
-    console.log('first item constsubstitute', allItems[0])
     const items: IWindowItem[] = allItems.filter((item: IWindowItem) => { return ((item.nodename == 'VarRange' || item.nodename == 'VarRangeText') && !item.constsubstitute)});
-    console.log('VAR RANGE ITEMS', items);
     const constsubstituteItems: IWindowItem[] = parsedWindow.items.filter((item: IWindowItem) =>{ return (item.nodename == 'VarRange' || item.nodename == 'VarRangeText') && item.constsubstitute && item.constsubstitute == true});
-    console.log('CONST SUB ITEMS', constsubstituteItems);
     //cell items
     const cellItems: IWindowItem[] = allItems.filter((item: IWindowItem) => { return item.nodename == 'Cell' });
     const testOptions = [

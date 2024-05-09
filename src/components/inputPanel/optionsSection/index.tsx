@@ -7,13 +7,14 @@ import { IOptionItem } from '../../../types/options';
 import OptionList from '../optionList';
 import { OptionCheckbox } from '../optionCheckbox';
 import { OptionNumberInput } from '../optionNumberInput';
+import { OptionStringInput } from '../optionStringInput';
 interface VariablesSectionProps {
     items: IOptionItem[];
 }
 
 const OptionSections: React.FC<VariablesSectionProps> = ({ items }) => {
    
-    console.log('VAR RANGE ITEMS', items);
+    console.log('ALL OPTIONS', items);
 
     return (
         <div style={{
@@ -38,6 +39,11 @@ const OptionSections: React.FC<VariablesSectionProps> = ({ items }) => {
             :
             item.nodename == "number" || item.nodename == 'numberint' ?
             <OptionNumberInput
+                option={item}
+            />
+            :
+            item.nodename == 'string' ?
+            <OptionStringInput
                 option={item}
             />
             :
