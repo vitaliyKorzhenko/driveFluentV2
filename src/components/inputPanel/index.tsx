@@ -48,13 +48,41 @@ export const InputPanel = (props: InputPanelProps) => {
 
 
 
+  const parseAdwancedWindowItems = (items: any[]): IOptionItem[] => {
+    if (!items || items.length == 0) {
+      return [];
+    }
+
+    //loop for items
+    let optionItems: IOptionItem[] = [];
+
+    items.forEach((item: any) => {
+      console.log('advancedwindow item', item);
+      optionItems.push({
+        nodename: item.nodename ?? '',
+        name: item.name ?? '',
+        value: item.value ?? '',
+        tab: item.tab ?? '',
+        actionEnabled: item['action-enabled'] ? item['action-enabled'] : undefined ,
+        indent: item.indent ?? undefined,
+        valueex: item.valueex ?? 0,
+        valueshort: item.valueshort ?? '',
+      });
+
+    })
+    return optionItems;
+  };
+
+
   const parseOptionAdditionTabs = () => {
     let optionTabs: {tab: string, items: IOptionItem[]}[] = [];
     if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) 
     {
     let advancedwindow = JSON.parse(props.command.advancedwindow);
+  console.log('OPTION TAB TABS', advancedwindow);
     if (advancedwindow) {
-      const items: IOptionItem[] = advancedwindow.items;
+      const items: IOptionItem[] =parseAdwancedWindowItems(advancedwindow.items);
+      console.log('PARSED ITEMS', items);
       //loop for items
       items.forEach((item) => {
         if (item.tab &&  item.tab != '') {

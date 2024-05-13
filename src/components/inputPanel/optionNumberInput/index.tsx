@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 
 export interface OptionNumberInputProps {
     option: IOptionItem;
+    isVisible: boolean;
 }
 
 const ClearButton: React.FC<ButtonProps> = (props) => {
@@ -50,9 +51,9 @@ export const OptionNumberInput = (props: OptionNumberInputProps) => {
 
   console.log('OptionNumberInput', props.option);
   const [value, setValue] = React.useState<string>(props.option.value !== undefined && props.option.value !== null ? props.option.value.toString() : "");
-
+  if (props.isVisible) {
   return (
-    <div className={styles.root}>
+     <div className={styles.root}>
         <div>
         <Label htmlFor={afterId}>{props.option.name}</Label>
         <Input
@@ -65,4 +66,7 @@ export const OptionNumberInput = (props: OptionNumberInputProps) => {
       </div>
     </div>
   );
+  } else {
+    return <></>
+  }
 };
