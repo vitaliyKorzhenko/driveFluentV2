@@ -163,7 +163,8 @@ export const CardsPanel = (props: CardsPanelProps) => {
               return <BasicCard 
               name={card.title}
               changeMode = {() => changeMode(card)}
-              coutCommands={card.commands.length}
+              countCommands={card.commands.length}
+              description={card.description}
               />
             })
           }

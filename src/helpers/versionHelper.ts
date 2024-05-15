@@ -2,7 +2,7 @@
 
 export class VersionHelper {
 
-    private static version: string = '1.0.20(May 8)';
+    private static version: string = '1.0.22(May 15)';
 
     public static getVersion(): string {
         return VersionHelper.version;

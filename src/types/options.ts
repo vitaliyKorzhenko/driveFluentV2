@@ -5,4 +5,6 @@ export interface IOptionItem {
     valueex: number;
     valueshort: string;
     tab?: string;
+    actionEnabled?: string;
+    indent?: number;
 }

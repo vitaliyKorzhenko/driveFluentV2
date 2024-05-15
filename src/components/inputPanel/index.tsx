@@ -48,13 +48,41 @@ export const InputPanel = (props: InputPanelProps) => {
 
 
 
+  const parseAdwancedWindowItems = (items: any[]): IOptionItem[] => {
+    if (!items || items.length == 0) {
+      return [];
+    }
+
+    //loop for items
+    let optionItems: IOptionItem[] = [];
+
+    items.forEach((item: any) => {
+      console.log('advancedwindow item', item);
+      optionItems.push({
+        nodename: item.nodename ?? '',
+        name: item.name ?? '',
+        value: item.value ?? '',
+        tab: item.tab ?? '',
+        actionEnabled: item['action-enabled'] ? item['action-enabled'] : undefined ,
+        indent: item.indent ?? undefined,
+        valueex: item.valueex ?? 0,
+        valueshort: item.valueshort ?? '',
+      });
+
+    })
+    return optionItems;
+  };
+
+
   const parseOptionAdditionTabs = () => {
     let optionTabs: {tab: string, items: IOptionItem[]}[] = [];
     if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) 
     {
     let advancedwindow = JSON.parse(props.command.advancedwindow);
+  console.log('OPTION TAB TABS', advancedwindow);
     if (advancedwindow) {
-      const items: IOptionItem[] = advancedwindow.items;
+      const items: IOptionItem[] =parseAdwancedWindowItems(advancedwindow.items);
+      console.log('PARSED ITEMS', items);
       //loop for items
       items.forEach((item) => {
         if (item.tab &&  item.tab != '') {
@@ -81,11 +109,16 @@ export const InputPanel = (props: InputPanelProps) => {
 
   const renderTabs = () => {
 
+
+    const tabStyle = {
+      margin: '0 0px', // Устанавливаем отступы по горизонтали на 5px, а по вертикали - 0
+    };
+
     const optionTabs = parseOptionAdditionTabs();
     return (
       <>
         <Tab
-          style={{ color: 'black' }}
+          style={{...tabStyle, color: 'black' }}
           icon={<BracesVariable24Regular />} value="variables"
           onClick={() => setSelectedTab("variables")}
 
@@ -98,6 +131,7 @@ export const InputPanel = (props: InputPanelProps) => {
               <Tab icon={<Options24Filled />}
                 value={optionTab.tab}
                 onClick={() => setSelectedTab(optionTab.tab)}
+                style={tabStyle}
               >
                 {optionTab.tab}
               </Tab>
@@ -107,12 +141,14 @@ export const InputPanel = (props: InputPanelProps) => {
         <Tab icon={<ChatHelp24Regular />}
           value="help"
           onClick={() => setSelectedTab("Help")}
+          style={tabStyle}
         >
           {translate('ui.label.help', 'Help')}
         </Tab>
         <Tab icon={<Settings24Filled />}
           value="preferences"
           onClick={() => setSelectedTab("Preferences")}
+          style={tabStyle}
         >
           {translate('ui.tab.preferences', 'Preferences')}
         </Tab>
@@ -223,7 +259,7 @@ export const InputPanel = (props: InputPanelProps) => {
 
         </DrawerHeader>
 
-        <TabList defaultSelectedValue="myfiles">{renderTabs()}
+        <TabList defaultSelectedValue="variables">{renderTabs()}
 
         </TabList>
         {

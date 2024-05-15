@@ -1,4 +1,4 @@
-import { Select } from '@fluentui/react-components';
+import { Label, Select } from '@fluentui/react-components';
 import React from 'react';
 import { IOptionItem } from '../../../types/options';
 
@@ -30,7 +30,9 @@ class OptionList extends React.Component<OptionListProps, OptionListState> {
             <div style={{
                 width: '100%',
             }}>
-               
+                
+                <Label >{this.props.option.name}</Label>
+
    
                 <Select
                     value={this.state.selectedValue}

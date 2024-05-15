@@ -28,9 +28,8 @@ const useStyles = makeStyles({
 });
 
 
-export interface OptionNumberInputProps {
+export interface OptionStringInputProps {
     option: IOptionItem;
-    isVisible: boolean;
 }
 
 const ClearButton: React.FC<ButtonProps> = (props) => {
@@ -44,7 +43,7 @@ const ClearButton: React.FC<ButtonProps> = (props) => {
   );
 };
 
-export const OptionNumberInput = (props: OptionNumberInputProps) => {
+export const OptionStringInput = (props: OptionStringInputProps) => {
   const styles = useStyles();
 
   const afterId = useId("content-after");
@@ -52,18 +51,20 @@ export const OptionNumberInput = (props: OptionNumberInputProps) => {
   console.log('OptionNumberInput', props.option);
   const [value, setValue] = React.useState<string>(props.option.value !== undefined && props.option.value !== null ? props.option.value.toString() : "");
 
-  //clear value onClick of clear button set 0
+  //clear value onClick of clear button
   const clearValue = () => {
-    setValue("0");
+    setValue("");
   }
-  if (props.isVisible) {
+
   return (
-     <div className={styles.root}>
+    <div className={styles.root}>
         <div>
         <Label htmlFor={afterId}>{props.option.name}</Label>
         <Input
-        type="number"
-          contentAfter={<ClearButton aria-label="clear" onClick={clearValue} />}
+          contentAfter={<ClearButton aria-label="clear" onClick={() => {
+            clearValue();
+          4
+          }} />}
           id={afterId}
          value={value}
             onChange={(event) => setValue(event.target.value)}
@@ -71,7 +72,4 @@ export const OptionNumberInput = (props: OptionNumberInputProps) => {
       </div>
     </div>
   );
-  } else {
-    return <></>
-  }
 };
