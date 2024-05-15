@@ -26,11 +26,13 @@ export const OptionParentCheckbox = (props: OptionCheckboxProps) => {
     <div style={{marginLeft: '20px'}}>
     {props.childOptions && props.childOptions.map((childOption: IOptionItem, index: number) => (
        childOption.nodename == 'checkbox' ?
+       <div>
        <ChildOptionCheckbox
          key={index}
             option={childOption}
             isVisble={checked}
          />
+         </div>
          :
          childOption.nodename == 'number' || childOption.nodename == 'numberint' ?
             <OptionNumberInput

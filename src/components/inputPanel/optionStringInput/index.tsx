@@ -51,12 +51,20 @@ export const OptionStringInput = (props: OptionStringInputProps) => {
   console.log('OptionNumberInput', props.option);
   const [value, setValue] = React.useState<string>(props.option.value !== undefined && props.option.value !== null ? props.option.value.toString() : "");
 
+  //clear value onClick of clear button
+  const clearValue = () => {
+    setValue("");
+  }
+
   return (
     <div className={styles.root}>
         <div>
         <Label htmlFor={afterId}>{props.option.name}</Label>
         <Input
-          contentAfter={<ClearButton aria-label="clear" />}
+          contentAfter={<ClearButton aria-label="clear" onClick={() => {
+            clearValue();
+          4
+          }} />}
           id={afterId}
          value={value}
             onChange={(event) => setValue(event.target.value)}

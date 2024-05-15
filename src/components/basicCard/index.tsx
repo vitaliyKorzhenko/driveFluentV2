@@ -6,10 +6,10 @@ import {
   CardFooter,
   Label,
 } from "@fluentui/react-components";
-import { ShareRegular, InfoRegular, KeyCommand24Regular, ListRtl20Regular } from "@fluentui/react-icons";
+import { ShareRegular,KeyCommand24Regular, ListRtl20Regular } from "@fluentui/react-icons";
 
 import { Card, CardHeader } from "@fluentui/react-components";
-import { translate } from "../../localization/localization";
+import { InfoPropover } from "../inputPanel/infoPropover";
 
 
 
@@ -24,8 +24,9 @@ const useStyles = makeStyles({
 
 export interface BasicCardProps {
     name: string;
-    coutCommands: number;
+    countCommands: number;
     changeMode?: () => void;
+    description: string;
 }
 
 export const BasicCard = (props: BasicCardProps ) => {
@@ -34,11 +35,11 @@ export const BasicCard = (props: BasicCardProps ) => {
   return (
         <Card 
         className={styles.card} 
-        onClick={() => {
-          if (props.changeMode)
-          props.changeMode();
+        // onClick={() => {
+        //   if (props.changeMode)
+        //   props.changeMode();
         
-        }}
+        // }}
         >
                 <CardHeader
         header={
@@ -49,16 +50,7 @@ export const BasicCard = (props: BasicCardProps ) => {
         }
       />
              <CardFooter>
-         <Button 
-         style={{
-            backgroundColor: "#1E90FF",
-            color: "white",
-            borderRadius: "20px",
-            padding: "5px 20px"
-         }}
-         icon={<InfoRegular fontSize={16} />}>
-          {translate('ui.label.info', 'Info')}
-         </Button>
+        <InfoPropover description={props.description} />
         <Button 
         style={{
             backgroundColor: "#1C1C1C",
@@ -68,7 +60,8 @@ export const BasicCard = (props: BasicCardProps ) => {
         }}
         icon={<ShareRegular fontSize={16} />}
         onClick={() => {
-          
+          if (props.changeMode)
+          props.changeMode();
         }}
         >
           Open
@@ -84,7 +77,7 @@ export const BasicCard = (props: BasicCardProps ) => {
         icon={<ListRtl20Regular fontSize={16} />}>{
           
          }
-         {props.coutCommands}
+         {props.countCommands}
          </Button>
       </CardFooter>
         </Card>

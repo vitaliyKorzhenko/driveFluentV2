@@ -69,7 +69,7 @@ const OptionSections: React.FC<OptionSectionProps> = ({ items }) => {
                 <div key={index}
                     style={{
                         width: '90%',
-                        padding: '10px',
+                        padding: '5px',
                     }}
                 >
                     {element.item.nodename == 'list' ?

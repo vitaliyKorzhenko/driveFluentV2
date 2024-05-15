@@ -109,11 +109,16 @@ export const InputPanel = (props: InputPanelProps) => {
 
   const renderTabs = () => {
 
+
+    const tabStyle = {
+      margin: '0 0px', // Устанавливаем отступы по горизонтали на 5px, а по вертикали - 0
+    };
+
     const optionTabs = parseOptionAdditionTabs();
     return (
       <>
         <Tab
-          style={{ color: 'black' }}
+          style={{...tabStyle, color: 'black' }}
           icon={<BracesVariable24Regular />} value="variables"
           onClick={() => setSelectedTab("variables")}
 
@@ -126,6 +131,7 @@ export const InputPanel = (props: InputPanelProps) => {
               <Tab icon={<Options24Filled />}
                 value={optionTab.tab}
                 onClick={() => setSelectedTab(optionTab.tab)}
+                style={tabStyle}
               >
                 {optionTab.tab}
               </Tab>
@@ -135,12 +141,14 @@ export const InputPanel = (props: InputPanelProps) => {
         <Tab icon={<ChatHelp24Regular />}
           value="help"
           onClick={() => setSelectedTab("Help")}
+          style={tabStyle}
         >
           {translate('ui.label.help', 'Help')}
         </Tab>
         <Tab icon={<Settings24Filled />}
           value="preferences"
           onClick={() => setSelectedTab("Preferences")}
+          style={tabStyle}
         >
           {translate('ui.tab.preferences', 'Preferences')}
         </Tab>
@@ -251,7 +259,7 @@ export const InputPanel = (props: InputPanelProps) => {
 
         </DrawerHeader>
 
-        <TabList defaultSelectedValue="myfiles">{renderTabs()}
+        <TabList defaultSelectedValue="variables">{renderTabs()}
 
         </TabList>
         {

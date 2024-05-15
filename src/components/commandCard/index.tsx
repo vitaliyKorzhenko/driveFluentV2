@@ -6,7 +6,7 @@ import {
   Button,
   shorthands,
 } from "@fluentui/react-components";
-import { ShareRegular, MoneyRegular, InfoRegular } from "@fluentui/react-icons";
+import { ShareRegular, MoneyRegular } from "@fluentui/react-icons";
 import {
   Card,
   CardFooter,
@@ -14,7 +14,7 @@ import {
 } from "@fluentui/react-components";
 import { Subscriptions } from "../../types";
 import { Command } from "../../types/commands";
-import { translate } from "../../localization/localization";
+import { InfoPropover } from "../inputPanel/infoPropover";
 
 const useStyles = makeStyles({
   card: {
@@ -74,16 +74,8 @@ export const CommandCard = (props: CommandCardProps) => {
         ? "Pro" :
         "Premium"
          }</Button>
-         <Button 
-         style={{
-            backgroundColor: "#1E90FF",
-            color: "white",
-            borderRadius: "20px",
-            padding: "5px 20px"
-         }}
-         icon={<InfoRegular fontSize={16} />}>
-          {translate('ui.label.info', 'Info')}
-         </Button>
+          <InfoPropover description={props.description} />
+
         <Button 
         style={{
             backgroundColor: "#1C1C1C",
