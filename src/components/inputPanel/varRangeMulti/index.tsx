@@ -17,6 +17,7 @@ import {
     AddSquareRegular,
 } from "@fluentui/react-icons";
 import { translate } from "../../../localization/localization";
+import { InfoLabel } from "../../InfoLabel";
 
 const useStyles = makeStyles({
     root: {
@@ -102,12 +103,7 @@ export const VarRangeMulti = (props: Partial<VarRangeMultiProps>) => {
         flex: 1,  // Занимает всю доступную ширину
     }}>
         <Label required={true}>{props.label}</Label>
-        <Button 
-            size="small" 
-            icon={<Info24Regular />} 
-            appearance="subtle" // Применение стиля primary
-            style={{ marginLeft: '5px' }} // Маленький отступ слева
-        />
+        <InfoLabel description={props.description ?? ''} />
     </div>
     <div style={{ display: 'flex', alignItems: 'center' }}>
         <Button 
