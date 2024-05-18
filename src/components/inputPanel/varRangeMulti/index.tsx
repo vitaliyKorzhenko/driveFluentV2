@@ -12,7 +12,6 @@ import {
 import type { ComboboxProps } from "@fluentui/react-components";
 import {
      Dismiss12Regular, 
-    Info24Regular,
     SelectObject20Filled,
     AddSquareRegular,
 } from "@fluentui/react-icons";

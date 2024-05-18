@@ -165,6 +165,7 @@ export const CardsPanel = (props: CardsPanelProps) => {
               changeMode = {() => changeMode(card)}
               countCommands={card.commands.length}
               description={card.description}
+              id = {card.groupId.toString()}
               />
             })
           }
