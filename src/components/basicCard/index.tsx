@@ -6,10 +6,10 @@ import {
   CardFooter,
   Label,
 } from "@fluentui/react-components";
-import { ShareRegular,KeyCommand24Regular, ListRtl20Regular } from "@fluentui/react-icons";
+import { ShareRegular, ListRtl20Regular } from "@fluentui/react-icons";
 
 import { Card, CardHeader } from "@fluentui/react-components";
-import { InfoPropover } from "../inputPanel/infoPropover";
+import CustomIcon from "../CommandIconItem";
 
 
 
@@ -27,6 +27,7 @@ export interface BasicCardProps {
     countCommands: number;
     changeMode?: () => void;
     description: string;
+    id: string;
 }
 
 export const BasicCard = (props: BasicCardProps ) => {
@@ -44,13 +45,12 @@ export const BasicCard = (props: BasicCardProps ) => {
                 <CardHeader
         header={
           <Body1 style={{ display: 'flex', alignItems: 'center' }}>
-          <KeyCommand24Regular style={{ marginRight: '5px' }} />
+          <CustomIcon  isLight= {true} id={props.id}/>
           <Label size="large">{props.name}</Label> 
           </Body1>
         }
       />
              <CardFooter>
-        <InfoPropover description={props.description} />
         <Button 
         style={{
             backgroundColor: "#1C1C1C",
