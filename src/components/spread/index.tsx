@@ -5,6 +5,7 @@ import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { Command } from "../../types/commands";
 
 
+
 export interface SpreadProps {
   changeTheme: () => void;
   changeDriveMode: () => void;
@@ -24,7 +25,6 @@ export interface SpreadState {
 
 class MainSpread extends React.Component<SpreadProps, SpreadState> {
 
-   
     constructor(props: SpreadProps) {
         super(props);
 
@@ -99,7 +99,9 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
           updateLanguage={this.props.updateLanguage}
 
         />
-        <SpreadsheetComponent />
+        <SpreadsheetComponent
+        />
+      
       </div>
     );
   }

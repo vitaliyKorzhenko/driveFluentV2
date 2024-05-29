@@ -98,6 +98,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+
   if (!isAuth) {
   return (
     <FluentProvider>
