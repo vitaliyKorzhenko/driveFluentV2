@@ -34,12 +34,12 @@ const items = [
     premium: {label: "Non-Parametric Statistics", icon: <CheckmarkCircle24Regular style={{color: 'green'}} />},
   },
   {
-    pro: {label: "Time Series & Survival Analysis", icon: <CheckmarkCircle24Regular style={{color: 'red'}}/>},
-    premium: {label: "Time Series & Survival Analysis", icon: <Dismiss24Regular style={{color: 'green'}}/>},
+    pro: {label: "Time Series & Survival Analysis", icon: <Dismiss24Regular style={{color: 'red'}}/>},
+    premium: {label: "Time Series & Survival Analysis", icon: <CheckmarkCircle24Regular style={{color: 'green'}}/>},
   },
   {
-    pro: {label: "Feature on request", icon: <CheckmarkCircle24Regular style={{color: 'red'}}/>},
-    premium: {label: "Feature on request", icon: <Dismiss24Regular style={{color: 'green'}}/>}
+    pro: {label: "Feature on request", icon: <Dismiss24Regular style={{color: 'red'}}/>},
+    premium: {label: "Feature on request", icon: <CheckmarkCircle24Regular style={{color: 'green'}}/>}
 
   },
 ];
@@ -62,15 +62,15 @@ const columns = [
 
 export const TablePrices = () => {
   return (
-    <Table size="small" aria-label="Table with small size" style={{backgroundColor: '#F5FFFA'}}>
+    <Table size="small" aria-label="Table with small size" style={{backgroundColor: tokens.colorBrandBackground2}}>
       <TableHeader>
         <TableRow>
           {columns.map((column) => (
             <TableHeaderCell key={column.columnKey} 
             style={{
-                backgroundColor: '#1E90FF',
+                backgroundColor: tokens.colorNeutralBackground1Pressed,
                 fontWeight: 'bold',
-                color: "white"
+                color: tokens.colorBrandForegroundLinkPressed
                 
             }}
             >
@@ -88,7 +88,7 @@ export const TablePrices = () => {
               media={item.pro.icon} 
               style={{
                 //fontWeight: 'bold',
-                color: tokens.colorBrandBackgroundSelected
+                color: tokens.colorBrandForegroundLinkPressed
               }}
               >
                 {item.pro.label}
@@ -98,7 +98,7 @@ export const TablePrices = () => {
               <TableCellLayout media={item.premium.icon} 
               style={{
                 //fontWeight: 'bold',
-                color: tokens.colorBrandBackgroundSelected
+                color: tokens.colorBrandForegroundLinkPressed
               }}
               >
                 {item.premium.label}
@@ -113,8 +113,8 @@ export const TablePrices = () => {
                       content={buttonItem.pro.label}
                       key={buttonItem.pro.key}
                       style={{
-                        backgroundColor: '#1E90FF',
-                        color: 'white',
+                        backgroundColor: tokens.colorNeutralBackground5Pressed,
+                        color: tokens.colorBrandForegroundLinkPressed,
                         width: '100%',
                         fontWeight: 'bold'
                       }}
@@ -127,8 +127,8 @@ export const TablePrices = () => {
                       content={buttonItem.premium.label}
                       key={buttonItem.premium.key}
                       style={{
-                            backgroundColor: '#1E90FF',
-                            color: 'white',
+                            backgroundColor: tokens.colorNeutralBackground5Pressed,
+                            color: tokens.colorBrandForegroundLinkPressed,
                             width: '100%'
                       }}
                       >
