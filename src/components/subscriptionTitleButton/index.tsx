@@ -11,6 +11,8 @@ export const SubscriptionTitleButton = (props: CompoundButtonProps) => (
     style={{
         backgroundColor: "#1E90FF",
         color: "white",
+        width: '100%',
+        
     }}
     {...props}
   >

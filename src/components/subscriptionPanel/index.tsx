@@ -4,18 +4,17 @@ import {
   DrawerHeader,
   DrawerHeaderTitle,
   OverlayDrawer,
-  Button,
   tokens,
   makeStyles,
   shorthands,
   ToolbarButton,
 } from "@fluentui/react-components";
-import { Dismiss24Regular,TextSubscript24Filled} from "@fluentui/react-icons";
-import { SubscriptionTitleButton } from "../subscriptionTitleButton";
+import { TextSubscript24Filled} from "@fluentui/react-icons";
 import { ActiveDiscountIntent } from "../activeDiscountMessage";
 import { BillingHistoryIntent } from "../billingHistoryMessage";
 import { PricesButton } from "../showPricesButton";
 import { TablePrices } from "../pricesTable";
+import { SubscriptionLabel } from "../subscriptionLabel";
 
 
 const useStyles = makeStyles({
@@ -61,21 +60,16 @@ export const SubscriptionPanel = () => {
         open={open}
         position="end"
         onOpenChange={(_, state) => setOpen(state.open)}
-        style={{ width: `${customSize}px` }}
+        style={{ width: customSize }}
       >
-        <DrawerHeader>
+        <DrawerHeader
+       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
           <DrawerHeaderTitle
-            action={
-              <Button
-                appearance="subtle"
-                aria-label="Close"
-                color="white"
-                icon={<Dismiss24Regular />}
-                onClick={() => setOpen(false)}
-              />
-            }
           >
-           <SubscriptionTitleButton/>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+         <SubscriptionLabel/>
+          </div>  
           </DrawerHeaderTitle>
         </DrawerHeader>
 
