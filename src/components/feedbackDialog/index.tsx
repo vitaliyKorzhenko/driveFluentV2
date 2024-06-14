@@ -13,6 +13,7 @@ import {
 } from "@fluentui/react-components";
 import { UserProfile } from "../../users";
 import { ApiUserNode } from "../../api/ApiUser";
+import { translate } from "../../localization/localization";
 
 const useStyles = makeStyles({
     content: {
@@ -72,7 +73,7 @@ export const FeedbackDialog = (props: FeedbackDialogProps) => {
             <DialogSurface aria-describedby={undefined}>
                 <form onSubmit={handleSubmit}>
                     <DialogBody>
-                        <DialogTitle>FeedBack</DialogTitle>
+                        <DialogTitle>{translate('ui.label.feedback', 'Feedback')}</DialogTitle>
                         <DialogContent className={styles.content}>
                             <Field required>
                                 <Textarea
@@ -89,7 +90,7 @@ export const FeedbackDialog = (props: FeedbackDialogProps) => {
                         </DialogContent>
                         <DialogActions>
                             <Button type="submit" appearance="primary">
-                                Send
+                                {translate('ui.label.submit', 'Submit')}
                             </Button>
                         </DialogActions>
                     </DialogBody>
