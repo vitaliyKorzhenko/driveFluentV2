@@ -9,12 +9,12 @@ import {
     Button,
     makeStyles,
     Field,
-    Label,
     Input,
     useId,
 } from "@fluentui/react-components";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { UserProfile } from "../../users";
+import { translate } from "../../localization/localization";
 const useStyles = makeStyles({
     content: {
         display: "flex",
@@ -79,12 +79,11 @@ export const EditFileDialog = (props: EditFileDialogProps) => {
             <DialogSurface aria-describedby={undefined}>
                 <form onSubmit={handleSubmit}>
                     <DialogBody>
-                        <DialogTitle>Rename File</DialogTitle>
+                        <DialogTitle>
+                        {translate('drive.rename.file', 'Rename File')}
+                        </DialogTitle>
                         <DialogContent className={styles.content}>
                             <Field required>
-                                <Label htmlFor={inputId}>
-                                   rename your file
-                                </Label>
                                 <Input 
                                 id={inputId} 
                                 value={fileName}
@@ -94,7 +93,7 @@ export const EditFileDialog = (props: EditFileDialogProps) => {
                         </DialogContent>
                         <DialogActions>
                             <Button type="submit" appearance="primary">
-                                Rename
+                               {translate('ui.save', 'Save')}
                             </Button>
                         </DialogActions>
                     </DialogBody>

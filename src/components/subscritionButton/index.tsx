@@ -10,6 +10,9 @@ export const SubscriptionButton = (props: CompoundButtonProps) => (
     style={{
         backgroundColor: "#1E90FF",
         color: "white",
+        fontWeight: "bold",
+        width: "100px",
+        height:'10px'
     }}
     {...props}
   >
