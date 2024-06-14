@@ -2,6 +2,7 @@
 import { SignOut24Regular } from "@fluentui/react-icons";
 import { CompoundButton } from "@fluentui/react-components";
 import { logout } from "../../firebase";
+import { translate } from "../../localization/localization";
 
 export interface LogoutButtonProps {
   changeAuth?: () => void;
@@ -18,6 +19,6 @@ export const LogoutButton = (props: LogoutButtonProps) => (
       props.changeAuth && props.changeAuth();
     }}
   >
-    Sign Out
+    {translate('ui.label.signOut', 'Sign out')}
   </CompoundButton>
 );

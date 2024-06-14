@@ -24,6 +24,7 @@ import { ApiUserNode } from "../../api/ApiUser";
 import { SaveProfileButton } from "../saveProfileButton";
 import { IChangeProfileModel } from "../../api/types";
 import { CountriesDropdown } from "../countriesDropdown";
+import { translate } from "../../localization/localization";
 
 const useStyles = makeStyles({
   root: {
@@ -48,6 +49,19 @@ const useStyles = makeStyles({
   field: {
     display: "grid",
     gridRowGap: tokens.spacingVerticalS,
+  },
+
+  button: {
+   marginLeft: "auto",
+  },
+  container: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+  },
+  personaWrapper: {
+    display: "flex",
+    alignItems: "center",
   },
 });
 
@@ -129,14 +143,15 @@ export const UserPanel = (props: UserPanelProps) => {
               />
             }
           >
-           <AccountButton/>
-           <SubscriptionButton/>
+           {/* <AccountButton/> */}
+           {/* <SubscriptionButton/> */}
           </DrawerHeaderTitle>
         </DrawerHeader>
 
         <DrawerBody>
           <div className={styles.root}>
-            <div>
+            <div className={styles.container}>
+              <div className={styles.personaWrapper}>
             <Persona
         presence={{ status: "available" }}
         size="medium"
@@ -144,10 +159,15 @@ export const UserPanel = (props: UserPanelProps) => {
         avatar={{ color: "colorful" }}
         secondaryText={email}
       />
+            <SubscriptionButton className={styles.button}/>
+
+      </div>
             </div>
           
             <div>
-              <Label htmlFor={beforeId}>First name</Label>
+              <Label htmlFor={beforeId}>
+                {translate('ui.label.firstName', 'First name')}
+              </Label>
               <Input contentBefore={<PersonRegular />} 
               id={beforeId} 
               value={firstName}
@@ -155,7 +175,9 @@ export const UserPanel = (props: UserPanelProps) => {
               />
       </div>
       <div>
-              <Label htmlFor={beforeId}>Last name</Label>
+              <Label htmlFor={beforeId}>
+                {translate('ui.label.lastName', 'Last name')}
+              </Label>
               <Input contentBefore={<PersonRegular />} 
               id={beforeId} 
               value={lastName}
@@ -163,7 +185,9 @@ export const UserPanel = (props: UserPanelProps) => {
               />
       </div>
       <div>
-              <Label htmlFor={beforeId}>Phone</Label>
+              <Label htmlFor={beforeId}>
+                {translate('ui.label.phone', 'Phone')}
+              </Label>
               <Input contentBefore={<PhoneRegular/>} 
               id={beforeId} 
               value={phone}
@@ -173,7 +197,9 @@ export const UserPanel = (props: UserPanelProps) => {
       <div>
               <Label typeof="email" 
               htmlFor={beforeId}
-              >Email</Label>
+              >
+                {translate('ui.label.email', 'Email')}
+              </Label>
               <Input contentBefore={<MailRegular/>} 
               id={beforeId} 
               disabled={true}
