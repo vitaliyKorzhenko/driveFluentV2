@@ -1,6 +1,7 @@
 import { CompoundButton } from "@fluentui/react-components";
 import { MoneyRegular } from "@fluentui/react-icons";
 import type { CompoundButtonProps } from "@fluentui/react-components";
+import { translate } from "../../localization/localization";
 
 export const PricesButton = (props: CompoundButtonProps) => (
   <CompoundButton
@@ -14,6 +15,6 @@ export const PricesButton = (props: CompoundButtonProps) => (
     }}
     {...props}
   >
-    Show Prices in $USD
+   {translate("ui.payment.pricesin", "Show prices in") + '$USD' }
   </CompoundButton>
 );

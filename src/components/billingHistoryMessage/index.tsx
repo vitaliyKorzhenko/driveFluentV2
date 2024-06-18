@@ -6,6 +6,7 @@ import {
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
+import { translate } from "../../localization/localization";
 
 const useClasses = makeStyles({
   container: {
@@ -16,11 +17,12 @@ const useClasses = makeStyles({
 });
 const intentSuccess: MessageBarIntent = "warning";
 
-const intentMessage: string  = "You do not have an active subscription.";
-const intentMessage2: string  = "Upgrade now to unlock the full potential.";
+const intentMessage: string  = translate("ui.sub.noactive", "You do not have an active subscription. Upgrade now to unlock the full potential.");
+;
+// 
 
 
-const intentLinkText: string = "Billing history";
+const intentLinkText: string = translate("ui.billinghistory:", "Billing History");
 
 
 export const BillingHistoryIntent = () => {
@@ -31,9 +33,6 @@ export const BillingHistoryIntent = () => {
         <MessageBar key={intentSuccess} intent={intentSuccess}>
           <MessageBarBody>
             {intentMessage}
-            <div>
-                {intentMessage2}
-            </div>
             <div>
                 <Link href="https://www.microsoft.com" target="_blank">
                     {intentLinkText}
