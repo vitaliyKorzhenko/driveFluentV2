@@ -8,6 +8,7 @@ import {
   makeStyles,
   shorthands,
   ToolbarButton,
+  Text
 } from "@fluentui/react-components";
 import { TextSubscript24Filled} from "@fluentui/react-icons";
 import { ActiveDiscountIntent } from "../activeDiscountMessage";
@@ -15,6 +16,7 @@ import { BillingHistoryIntent } from "../billingHistoryMessage";
 import { PricesButton } from "../showPricesButton";
 import { TablePrices } from "../pricesTable";
 import { SubscriptionLabel } from "../subscriptionLabel";
+import { translate } from "../../localization/localization";
 
 
 const useStyles = makeStyles({
@@ -80,6 +82,9 @@ export const SubscriptionPanel = () => {
             <PricesButton/>
           </div>
           <TablePrices/>
+          <Text size={100}>
+            {translate('ui.sub.policy', 'By subscribing, you agree to our {0}.')}
+          </Text>
         </DrawerBody>
       </OverlayDrawer>
 

@@ -6,6 +6,7 @@ import {
   makeStyles,
   shorthands,
 } from "@fluentui/react-components";
+import { translate } from "../../localization/localization";
 
 const useClasses = makeStyles({
   container: {
@@ -16,9 +17,10 @@ const useClasses = makeStyles({
 });
 const intentSuccess: MessageBarIntent = "success";
 
-const intentMessage: string  = "Activate today and get a lifetime discount.";
+const intentMessage: string  = translate("ui.sub.promo50","Activate today and get a lifetime discount.");// "get up to 50% off for a lifetime."
 
-const intentLinkText: string = "Are you a student, a researcher or an academic?";
+const intentLinkText: string = translate("ui.offer.stdacad.linktext", "Are you a student, a researcher or an academic?");
+
 
 
 export const ActiveDiscountIntent = () => {

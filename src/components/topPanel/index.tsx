@@ -14,7 +14,9 @@ import {
   Toolbar,
   ToolbarButton,
   ToolbarDivider,
-  tokens
+  Tooltip,
+  tokens,
+  Image
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
 import { FeedbackDialog } from "../feedbackDialog";
@@ -54,16 +56,33 @@ export const MainTopPanel = (props: MainTopPanelProps) => {
 
   <Toolbar aria-label="Default" {...props} style={{backgroundColor: tokens.colorBrandBackground}}>
   <div style={{ display: 'flex', alignItems: 'center' }}>
-
+<Tooltip  relationship="label"  
+content={
+  <>
+    <div style={{ padding: "20px", maxWidth: "250px" }}>
+      <div style={{ fontWeight: "lighter", fontSize: "larger" }}>
+        {translate("drive.ad.xl", "Enhance your experience with StatPlus add-in for Microsoft Excel.")}
+      </div>
+      <div style={{ marginTop: "10px" }}>
+        <a href="https://appsource.microsoft.com/en-us/product/office/WA200002512?tab=Overview" target="_blank">
+          <Image
+            src="https://img.icons8.com/color/452/microsoft-excel-2019--v1.png"
+            alt="Get add-in for Microsoft Excel"
+            height={60}
+          />
+        </a>
+      </div>
+    </div>
+  </>
+}>
     <ToolbarButton
-      aria-label="StatPlus.io"
       appearance="primary"
       icon={<Apps24Regular />}
-      title="StatPlus.io"
     >
      { 'StatPlus.io '}
      <Label style={{color: 'red'}}>{'v' + VersionHelper.getVersion()}</Label>
     </ToolbarButton>
+</Tooltip>
     <SubscriptionPanel/>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>

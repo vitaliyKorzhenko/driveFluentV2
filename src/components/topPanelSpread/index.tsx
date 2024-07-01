@@ -18,13 +18,14 @@ import {
 } from "@fluentui/react-components";
 import type { ToolbarProps } from "@fluentui/react-components";
 import { UserPanel } from "../userPanel";
-import { CardsPanel } from "../cardsBasicPanel";
+import { CardsPanel, CardsPanelHandle } from "../cardsBasicPanel";
 import { InputPanel } from "../inputPanel";
 import { Command } from "../../types/commands";
 import { VersionHelper } from "../../helpers/versionHelper";
 import { getAvailableLanguagesUiList, translate } from "../../localization/localization";
 import React from "react";
 import { FeedbackDialog } from "../feedbackDialog";
+import { FindCommandsInput } from "../findCommands";
 
 
 export interface MainTopPanelProps extends ToolbarProps {
@@ -48,6 +49,8 @@ export interface MainTopPanelProps extends ToolbarProps {
 export const MainTopPanelSpread = (props: MainTopPanelProps) => {
 
   const [openFeedback, setOpenFeedback] = React.useState(false);
+
+  const cardsPanelRef = React.useRef<CardsPanelHandle>(null);
 
   const openFeedbackDialog = () => {
     setOpenFeedback(true);
@@ -74,6 +77,7 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
           <Label style={{ color: 'red' }}>{'v' + VersionHelper.getVersion()}</Label>
         </ToolbarButton>
         <Label> {props.fileName}</Label>
+
         <ToolbarButton
           aria-label="Feedback"
           onClick={openFeedbackDialog}
@@ -82,6 +86,17 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
 
           {translate("ui.label.feedback", 'Feedback')}
         </ToolbarButton>
+        <FindCommandsInput 
+         onSearch={(searchText) => {
+           if (cardsPanelRef.current) {
+            if (searchText && searchText.length > 0) {
+              if (cardsPanelRef.current ) {
+                cardsPanelRef.current.openWithFilter(searchText);
+              }
+            }
+           }
+         }}
+        />
         <FeedbackDialog
           open={openFeedback}
           closeDialog={closeFeedbackDialog}
@@ -92,6 +107,7 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
         <CardsPanel
           openInputPanel={props.openInputPanel}
+          ref={cardsPanelRef}
         />
         <ToolbarButton
           aria-label="Dark Theme"

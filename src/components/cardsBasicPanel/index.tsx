@@ -47,7 +47,12 @@ const useStyles = makeStyles({
 export interface CardsPanelProps {
   openInputPanel: (command: Command) => void;
 }
-export const CardsPanel = (props: CardsPanelProps) => {
+
+export interface CardsPanelHandle {
+  openWithFilter: (filter: string) => void;
+}
+
+export const CardsPanel = React.forwardRef<CardsPanelHandle, CardsPanelProps>((props, ref) => {
   const styles = useStyles();
   const [open, setOpen] = React.useState(false);
   const [customSize] = React.useState(400);
@@ -67,6 +72,11 @@ export const CardsPanel = (props: CardsPanelProps) => {
     } else {
       setIsBasicMode(!isBasicMode);
     }
+  }
+
+  function openWithFilter(filter: string) {
+    setOpen(true);
+    searchCommands(filter);
   }
 
   const onClickBack = () => {
@@ -103,6 +113,14 @@ export const CardsPanel = (props: CardsPanelProps) => {
   </DrawerBody>
   }
 
+  // React.useImperativeHandle(ref, () => ({
+  //   openWithFilter
+  // }));
+
+  React.useImperativeHandle(ref, () => ({
+    openWithFilter,
+  }));
+
   const MicButton: React.FC<ButtonProps> = (props) => {
     return (
       <Button
@@ -124,7 +142,11 @@ export const CardsPanel = (props: CardsPanelProps) => {
       const childCommands = basicCommand.commands;
       for (let j = 0; j < childCommands.length; j++) {
         const childCommand = childCommands[j];
-        if (childCommand.title.includes(search) || childCommand.description.includes(search)) {
+        //all to lower case
+        search = search.toLowerCase();
+        let titleL = childCommand.title.toLowerCase();
+        let descriptionL = childCommand.description.toLowerCase();
+        if (titleL.includes(search) || descriptionL.includes(search)) {
           //add to result
           resultCommands.push(childCommand);
         }
@@ -249,4 +271,4 @@ export const CardsPanel = (props: CardsPanelProps) => {
       </div>
     </div>
   );
-};
+});
