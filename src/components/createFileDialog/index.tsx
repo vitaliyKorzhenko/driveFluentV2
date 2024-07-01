@@ -10,7 +10,6 @@ import {
     Button,
     makeStyles,
     Field,
-    Label,
     Input,
     useId,
 } from "@fluentui/react-components";
@@ -78,12 +77,11 @@ export const CreateFileDialog = (props: CreateFileDialogProps) => {
             <DialogSurface aria-describedby={undefined}>
                 <form onSubmit={handleSubmit}>
                     <DialogBody>
-                        <DialogTitle>Create File</DialogTitle>
+                        <DialogTitle>
+                            {translate('drive.create', 'Create file')}
+                        </DialogTitle>
                         <DialogContent className={styles.content}>
                             <Field required>
-                                <Label htmlFor={inputId}>
-                                   enter file name
-                                </Label>
                                 <Input 
                                 id={inputId} 
                                 value={fileName}
@@ -93,7 +91,7 @@ export const CreateFileDialog = (props: CreateFileDialogProps) => {
                         </DialogContent>
                         <DialogActions>
                             <Button type="submit" appearance="primary">
-                                Save
+                            {translate('ui.save', 'Save')}
                             </Button>
                         </DialogActions>
                     </DialogBody>
