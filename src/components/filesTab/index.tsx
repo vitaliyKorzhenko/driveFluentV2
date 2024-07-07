@@ -89,7 +89,11 @@ export const FilesTabs = (props :  FilesTabsProps) => {
             setFileNameHandler={props.setFileNameHandler}
              /> :
             selectedTab == "examples" ?
-            <FilesExampleGrid files={props.examples}  /> :
+            <FilesExampleGrid 
+            files={props.examples}  
+            changeDriveMode={props.changeDriveMode}
+            setFileNameHandler={props.setFileNameHandler}
+            /> :
             <FilesTrashGrid 
             trashedFiles={props.trashFiles}
             refreshFiles={props.refreshFiles}
