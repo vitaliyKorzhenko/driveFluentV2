@@ -4,7 +4,9 @@ import { SpreadsheetComponent } from "../speadsheet";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { Command } from "../../types/commands";
 
-
+import { SpreadComponent } from "../mainSpreadComponent";
+import { SpreadAppContext } from "../mainSpreadComponent/SpreadContext";
+import { ISpreadComponentBaseProps, ISpreadDataProvider } from "../mainSpreadComponent/types";
 
 export interface SpreadProps {
   changeTheme: () => void;
@@ -25,6 +27,11 @@ export interface SpreadState {
 
 class MainSpread extends React.Component<SpreadProps, SpreadState> {
 
+    // Spreadsheet with data and reports
+   private spreadComponent: SpreadComponent | null = null;
+
+   private spreadDataProvider: ISpreadDataProvider | null = null;
+
     constructor(props: SpreadProps) {
         super(props);
 
@@ -33,6 +40,17 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
             isOpenInputPanel: false,
             data: [],
             selectedCommand: {id: 0, title: '', description: '', visbilility: false, isenabled: false, commandIdOld: '', subscription: '', window: '', advancedwindow: ''}
+        };
+
+        this.spreadDataProvider = {
+            loadData: async () => {
+                console.log('MainSpread loadData');
+                return '';
+            },
+            saveData: (dataJsonString: string) => {
+                console.log('MainSpread saveData', dataJsonString);
+
+            }
         };
     }
 
@@ -64,6 +82,25 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
       
      }
    }
+
+
+   private Spread = (props: ISpreadComponentBaseProps) => {
+    return React.useMemo(() => <>
+      <SpreadAppContext.Provider
+        value={
+          {
+            language: 'en',
+          }}
+      >
+
+        <SpreadComponent
+          ref={(ref) => { this.spreadComponent = ref }}
+          dataProvider={props.dataProvider}
+        />
+      </SpreadAppContext.Provider>
+    </>
+      , [])
+  }
 
   //open input panel
    openInputPanel = (card: Command) => {
@@ -99,9 +136,10 @@ class MainSpread extends React.Component<SpreadProps, SpreadState> {
           updateLanguage={this.props.updateLanguage}
 
         />
-        <SpreadsheetComponent
-        />
-      
+        {
+          this.spreadDataProvider &&
+          <this.Spread dataProvider={this.spreadDataProvider} />
+        }      
       </div>
     );
   }
