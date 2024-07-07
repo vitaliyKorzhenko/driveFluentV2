@@ -57,90 +57,7 @@ function parseNodeModelsToItems(files: IExampleFileNodeModel[]): Item[] {
   });
 }
 
-const columns: TableColumnDefinition<Item>[] = [
-  createTableColumn<Item>({
-    columnId: "file",
-    compare: (a, b) => {
-      return a.file.label.localeCompare(b.file.label);
-    },
-    renderHeaderCell: () => {
-      return translate("file.name", 'Name');
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout media={item.file.icon}
-        style={{
-          fontSize: "16px",
-          fontWeight: "bold",
 
-        }}
-        >
-          {item.file.label}
-        </TableCellLayout>
-      );
-    },
-  }),
-  createTableColumn<Item>({
-    columnId: "author",
-    compare: (a, b) => {
-      return a.author.label.localeCompare(b.author.label);
-    },
-    renderHeaderCell: () => {
-      return translate("file.author", 'Author');
-    },
-    renderCell: (item) => {
-      return (
-        <TableCellLayout
-          media={
-            <Avatar
-              aria-label={item.author.label}
-              name={item.author.label}
-              badge={{ status: item.author.status }}
-            />
-            
-          }
-        >
-          {item.author.label}
-        </TableCellLayout>
-      );
-    },
-  }),
-    createTableColumn<Item>({
-        columnId: "description",
-        compare: (a, b) => {
-        return a.description.label.localeCompare(b.description.label);
-        },
-        renderHeaderCell: () => {
-        return translate('file.description', 'Description');
-        },
-        renderCell: (item) => {
-        return (
-            <TableCellLayout>
-            {item.description.label}
-            </TableCellLayout>
-        );
-        },
-    }),   
-  createTableColumn<Item>({
-    columnId: "singleAction",
-    renderHeaderCell: () => {
-      return "";
-    },
-    renderCell: () => {
-      return <Button
-      style={{
-        width: "100%",
-      
-        color: "#1E90FF",
-
-      }}
-       icon={<OpenRegular />}>
-        {translate('ui.label.openInBrowser', 'Open')}
-        </Button>;
-    },
-  }),
- 
-];
 
 const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
   switch (columnId) {
@@ -155,8 +72,101 @@ const getCellFocusMode = (columnId: TableColumnId): DataGridCellFocusMode => {
 
 export interface FilesExampleGridProps {
   files: IExampleFileNodeModel[];
+  changeDriveMode?: () => void;
+  setFileNameHandler: (name: string) => void;
 }
 export const FilesExampleGrid = (props: FilesExampleGridProps) => {
+
+  const columns: TableColumnDefinition<Item>[] = [
+    createTableColumn<Item>({
+      columnId: "file",
+      compare: (a, b) => {
+        return a.file.label.localeCompare(b.file.label);
+      },
+      renderHeaderCell: () => {
+        return translate("file.name", 'Name');
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout media={item.file.icon}
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+  
+          }}
+          >
+            {item.file.label}
+          </TableCellLayout>
+        );
+      },
+    }),
+    createTableColumn<Item>({
+      columnId: "author",
+      compare: (a, b) => {
+        return a.author.label.localeCompare(b.author.label);
+      },
+      renderHeaderCell: () => {
+        return translate("file.author", 'Author');
+      },
+      renderCell: (item) => {
+        return (
+          <TableCellLayout
+            media={
+              <Avatar
+                aria-label={item.author.label}
+                name={item.author.label}
+                badge={{ status: item.author.status }}
+              />
+              
+            }
+          >
+            {item.author.label}
+          </TableCellLayout>
+        );
+      },
+    }),
+      createTableColumn<Item>({
+          columnId: "description",
+          compare: (a, b) => {
+          return a.description.label.localeCompare(b.description.label);
+          },
+          renderHeaderCell: () => {
+          return translate('file.description', 'Description');
+          },
+          renderCell: (item) => {
+          return (
+              <TableCellLayout>
+              {item.description.label}
+              </TableCellLayout>
+          );
+          },
+      }),   
+    createTableColumn<Item>({
+      columnId: "singleAction",
+      renderHeaderCell: () => {
+        return "";
+      },
+      renderCell: (item: Item) => {
+        return <Button
+        style={{
+          width: "100%",
+        
+          color: "#1E90FF",
+  
+        }}
+        onClick={() => {
+          props.setFileNameHandler && props.setFileNameHandler(item.file.label);
+          props.changeDriveMode && props.changeDriveMode();
+         }}
+         icon={<OpenRegular />}>
+          {translate('ui.label.openInBrowser', 'Open')}
+          </Button>;
+      },
+    }),
+   
+  ];
+
+
   return (
     <DataGrid
       items={parseNodeModelsToItems(props.files)}
