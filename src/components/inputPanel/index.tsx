@@ -25,6 +25,7 @@ import VariablesSection from "./variablesSection";
 import OptionSections from "./optionsSection";
 import PrefsTab from "../preferences/prefsTab";
 import { IOptionItem } from "../../types/options";
+import { AppNavigate } from "../../helpers/navigateHelper";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -280,6 +281,9 @@ export const InputPanel = (props: InputPanelProps) => {
                     size="large" 
                     style={{width: '100%'}}
                     icon={<ChatHelp24Regular />}
+                    onClick={() => {
+                      AppNavigate.openHelpLink(props.command.commandIdOld);
+                    }}
                     >
                       {translate('ui.button.help', 'Help')}
                     </Button>
