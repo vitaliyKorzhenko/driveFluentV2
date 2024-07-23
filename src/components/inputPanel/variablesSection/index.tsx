@@ -25,7 +25,9 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({ window }) => {
 
     return (
         <div style={{
-            width: '100%',     
+            width: '100%',  
+            maxHeight: '400px', // Set a fixed height for the container
+        overflowY: 'auto', // Enable vertical scrolling   
         }}>
            {items.map((item: IWindowItem, index: number) => (
                 <div key={index}
