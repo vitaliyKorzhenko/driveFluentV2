@@ -9,6 +9,7 @@ import {
   } from "@fluentui/react-components";
   import { Info24Regular, Check24Filled } from "@fluentui/react-icons";
 import { translate } from "../../localization/localization";
+import React, { useEffect } from "react";
     
   const useStyles = makeStyles({
     contentHeader: {
@@ -36,8 +37,22 @@ import { translate } from "../../localization/localization";
       description: string;
   
   }
-  const InfoContent = (props: InfoPropoverProps) => {
+  const InfoContent = (props: InfoPropoverProps & { onClose: () => void }) => {
       const styles = useStyles();
+
+      useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === "Escape") {
+            props.onClose();
+          }
+        };
+    
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+          document.removeEventListener("keydown", handleKeyDown);
+        };
+      }, [props]);
+
       return (
           <>
         <div className={styles.container}>
@@ -49,9 +64,10 @@ import { translate } from "../../localization/localization";
           <Button 
             size="medium" 
             icon={< Check24Filled/>}
-            className={styles.button} // Применяем стили для кнопки
+            className={styles.button} 
+            onClick={props.onClose} 
           >
-            {translate('ui.label.Ok', 'Ok')}
+            {translate('ui.label.OK', 'OK')}
           </Button>
         </div>
       </>
@@ -61,11 +77,25 @@ import { translate } from "../../localization/localization";
   
   export const InfoLabel = (props: InfoPropoverProps) => {
     const layoutStyles = useLayoutStyles();
+
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    
+    const handleOpen = () => {
+      setIsOpen(true);
+    }
+
+    const handleClose = () => {
+      setIsOpen(false);
+    }
   
     return (
       <div className={layoutStyles.root}>
   
-        <Popover>
+        <Popover 
+        open={isOpen}
+        onOpenChange={handleOpen}
+        >
           <PopoverTrigger disableButtonEnhancement>
           <Button 
             size="small" 
@@ -76,7 +106,10 @@ import { translate } from "../../localization/localization";
           </PopoverTrigger>
   
           <PopoverSurface tabIndex={-1}>
-            <InfoContent description={props.description}/>
+            <InfoContent 
+            description={props.description}
+            onClose={handleClose}
+            />
               
           </PopoverSurface>
         </Popover>

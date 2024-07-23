@@ -5,6 +5,7 @@ import {
     SelectObject20Filled,
     AddSquareRegular,
 } from "@fluentui/react-icons";
+import { InfoLabel } from '../../InfoLabel';
 
 interface ConstsubstituteRangeProps {
     size: number;
@@ -97,12 +98,7 @@ class ConstsubstituteRange extends React.Component<ConstsubstituteRangeProps, Co
                         flex: 1,  // Занимает всю доступную ширину
                     }}>
                         <Label required={true}>{this.props.label}</Label>
-                        <Button
-                            size="small"
-                            icon={<Info24Regular />}
-                            appearance="subtle" // Применение стиля primary
-                            style={{ marginLeft: '5px' }} // Маленький отступ слева
-                        />
+                        <InfoLabel description={this.props.description ?? ''} />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Button

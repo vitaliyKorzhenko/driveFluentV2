@@ -4,9 +4,10 @@ import {
   Input,
   Label,
 } from "@fluentui/react-components";
-import { Delete24Regular, Info24Regular } from "@fluentui/react-icons";
+import { Delete24Regular } from "@fluentui/react-icons";
 import type { ButtonProps } from "@fluentui/react-components";
 import { IWindowItem } from "../../../types/window";
+import { InfoLabel } from "../../InfoLabel";
 
 
 export interface CellRangeProps {
@@ -40,12 +41,7 @@ export const CellRange = (props: CellRangeProps) => {
         flex: 1,  // Занимает всю доступную ширину
     }}>
         <Label required = {props.item.required}>{props.item.label}</Label>
-        <Button 
-            size="small" 
-            icon={<Info24Regular />} 
-            appearance="subtle" // Применение стиля primary
-            style={{ marginLeft: '5px' }} // Маленький отступ слева
-        />
+        <InfoLabel  description={props.item.description ?? ''} />
         </div>
         <Input
         style={{
