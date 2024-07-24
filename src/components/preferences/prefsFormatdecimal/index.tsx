@@ -1,9 +1,8 @@
 import * as React from "react";
 import {
-  Input,
   Label,
+  Select
 } from "@fluentui/react-components";
-import type { InputProps } from "@fluentui/react-components";
 import { IPreferencesOptions } from "../types";
 
 
@@ -12,27 +11,39 @@ interface IPrefFontDecimal {
 }
 
 export const PrefsFormatDecimal = (props: IPrefFontDecimal) => {
-  const [value, setValue] = React.useState("initial value");
+  console.log('Prefs Format Decimal', props.option);
 
-  const onChange: InputProps["onChange"] = (_ev, data) => {
-    // The controlled input pattern can be used for other purposes besides validation,
-    // but validation is a useful example
-    if (data.value.length <= 20) {
-      setValue(data.value);
+  const [selectedValue, setSelectedValue] = React.useState<string>(props.option.value);
+
+  const generateOptions = () => {
+    //use props.option min and max to generate options
+    let options = [];
+    if (props.option.min && props.option.max) {
+    for (let i = props.option.min; i < props.option.max; i++) {
+      options.push(<option key={i} value={i}>{i}</option>);
     }
-  };
+  }
+    return options;
+  }
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'  }}>
       <Label size="large">{props.option.name}</Label> 
-      <Input 
-      value={value} 
-      type="number"
-      onChange={onChange}
-      style={{
-        width: '350px'
-      }}
-      />
+      <Select
+        style={{
+          width: '350px'
+        }}
+        defaultValue={selectedValue}
+        onChange={(_ev, data) => {
+          setSelectedValue(data.value as string);
+        }}
+      >
+        {
+          generateOptions().map((item: any) => {
+            return item;
+          })
+        }
+      </Select>
     </div>
   );
 };

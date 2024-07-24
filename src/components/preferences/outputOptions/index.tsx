@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from '@fluentui/react-components';
+import { Divider, Label } from '@fluentui/react-components';
 import { IPreferencesOptions } from '../types';
 import { PrefFont } from '../prefFont';
 import { PrefFontSize } from '../prefFontSize';
@@ -20,7 +20,11 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
         <div style={{
             width: '100%',     
         }}>
-            <Divider appearance="strong">{name}</Divider>
+            <Divider appearance="strong">
+                <Label size='large' style={{fontWeight: 'bold'}}>
+                {name}
+                </Label>
+            </Divider>
            {items.map((item: IPreferencesOptions, index: number) => (
                 <div key={index}
                 style={{
