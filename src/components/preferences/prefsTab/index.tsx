@@ -26,14 +26,19 @@ const PrefsTab: React.FC<PreferencesOptionsSection> = ({  }) => {
                 value: item.value ?? '',
                 name: item.name ?? '',
                 select: item.select ?? '',
-                returnname: item.returnname ?? ''
+                returnname: item.returnname ?? '',
+                min: item.min ?? 0,
+                max: item.max ?? 0,
             }
         })
         
     }
     return (
         <div style={{
-            width: '100%',     
+            width: '100%',    
+            height: '500px',
+            overflowY: 'auto', // Enable vertical scrolling   
+ 
         }}>
            <OptionSections
             name={outOptions[0].name}
