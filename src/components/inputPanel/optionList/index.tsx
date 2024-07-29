@@ -1,9 +1,11 @@
 import { Label, Select } from '@fluentui/react-components';
 import React from 'react';
 import { IOptionItem } from '../../../types/options';
+import { IMainOtionItem } from '../types/optionProps';
 
-interface OptionListProps {
+interface OptionListProps extends IMainOtionItem {
    option: IOptionItem
+
 }
 
 //state interface
@@ -19,17 +21,19 @@ class OptionList extends React.Component<OptionListProps, OptionListState> {
         super(props);
         this.state = {
            optionValues: values,
-           selectedValue: values[0],
+           selectedValue: this.props.option.currentvalue ? this.props.option.currentvalue : values[0],
         };
 
     }
-
     
     render() {
+        console.log('OptionList', this.props.option);
         return (
             <div style={{
                 width: '100%',
-            }}>
+            }}
+            key = {this.props.option.name}
+            >
                 
                 <Label >{this.props.option.name}</Label>
 
@@ -41,7 +45,16 @@ class OptionList extends React.Component<OptionListProps, OptionListState> {
                         minWidth: '200px',
                     }}
                    // multiple={this.props.multiple}
-                    onChange={(event) => this.setState({ selectedValue: event.target.value })}
+                    onChange={(event) => {
+                        console.log('selected value', event.target.value);
+                        console.log('tab and option', this.props.selectedTab, this.props.option);
+                        this.setState({ selectedValue: event.target.value })
+                        //update in parent
+                        let newOtion = this.props.option;
+                        newOtion.currentvalue = event.target.value;
+                        this.props.addOptionElement(this.props.selectedTab, newOtion);
+                    }
+                }
                 >
                     {this.state.optionValues.map((option) => (
                         <option key={option} value={option}>

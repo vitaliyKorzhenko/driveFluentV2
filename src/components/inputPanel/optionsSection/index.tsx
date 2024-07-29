@@ -12,13 +12,15 @@ import { OptionStringInput } from '../optionStringInput';
 
 interface OptionSectionProps {
     items: IOptionItem[];
+    addOptionElement: (tabName: string, item: IOptionItem) => void;
+    selectedTab: string;
 }
 
 interface IOptionElement {
     item: IOptionItem;
     childOptions?: IOptionItem[];
 }
-const OptionSections: React.FC<OptionSectionProps> = ({ items }) => {
+const OptionSections: React.FC<OptionSectionProps> = ({ items, selectedTab, addOptionElement }) => {
 
     console.log('ALL OPTIONS', items);
 
@@ -75,6 +77,8 @@ const OptionSections: React.FC<OptionSectionProps> = ({ items }) => {
                     {element.item.nodename == 'list' ?
                         <OptionList
                             option={element.item}
+                            addOptionElement={addOptionElement}
+                            selectedTab={selectedTab}
                         />
                         :
                         element.item.nodename == 'checkbox' ?
