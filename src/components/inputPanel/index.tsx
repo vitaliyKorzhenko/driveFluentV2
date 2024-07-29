@@ -33,16 +33,30 @@ export interface InputPanelProps {
   command: Command
 }
 
+interface IOptionElement {
+  tabName: string;
+  item: IOptionItem;
+}
+
 export const InputPanel = (props: InputPanelProps) => {
   const [open, setOpen] = React.useState(props.isOpen);
   const [customSize] = React.useState(600);
 
   const [selectedTab, setSelectedTab] = React.useState("variables");
 
+  const [optionElements, setOptionElements] = React.useState<IOptionElement[]>([]);
+
+  //add option Elements
+  const addOptionElement = (tabName: string, item: IOptionItem) => {
+    console.log('addOptionElement', tabName, item);
+    setOptionElements([...optionElements, { tabName, item }]);
+  }
+
   console.log('InputPanel', props.isOpen, props.command);
 
   React.useEffect(() => {
     setOpen(props.isOpen);
+    // setCurrentOptions(parseOptionAdditionTabs()); 
     //setCurrentCommand(props.command);
   }
     , [props.isOpen, props.command]);
@@ -68,6 +82,7 @@ export const InputPanel = (props: InputPanelProps) => {
         indent: item.indent ?? undefined,
         valueex: item.valueex ?? 0,
         valueshort: item.valueshort ?? '',
+        currentvalue: item.currentvalue ?? '',
       });
 
     })
@@ -193,9 +208,34 @@ export const InputPanel = (props: InputPanelProps) => {
 
   //render Options
 
+  const updateSelectedOptions = (selectedOptions:  {tab: string, items: IOptionItem[]}) => {
+    console.log('UPDATE SELECTED OPTIONS', selectedOptions, optionElements);
+    for (let i = 0; i < selectedOptions.items.length; i++) {
+      for (let j = 0; j< optionElements.length; j++) {
+        if  
+        (selectedOptions.tab == optionElements[j].tabName 
+          && selectedOptions.items[i].name == optionElements[j].item.name
+          && selectedOptions.items[i].nodename == optionElements[j].item.nodename
+          ) {
+          console.log('CURRENT VALUE', optionElements[j].item.currentvalue);
+          selectedOptions.items[i] = optionElements[j].item;  
+    }
+  }
+  console.log('NEW SELECTED OPTIONS', selectedOptions);
+  return selectedOptions;
+}
+  }
+
   const renderOptions = (tabName: string): JSX.Element => {
     const options = parseOptionAdditionTabs();
-    const selectedOptions = options.find((option) => option.tab == tabName);
+    let selectedOptions = options.find((option) => option.tab == tabName);
+    if (!selectedOptions) {
+      return <></>;
+    }
+
+   
+    selectedOptions = updateSelectedOptions(selectedOptions);
+    console.log('SELECTED OPTIONS', selectedOptions);
     if (!selectedOptions) {
       return <></>;
     }
@@ -211,6 +251,8 @@ export const InputPanel = (props: InputPanelProps) => {
         >
           <OptionSections
             items={selectedOptions.items}
+            addOptionElement={addOptionElement}
+            selectedTab={selectedOptions.tab}
           />
         </div>
       </>
