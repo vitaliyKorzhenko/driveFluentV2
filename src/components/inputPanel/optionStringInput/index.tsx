@@ -10,6 +10,7 @@ import {
 import { Delete24Regular } from "@fluentui/react-icons";
 import type { ButtonProps } from "@fluentui/react-components";
 import { IOptionItem } from "../../../types/options";
+import { IMainOtionItem } from "../types/optionProps";
 
 const useStyles = makeStyles({
   root: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
 });
 
 
-export interface OptionStringInputProps {
+export interface OptionStringInputProps extends IMainOtionItem {
     option: IOptionItem;
 }
 
@@ -49,7 +50,7 @@ export const OptionStringInput = (props: OptionStringInputProps) => {
   const afterId = useId("content-after");
 
   console.log('OptionNumberInput', props.option);
-  const [value, setValue] = React.useState<string>(props.option.value !== undefined && props.option.value !== null ? props.option.value.toString() : "");
+  const [value, setValue] = React.useState<string>(props.option.currentvalue ? props.option.currentvalue : props.option.value !== undefined && props.option.value !== null ? props.option.value.toString() : "");
 
   //clear value onClick of clear button
   const clearValue = () => {
@@ -67,7 +68,13 @@ export const OptionStringInput = (props: OptionStringInputProps) => {
           }} />}
           id={afterId}
          value={value}
-            onChange={(event) => setValue(event.target.value)}
+            onChange={(event) => {
+              setValue(event.target.value)
+              let newOtion = props.option;
+              newOtion.currentvalue = event.target.value;
+              props.addOptionElement(props.selectedTab, newOtion);
+            }
+          }
         />
       </div>
     </div>

@@ -4,15 +4,16 @@ import { IOptionItem } from "../../../types/options";
 import { ChildOptionCheckbox } from "../childOptionCheckBox";
 import { OptionNumberInput } from "../optionNumberInput";
 import { OptionStringInput } from "../optionStringInput";
+import { IMainOtionItem } from "../types/optionProps";
 
-export interface OptionCheckboxProps {
+export interface OptionCheckboxProps extends IMainOtionItem {
     option: IOptionItem;
     childOptions?: IOptionItem[];
 }
 
 export const OptionParentCheckbox = (props: OptionCheckboxProps) => {
 
- const [checked, setChecked] = React.useState(props.option.value.toString() == 'true' ? true : false);
+ const [checked, setChecked] = React.useState(props.option.currentvalue.toString() == 'true' ? true : props.option.value == 'true' ? true : false);
     return ( 
         <>
     <Switch
@@ -21,6 +22,9 @@ export const OptionParentCheckbox = (props: OptionCheckboxProps) => {
     checked={checked}
     onChange={(_event) => {
         setChecked(!checked);
+        let newOtion = props.option;
+        newOtion.currentvalue = checked ? 'false' : 'true';
+        props.addOptionElement(props.selectedTab, newOtion);
     }}
     />
     <div style={{marginLeft: '20px'}}>
@@ -31,6 +35,8 @@ export const OptionParentCheckbox = (props: OptionCheckboxProps) => {
          key={index}
             option={childOption}
             isVisble={checked}
+            addOptionElement={props.addOptionElement}
+            selectedTab={props.selectedTab}
          />
          </div>
          :
@@ -39,12 +45,16 @@ export const OptionParentCheckbox = (props: OptionCheckboxProps) => {
             key={index}
             option={childOption}
             isVisible={checked}
+            addOptionElement={props.addOptionElement}
+            selectedTab={props.selectedTab}
             />
             :
             childOption.nodename == 'string' ?
             <OptionStringInput
             key={index}
             option={childOption}
+            addOptionElement={props.addOptionElement}
+            selectedTab={props.selectedTab}
             />
             :
             <></>
