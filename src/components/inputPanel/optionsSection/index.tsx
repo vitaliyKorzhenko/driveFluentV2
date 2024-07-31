@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@fluentui/react-components';
 import {
-    ClearFormatting24Regular
+    ArrowClockwise24Filled
 } from "@fluentui/react-icons";
 import { IOptionItem } from '../../../types/options';
 import OptionList from '../optionList';
@@ -14,13 +14,14 @@ interface OptionSectionProps {
     items: IOptionItem[];
     addOptionElement: (tabName: string, item: IOptionItem) => void;
     selectedTab: string;
+    resetOptionElements: (tabName: string) => void;
 }
 
 interface IOptionElement {
     item: IOptionItem;
     childOptions?: IOptionItem[];
 }
-const OptionSections: React.FC<OptionSectionProps> = ({ items, selectedTab, addOptionElement }) => {
+const OptionSections: React.FC<OptionSectionProps> = ({ items, selectedTab, addOptionElement, resetOptionElements }) => {
 
     console.log('ALL OPTIONS', items);
 
@@ -85,17 +86,23 @@ const OptionSections: React.FC<OptionSectionProps> = ({ items, selectedTab, addO
                             <OptionParentCheckbox
                                 option={element.item}
                                 childOptions={element.childOptions}
+                                addOptionElement={addOptionElement}
+                                selectedTab={selectedTab}
                             />
                             :
                             element.item.nodename == "number" || element.item.nodename == 'numberint' ?
                                 <OptionNumberInput
                                     option={element.item}
                                     isVisible={true}
+                                    addOptionElement={addOptionElement}
+                                    selectedTab={selectedTab}
                                 />
                                 :
                                 element.item.nodename == 'string' ?
                                     <OptionStringInput
                                         option={element.item}
+                                        addOptionElement={addOptionElement}
+                                        selectedTab={selectedTab}
                                     />
                                     :
                                     <></>
@@ -108,8 +115,10 @@ const OptionSections: React.FC<OptionSectionProps> = ({ items, selectedTab, addO
                 alignItems: 'center',
                 margin: '40px'
             }}>
-                <ClearFormatting24Regular type='primary' />
-                <Link >Reset Options</Link>
+                <ArrowClockwise24Filled type='primary' />
+                <Link  onClick={() => {
+                    resetOptionElements(selectedTab);
+                }}> Reset Options</Link>
 
             </div>
         </div>

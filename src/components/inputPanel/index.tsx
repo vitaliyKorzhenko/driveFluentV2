@@ -7,15 +7,14 @@ import {
   TabList,
   Text,
   Label,
-  CompoundButton,
 } from "@fluentui/react-components";
 import {
   Settings24Filled,
   Options24Filled,
   ChatHelp24Regular,
-  ArrowStepBackRegular,
-  Run24Regular,
-  BracesVariable24Regular
+  BracesVariable24Regular,
+  CaretRight24Regular,
+  ArrowCircleLeft24Filled
 } from "@fluentui/react-icons";
 import { Command } from "../../types/commands";
 import { translate } from "../../localization/localization";
@@ -46,20 +45,44 @@ export const InputPanel = (props: InputPanelProps) => {
 
   const [optionElements, setOptionElements] = React.useState<IOptionElement[]>([]);
 
+  const [key, setKey] = React.useState(1);  
+
   //add option Elements
   const addOptionElement = (tabName: string, item: IOptionItem) => {
-    console.log('addOptionElement', tabName, item);
-    setOptionElements([...optionElements, { tabName, item }]);
-  }
+      // Check if item exists
+      console.log('ADD OPTION ELEMENT', tabName, item);
+    let optionElement = optionElements.find((element) => element.tabName == tabName && element.item.name == item.name && element.item.nodename == item.nodename);
+  
+    if (optionElement) {
+      // Update item
+      const updatedOptionElements = optionElements.map((element) => 
+        element.tabName === tabName && element.item.name === item.name && element.item.nodename === item.nodename ? 
+        { ...element, item } : 
+        element
+      );
+      setOptionElements(updatedOptionElements);
+    } else {
+      // Add item
+      setOptionElements([...optionElements, { tabName, item }]);
+    }
+  };
 
-  console.log('InputPanel', props.isOpen, props.command);
+  //reset option Elements to empty array
+  const resetOptionElements = (tabName: string) => {
+    setOptionElements([]);
+    setSelectedTab(tabName);
+    //update key to force re-render
+    setKey(key + 1);
+   
+  };
+  
 
   React.useEffect(() => {
     setOpen(props.isOpen);
     // setCurrentOptions(parseOptionAdditionTabs()); 
     //setCurrentCommand(props.command);
   }
-    , [props.isOpen, props.command]);
+    , [props.isOpen, props.command, optionElements, selectedTab]);
 
 
 
@@ -72,7 +95,6 @@ export const InputPanel = (props: InputPanelProps) => {
     let optionItems: IOptionItem[] = [];
 
     items.forEach((item: any) => {
-      console.log('advancedwindow item', item);
       optionItems.push({
         nodename: item.nodename ?? '',
         name: item.name ?? '',
@@ -95,10 +117,8 @@ export const InputPanel = (props: InputPanelProps) => {
     if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) 
     {
     let advancedwindow = JSON.parse(props.command.advancedwindow);
-  console.log('OPTION TAB TABS', advancedwindow);
     if (advancedwindow) {
       const items: IOptionItem[] =parseAdwancedWindowItems(advancedwindow.items);
-      console.log('PARSED ITEMS', items);
       //loop for items
       items.forEach((item) => {
         if (item.tab &&  item.tab != '') {
@@ -208,23 +228,26 @@ export const InputPanel = (props: InputPanelProps) => {
 
   //render Options
 
-  const updateSelectedOptions = (selectedOptions:  {tab: string, items: IOptionItem[]}) => {
-    console.log('UPDATE SELECTED OPTIONS', selectedOptions, optionElements);
-    for (let i = 0; i < selectedOptions.items.length; i++) {
-      for (let j = 0; j< optionElements.length; j++) {
-        if  
-        (selectedOptions.tab == optionElements[j].tabName 
-          && selectedOptions.items[i].name == optionElements[j].item.name
-          && selectedOptions.items[i].nodename == optionElements[j].item.nodename
-          ) {
-          console.log('CURRENT VALUE', optionElements[j].item.currentvalue);
-          selectedOptions.items[i] = optionElements[j].item;  
+  const updateSelectedOptions = (selectedOptions: { tab: string, items: IOptionItem[] }) => {
+  
+    // Create a copy of selectedOptions to avoid direct mutation
+    const updatedSelectedOptions = { ...selectedOptions, items: [...selectedOptions.items] };
+  
+    for (let i = 0; i < updatedSelectedOptions.items.length; i++) {
+      for (let j = 0; j < optionElements.length; j++) {
+        if (
+          updatedSelectedOptions.tab === optionElements[j].tabName &&
+          updatedSelectedOptions.items[i].name === optionElements[j].item.name &&
+          updatedSelectedOptions.items[i].nodename === optionElements[j].item.nodename
+        ) {
+          updatedSelectedOptions.items[i] = optionElements[j].item;
+        }
+      }
     }
-  }
-  console.log('NEW SELECTED OPTIONS', selectedOptions);
-  return selectedOptions;
-}
-  }
+  
+    return updatedSelectedOptions;
+  };
+  
 
   const renderOptions = (tabName: string): JSX.Element => {
     const options = parseOptionAdditionTabs();
@@ -235,7 +258,6 @@ export const InputPanel = (props: InputPanelProps) => {
 
    
     selectedOptions = updateSelectedOptions(selectedOptions);
-    console.log('SELECTED OPTIONS', selectedOptions);
     if (!selectedOptions) {
       return <></>;
     }
@@ -253,6 +275,7 @@ export const InputPanel = (props: InputPanelProps) => {
             items={selectedOptions.items}
             addOptionElement={addOptionElement}
             selectedTab={selectedOptions.tab}
+            resetOptionElements={resetOptionElements}
           />
         </div>
       </>
@@ -260,7 +283,9 @@ export const InputPanel = (props: InputPanelProps) => {
   }
 
   return (
-    <div>
+    <div
+    key={key}
+    >
       <OverlayDrawer
         open={open}
         position="end"
@@ -278,7 +303,7 @@ export const InputPanel = (props: InputPanelProps) => {
             // padding: '10px'
           }}>
             <Button size="small"
-              icon={<ArrowStepBackRegular />}
+              icon={<ArrowCircleLeft24Filled />}
               onClick={() => {
                 props.closeInputPanel();
               }}
@@ -287,8 +312,8 @@ export const InputPanel = (props: InputPanelProps) => {
               {translate('ui.label.back', 'Back')}
             </Button>
             <Label size='large' weight="semibold">{props.command.title}</Label>
-            <CompoundButton
-              icon={<Run24Regular />}
+            <Button
+              icon={<CaretRight24Regular />}
               appearance="outline"
               shape="circular"
               style={{
@@ -297,12 +322,12 @@ export const InputPanel = (props: InputPanelProps) => {
               }}
             >
               {translate('ui.label.run', 'Run')}
-            </CompoundButton>
+            </Button>
           </div>
 
         </DrawerHeader>
 
-        <TabList defaultSelectedValue="variables">{renderTabs()}
+        <TabList selectedValue={selectedTab} defaultSelectedValue="variables">{renderTabs()}
 
         </TabList>
         {
