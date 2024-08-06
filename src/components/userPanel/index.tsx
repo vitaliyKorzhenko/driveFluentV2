@@ -139,6 +139,7 @@ export const UserPanel = (props: UserPanelProps) => {
                 aria-label="Close"
                 icon={<Dismiss24Regular />}
                 onClick={() => setOpen(false)}
+                
               />
             }
           >
@@ -233,7 +234,12 @@ export const UserPanel = (props: UserPanelProps) => {
       <div className={styles.main}>
       <ToolbarButton
       aria-label="User"
-      icon={<People24Regular />} 
+      style={{ color: 'white',
+      backgroundColor: 'transparent',
+      border: 'none',
+      outline: 'none', 
+     }} // Устанавливаем цвет текста и фон
+      icon={<People24Regular style={{color: 'white'}} />} 
       onClick={() => setOpen(true)}
     />
       </div>

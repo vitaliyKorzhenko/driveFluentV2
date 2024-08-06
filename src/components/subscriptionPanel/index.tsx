@@ -90,13 +90,17 @@ export const SubscriptionPanel = () => {
 
       <div className={styles.main}>
       <ToolbarButton
-      aria-label="Subscription"
-      onClick={() => setOpen(true)}
-      color="white"
-      icon={<TextSubscript24Filled />}
-    >
-      FREE
-    </ToolbarButton>
+  aria-label="Subscription"
+  onClick={() => setOpen(true)}
+  style={{ color: 'white',
+   backgroundColor: 'transparent',
+   border: 'none',
+   outline: 'none', 
+  }} // Устанавливаем цвет текста и фон
+  icon={<TextSubscript24Filled style={{color: 'white'}} />}
+>
+  FREE
+</ToolbarButton>
       </div>
     </div>
   );

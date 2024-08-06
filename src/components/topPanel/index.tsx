@@ -89,7 +89,14 @@ content={
 
     <Menu>
       <MenuTrigger>
-        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
+        <ToolbarButton
+          style={{
+            color: 'white',
+            backgroundColor: 'transparent',
+            border: 'none', // Убедитесь, что нет границ
+            outline: 'none', // Убираем стандартный фокус
+          }}
+ aria-label="ChangeLanguage" icon={<LocalLanguage24Regular style={{color: 'white'}} />} />
       </MenuTrigger>
 
       <MenuPopover>
@@ -126,14 +133,16 @@ content={
     <ToolbarDivider />
     <ToolbarButton
       aria-label="Dark Theme"
-      icon={<DarkTheme24Filled />}
+      icon={<DarkTheme24Filled style={{color: 'white'}} />}
       onClick={props.changeTheme}
+      style={{ color: 'white', backgroundColor: 'transparent' }} // Устанавливаем цвет текста и фон
 
     />
     <ToolbarButton
       aria-label="Feedback"
       onClick={openFeedbackDialog}
-      icon={<Question24Regular />}
+      icon={<Question24Regular style={{color: 'white'}} />}
+      style={{ color: 'white', backgroundColor: 'transparent' }} // Устанавливаем цвет текста и фон
     >
       {translate("ui.label.feedback", 'Feedback')}
     </ToolbarButton>

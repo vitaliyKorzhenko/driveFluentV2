@@ -76,12 +76,14 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
           {'StatPlus.io '}
           <Label style={{ color: 'red' }}>{'v' + VersionHelper.getVersion()}</Label>
         </ToolbarButton>
-        <Label> {props.fileName}</Label>
+        <Label color="white" weight="semibold"> {props.fileName}</Label>
 
         <ToolbarButton
           aria-label="Feedback"
           onClick={openFeedbackDialog}
           icon={<Question24Regular />}
+          appearance="primary"
+
         >
 
           {translate("ui.label.feedback", 'Feedback')}
