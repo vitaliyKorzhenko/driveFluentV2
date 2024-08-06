@@ -72,10 +72,8 @@ export const Drive = (props: DriveProps) => {
     return (
         <div
             style={{
-                height: '100vh',
-                width: '100vw',
-                // padding: '0px',
-                // margin: '0px',
+                height: '100%',
+                width: '100%',
                 
             }}
         >

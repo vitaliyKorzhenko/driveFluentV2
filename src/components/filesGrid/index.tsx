@@ -19,6 +19,9 @@ import {
   Button,
   TableColumnId,
   DataGridCellFocusMode,
+  useScrollbarWidth,
+  useFluent,
+  tokens
 } from "@fluentui/react-components";
 import { IUserFileNodeModel } from "../../types/files";
 import { UserFilesToolbar } from "../userFilesToolbar";
@@ -240,25 +243,26 @@ export const FilesGrid = (props: FilesGridProps) => {
     }),
   ];
 
+  const { targetDocument } = useFluent();
+  const scrollbarWidth = useScrollbarWidth({ targetDocument });
+
   return (
     <>
     <UserFilesToolbar
       refreshFiles={props.refreshFiles}
      />
-    <DataGrid
+  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+     <DataGrid
       items={parseNodeModelsToItems(props.files)}
       columns={columns}
       sortable
+      focusMode="cell"
       selectionMode="multiselect"
       getRowId={(item) => item.file.label}
-      style={
-        {
-          width: "100%",
-          height: "100%",
-        }
-      }
-    >
-      <DataGridHeader>
+      style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}    >
+      <DataGridHeader 
+      style={{ position: 'sticky', top: 0, zIndex: 1, paddingRight: scrollbarWidth, backgroundColor: tokens.colorBrandBackground }}
+      >
         <DataGridRow
           selectionCell={{
             checkboxIndicator: { "aria-label": "Select all rows" },
@@ -269,6 +273,7 @@ export const FilesGrid = (props: FilesGridProps) => {
           )}
         </DataGridRow>
       </DataGridHeader>
+      <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
       <DataGridBody<Item>>
         {({ item, rowId }) => (
           <DataGridRow<Item>
@@ -285,7 +290,9 @@ export const FilesGrid = (props: FilesGridProps) => {
           </DataGridRow>
         )}
       </DataGridBody>
+      </div>
     </DataGrid>
+    </div>
     <EditFileDialog 
      refreshFiles={props.refreshFiles}
       open={isOpenEditFileDialog}
