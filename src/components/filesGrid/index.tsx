@@ -4,7 +4,7 @@ import {
   OpenRegular,
   DocumentRegular,
   DeleteRegular,
-  DoubleSwipeUpRegular,
+  DoubleSwipeUpRegular
 } from "@fluentui/react-icons";
 import {
   DataGridBody,
@@ -19,8 +19,6 @@ import {
   Button,
   TableColumnId,
   DataGridCellFocusMode,
-  useScrollbarWidth,
-  useFluent,
   tokens
 } from "@fluentui/react-components";
 import { IUserFileNodeModel } from "../../types/files";
@@ -122,10 +120,26 @@ export const FilesGrid = (props: FilesGridProps) => {
           style={{
             fontWeight: "bold",
             fontStyle: "italic",
-          
+            color: tokens.colorBrandBackground,
+
           }}
           >
-            {item.file.label}
+              <a
+        href="#"
+        style={{
+          color: tokens.colorBrandBackground,
+          textDecoration: 'none',
+          padding: '2px 4px',
+          borderRadius: '4px',
+          fontWeight: 'bold',
+        }}
+        onClick={() => {
+          props.setFileNameHandler && props.setFileNameHandler(item.file.label);
+          props.changeDriveMode && props.changeDriveMode();
+        }}
+      >
+        {item.file.label}
+      </a>
           </TableCellLayout>
         );
       },
@@ -194,7 +208,7 @@ export const FilesGrid = (props: FilesGridProps) => {
           props.changeDriveMode && props.changeDriveMode();
          }}
          >
-                 {translate('ui.label.openInBrowser', 'Open')}
+                 {translate('ui.label.open', 'Open')}
           </Button>;
       },
     }),
@@ -243,8 +257,6 @@ export const FilesGrid = (props: FilesGridProps) => {
     }),
   ];
 
-  const { targetDocument } = useFluent();
-  const scrollbarWidth = useScrollbarWidth({ targetDocument });
 
   return (
     <>
@@ -257,16 +269,11 @@ export const FilesGrid = (props: FilesGridProps) => {
       columns={columns}
       sortable
       focusMode="cell"
-      selectionMode="multiselect"
       getRowId={(item) => item.file.label}
       style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}    >
       <DataGridHeader 
-      style={{ position: 'sticky', top: 0, zIndex: 1, paddingRight: scrollbarWidth, backgroundColor: tokens.colorBrandBackground }}
       >
         <DataGridRow
-          selectionCell={{
-            checkboxIndicator: { "aria-label": "Select all rows" },
-          }}
         >
           {({ renderHeaderCell }) => (
             <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
@@ -278,9 +285,6 @@ export const FilesGrid = (props: FilesGridProps) => {
         {({ item, rowId }) => (
           <DataGridRow<Item>
             key={rowId}
-            selectionCell={{
-              checkboxIndicator: { "aria-label": "Select row" },
-            }}
           >
             {({ renderCell, columnId }) => (
               <DataGridCell focusMode={getCellFocusMode(columnId)}>

@@ -100,5 +100,26 @@ export class ApiUserFilesNode {
         if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
         return Promise.resolve<IUserFileNodeModel>(res.data)
     }
+
+    /*
+    delete Trash Files
+    */
+    public static async deleteTrashFilesNode (file_ids: string): Promise<any> {
+        const res = await ApiBase.runBaseRequest({ file_ids: file_ids }, MethodsHelper.deleteTrashFilesNode);
+        console.log('deleteTrashFilesNode', res);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve(res.data);
+    }
+
+    /*
+    emptyTrashNode
+    */
+
+    public static async emptyTrashNode(userId: number): Promise<any> {
+        const res = await ApiBase.runBaseRequest({ userId: userId }, MethodsHelper.emptyTrashNode);
+        console.log('emptyTrashNode', res);
+        if (res.status != ServiceResponseErrorCodes.NoError) return Promise.reject(res.message);
+        return Promise.resolve(res.data);
+    }
 }
 
