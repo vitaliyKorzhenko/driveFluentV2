@@ -1,8 +1,7 @@
 import {
   FolderRegular,
   DocumentRegular,
-  DeleteRegular,
-  DualScreenUpdateRegular
+  ApprovalsApp24Regular
 } from "@fluentui/react-icons";
 import {
   DataGridBody,
@@ -17,12 +16,14 @@ import {
   Button,
   TableColumnId,
   DataGridCellFocusMode,
+  tokens,
 } from "@fluentui/react-components";
 import { IUserFileNodeModel } from "../../types/files";
 import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
 import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { useProgressBar } from "../progressBar/progressContext";
 import { translate } from "../../localization/localization";
+import { UserTrashFilesToolbar } from "../userFileTrashBar";
 
 
 
@@ -91,7 +92,8 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
           style={{
             fontWeight: "bold",
             fontStyle: "italic",
-          
+            color: tokens.colorBrandBackground,
+
           }}
           >
             {item.file.label}
@@ -114,7 +116,7 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
           <TableCellLayout
             style={{
               fontWeight: "bold",
-              color: 'red'
+              color: 'blue'
             }}
             >
             {item.lastUpdated.label}
@@ -155,10 +157,10 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         style={{
           width: "100%",
         
-          color: "orange",
+          color: "red",
   
         }}
-         icon={<DualScreenUpdateRegular />
+         icon={<ApprovalsApp24Regular />
          }
          onClick={async () => {
           await handleRestoreFile(item.file.id);
@@ -176,20 +178,9 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
       renderHeaderCell: () => {
         return "";
       },
-      renderCell: (item: Item) => {
+      renderCell: () => {
         return (
           <>
-           
-            <Button 
-            style={{color: 'red'}} 
-            aria-label="Delete" 
-            icon={<DeleteRegular 
-            onClick={async () => {
-              console.log('delete file', item.file.id, item.file.label);
-            }
-            }
-            />} 
-            />
           </>
         );
       },
@@ -197,24 +188,17 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
   ];
 
   return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <UserTrashFilesToolbar refreshFiles={props.refreshFiles} />
     <DataGrid
       items={parseNodeModelsToItems(props.trashedFiles)}
       columns={columns}
       sortable
-      selectionMode="multiselect"
       getRowId={(item) => item.file.label}
-      style={
-        {
-          width: "100%",
-          height: "100%",
-        }
-      }
-    >
+      style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}   
+       >
       <DataGridHeader>
         <DataGridRow
-          selectionCell={{
-            checkboxIndicator: { "aria-label": "Select all rows" },
-          }}
         >
           {({ renderHeaderCell }) => (
             <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
@@ -225,9 +209,6 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         {({ item, rowId }) => (
           <DataGridRow<Item>
             key={rowId}
-            selectionCell={{
-              checkboxIndicator: { "aria-label": "Select row" },
-            }}
           >
             {({ renderCell, columnId }) => (
               <DataGridCell focusMode={getCellFocusMode(columnId)}>
@@ -238,5 +219,6 @@ export const FilesTrashGrid = (props: FilesTrashGridProps) => {
         )}
       </DataGridBody>
     </DataGrid>
+    </div>
   );
 };

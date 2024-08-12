@@ -110,7 +110,10 @@ function App() {
   } else {
     if (driveMode) {
      return (
-      <FluentProvider theme={theme}>
+      <FluentProvider theme={theme} style={{
+        height: '100%',
+        width: '100%',
+      }}>
       <ProgressBarProvider>
       <Drive
       changeAuth={changeAuth}
