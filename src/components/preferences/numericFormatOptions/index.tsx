@@ -7,9 +7,10 @@ import { PrefsFormatDecimal } from '../prefsFormatdecimal';
 interface PreferencesOptionsSection {
     name: string;
     items: IPreferencesOptions[];
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: string) => void;
 }
 
-const NumericFormatSections: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
+const NumericFormatSections: React.FC<PreferencesOptionsSection> = ({ name, items, updatePrefsOptions}) => {
    
 
    
@@ -35,12 +36,17 @@ const NumericFormatSections: React.FC<PreferencesOptionsSection> = ({ name, item
                         item.nodename == 'checkbox' ?
                         <PrefsCheckBox
                         item={item}
+                        name={name}
+                        updatePrefsOptions={updatePrefsOptions}
+
                         />
                         :
                         item.nodename == 'formatdecimal' ?
 
                         <PrefsFormatDecimal
                         option={item}
+                        name={name}
+                        updatePrefsOptions={updatePrefsOptions}
                         /> 
                         :
         

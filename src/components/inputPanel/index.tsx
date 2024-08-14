@@ -25,6 +25,9 @@ import OptionSections from "./optionsSection";
 import PrefsTab from "../preferences/prefsTab";
 import { IOptionItem } from "../../types/options";
 import { AppNavigate } from "../../helpers/navigateHelper";
+import { IPreferencesOptions, IPreferencesSections } from "../preferences/types";
+import preferences from '../../helpers/preferences.json';
+import { PreferencesHelper } from "./preferencesHelper";
 
 export interface InputPanelProps {
   isOpen: boolean;
@@ -45,20 +48,81 @@ export const InputPanel = (props: InputPanelProps) => {
 
   const [optionElements, setOptionElements] = React.useState<IOptionElement[]>([]);
 
-  const [key, setKey] = React.useState(1);  
+  const [key, setKey] = React.useState(1);
+
+  const [mainPrefences, setMainPreferences] = React.useState<IPreferencesSections[]>(PreferencesHelper.parsePreferencesJson(preferences));
+
+  console.log('mainPrefences', mainPrefences);
+
+  const updatePrefsOptions = (sectionName: string, item: IPreferencesOptions, newValue: any) => {
+    console.log('UPDATE PREFS OPTIONS', sectionName, item, newValue);
+    let updatedMainPreferences;
+
+    if (sectionName == 'Statistics') {
+      if (item.nodename == 'list') {
+        updatedMainPreferences = mainPrefences.map((section) =>
+          section.name === sectionName ?
+            {
+              ...section,
+              items: section.items.map((currentItem) =>
+               PreferencesHelper.comparePreferenceOptions(item, currentItem) ?
+                  { ...currentItem, select: newValue } :
+                  currentItem
+              )
+            } :
+            section
+        );
+      }
+
+      if (item.nodename == 'numberint') {
+        updatedMainPreferences = mainPrefences.map((section) =>
+          section.name === sectionName ?
+            {
+              ...section,
+              items: section.items.map((currentItem) =>
+              PreferencesHelper.comparePreferenceOptions(item, currentItem) ?
+                  { ...currentItem, value: newValue } :
+                  currentItem
+              )
+            } :
+            section
+        );
+      }
+    } else {
+
+
+      updatedMainPreferences = mainPrefences.map((section) =>
+        section.name === sectionName ?
+          {
+            ...section,
+            items: section.items.map((currentItem) =>
+            PreferencesHelper.comparePreferenceOptions(item, currentItem) ?
+                { ...currentItem, value: newValue } :
+                currentItem
+            )
+          } :
+          section
+      );
+    }
+    console.log('UPDATED MAIN PREFS', updatedMainPreferences);
+    setMainPreferences(updatedMainPreferences ? updatedMainPreferences : []);
+
+  };
+
+
 
   //add option Elements
   const addOptionElement = (tabName: string, item: IOptionItem) => {
-      // Check if item exists
-      console.log('ADD OPTION ELEMENT', tabName, item);
+    // Check if item exists
+    console.log('ADD OPTION ELEMENT', tabName, item);
     let optionElement = optionElements.find((element) => element.tabName == tabName && element.item.name == item.name && element.item.nodename == item.nodename);
-  
+
     if (optionElement) {
       // Update item
-      const updatedOptionElements = optionElements.map((element) => 
-        element.tabName === tabName && element.item.name === item.name && element.item.nodename === item.nodename ? 
-        { ...element, item } : 
-        element
+      const updatedOptionElements = optionElements.map((element) =>
+        element.tabName === tabName && element.item.name === item.name && element.item.nodename === item.nodename ?
+          { ...element, item } :
+          element
       );
       setOptionElements(updatedOptionElements);
     } else {
@@ -73,9 +137,9 @@ export const InputPanel = (props: InputPanelProps) => {
     setSelectedTab(tabName);
     //update key to force re-render
     setKey(key + 1);
-   
+
   };
-  
+
 
   React.useEffect(() => {
     setOpen(props.isOpen);
@@ -100,7 +164,7 @@ export const InputPanel = (props: InputPanelProps) => {
         name: item.name ?? '',
         value: item.value ?? '',
         tab: item.tab ?? '',
-        actionEnabled: item['action-enabled'] ? item['action-enabled'] : undefined ,
+        actionEnabled: item['action-enabled'] ? item['action-enabled'] : undefined,
         indent: item.indent ?? undefined,
         valueex: item.valueex ?? 0,
         valueshort: item.valueshort ?? '',
@@ -113,33 +177,32 @@ export const InputPanel = (props: InputPanelProps) => {
 
 
   const parseOptionAdditionTabs = () => {
-    let optionTabs: {tab: string, items: IOptionItem[]}[] = [];
-    if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) 
-    {
-    let advancedwindow = JSON.parse(props.command.advancedwindow);
-    if (advancedwindow) {
-      const items: IOptionItem[] =parseAdwancedWindowItems(advancedwindow.items);
-      //loop for items
-      items.forEach((item) => {
-        if (item.tab &&  item.tab != '') {
-          let tab = optionTabs.find((tab) => tab.tab == item.tab);
-          if (tab) {
-            tab.items.push(item);
+    let optionTabs: { tab: string, items: IOptionItem[] }[] = [];
+    if (props && props.command && props.command.advancedwindow && props.command.advancedwindow.length > 0) {
+      let advancedwindow = JSON.parse(props.command.advancedwindow);
+      if (advancedwindow) {
+        const items: IOptionItem[] = parseAdwancedWindowItems(advancedwindow.items);
+        //loop for items
+        items.forEach((item) => {
+          if (item.tab && item.tab != '') {
+            let tab = optionTabs.find((tab) => tab.tab == item.tab);
+            if (tab) {
+              tab.items.push(item);
+            } else {
+              optionTabs.push({ tab: item.tab, items: [item] });
+            }
           } else {
-            optionTabs.push({tab: item.tab, items: [item]});
-        }
-      } else {
-        //add to default tab Options
-        let tab = optionTabs.find((tab) => tab.tab == 'Options');
-        if (tab) {
-          tab.items.push(item);
-        } else {
-          optionTabs.push({tab: 'Options', items: [item]});
-        }
+            //add to default tab Options
+            let tab = optionTabs.find((tab) => tab.tab == 'Options');
+            if (tab) {
+              tab.items.push(item);
+            } else {
+              optionTabs.push({ tab: 'Options', items: [item] });
+            }
+          }
+        });
       }
-      });
     }
-  }
     return optionTabs;
   };
 
@@ -154,14 +217,14 @@ export const InputPanel = (props: InputPanelProps) => {
     return (
       <>
         <Tab
-          style={{...tabStyle, color: 'black' }}
+          style={{ ...tabStyle, color: 'black' }}
           icon={<BracesVariable24Regular />} value="variables"
           onClick={() => setSelectedTab("variables")}
 
         >
           {translate('ui.tab.variables', 'Variables')}
         </Tab>
-       {
+        {
           optionTabs.map((optionTab) => {
             return (
               <Tab icon={<Options24Filled />}
@@ -173,7 +236,7 @@ export const InputPanel = (props: InputPanelProps) => {
               </Tab>
             );
           })
-       }
+        }
         <Tab icon={<ChatHelp24Regular />}
           value="help"
           onClick={() => setSelectedTab("Help")}
@@ -229,10 +292,10 @@ export const InputPanel = (props: InputPanelProps) => {
   //render Options
 
   const updateSelectedOptions = (selectedOptions: { tab: string, items: IOptionItem[] }) => {
-  
+
     // Create a copy of selectedOptions to avoid direct mutation
     const updatedSelectedOptions = { ...selectedOptions, items: [...selectedOptions.items] };
-  
+
     for (let i = 0; i < updatedSelectedOptions.items.length; i++) {
       for (let j = 0; j < optionElements.length; j++) {
         if (
@@ -244,10 +307,10 @@ export const InputPanel = (props: InputPanelProps) => {
         }
       }
     }
-  
+
     return updatedSelectedOptions;
   };
-  
+
 
   const renderOptions = (tabName: string): JSX.Element => {
     const options = parseOptionAdditionTabs();
@@ -256,7 +319,7 @@ export const InputPanel = (props: InputPanelProps) => {
       return <></>;
     }
 
-   
+
     selectedOptions = updateSelectedOptions(selectedOptions);
     if (!selectedOptions) {
       return <></>;
@@ -284,7 +347,7 @@ export const InputPanel = (props: InputPanelProps) => {
 
   return (
     <div
-    key={key}
+      key={key}
     >
       <OverlayDrawer
         open={open}
@@ -334,7 +397,7 @@ export const InputPanel = (props: InputPanelProps) => {
           selectedTab == "variables" ?
             renderVariables() :
             selectedTab == "Help" ?
-              <div style={{padding: '5px', margin: '5px'}}>
+              <div style={{ padding: '5px', margin: '5px' }}>
                 <div style={{ padding: '10px' }}>
                   <Text size={400}>
                     {props.command.description}
@@ -344,13 +407,13 @@ export const InputPanel = (props: InputPanelProps) => {
                     justifyContent: 'center',
                     marginTop: '10px',
                   }}>
-                    <Button 
-                    size="large" 
-                    style={{width: '100%'}}
-                    icon={<ChatHelp24Regular />}
-                    onClick={() => {
-                      AppNavigate.openHelpLink(props.command.commandIdOld);
-                    }}
+                    <Button
+                      size="large"
+                      style={{ width: '100%' }}
+                      icon={<ChatHelp24Regular />}
+                      onClick={() => {
+                        AppNavigate.openHelpLink(props.command.commandIdOld);
+                      }}
                     >
                       {translate('ui.button.help', 'Help')}
                     </Button>
@@ -358,18 +421,24 @@ export const InputPanel = (props: InputPanelProps) => {
                 </div>
 
               </div> :
-  
-              selectedTab == 'Preferences' ?
-              <div 
-              style={{
-                width: '100%',
 
-              }}
-              >
-               <PrefsTab />
-              </div>
-              : renderOptions(selectedTab)
-              
+              selectedTab == 'Preferences' ?
+                <div
+                  style={{
+                    width: '100%',
+
+                  }}
+                >
+                  <PrefsTab
+                    mainOptions={mainPrefences}
+                    outOptions={mainPrefences.find(section => section?.name === 'Output Options')?.items ?? []}
+                    numericFormatOptions={mainPrefences.find(section => section?.name === 'Numeric Format')?.items ?? []}
+                    statisticsOptions={mainPrefences.find(section => section?.name === 'Statistics')?.items ?? []}
+                    updatePrefsOptions={updatePrefsOptions}
+                  />
+                </div>
+                : renderOptions(selectedTab)
+
         }
 
       </OverlayDrawer>

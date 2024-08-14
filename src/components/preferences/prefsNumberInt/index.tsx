@@ -9,16 +9,19 @@ import { IPreferencesOptions } from "../types";
 
 interface IPrefNumberInt {
     option: IPreferencesOptions;
+    name: string;
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: string) => void;
 }
 
 export const PrefsNumberInt = (props: IPrefNumberInt) => {
-  const [value, setValue] = React.useState("0");
+  const [value, setValue] = React.useState(props.option.value ? props.option.value : '0');
 
   const onChange: InputProps["onChange"] = (_ev, data) => {
     // The controlled input pattern can be used for other purposes besides validation,
     // but validation is a useful example
     if (data.value.length <= 20) {
       setValue(data.value);
+      props.updatePrefsOptions(props.name, props.option, data.value);
     }
   };
 

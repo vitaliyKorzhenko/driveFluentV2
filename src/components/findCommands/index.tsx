@@ -40,6 +40,7 @@ export const FindCommandsInput = (props: FindCommandsInputProps) => {
     <div className={styles.root}>
       <div>
         <Input
+        style={{backgroundColor: 'white'}}
           contentAfter={
             <Button
             appearance="transparent"

@@ -8,6 +8,8 @@ import { IPreferencesOptions } from "../types";
 
 interface IPrefFontDecimal {
     option: IPreferencesOptions;
+    name: string;
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: string) => void;
 }
 
 export const PrefsFormatDecimal = (props: IPrefFontDecimal) => {
@@ -36,6 +38,7 @@ export const PrefsFormatDecimal = (props: IPrefFontDecimal) => {
         defaultValue={selectedValue}
         onChange={(_ev, data) => {
           setSelectedValue(data.value as string);
+          props.updatePrefsOptions(props.name, props.option, data.value);
         }}
       >
         {

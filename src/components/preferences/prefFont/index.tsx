@@ -5,6 +5,8 @@ import { IPreferencesOptions } from "../types";
 
 interface IPrefFontProps {
   option: IPreferencesOptions;
+  name: string;
+  updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: string) => void;
 }
 
 
@@ -22,6 +24,7 @@ export const PrefFont = (props: IPrefFontProps) => {
         defaultValue={selectedValue}
         onChange={(_ev, data) => {
           setSelectedValue(data.value as string);
+          props.updatePrefsOptions(props.name, props.option, data.value);
         }}
       >
         {

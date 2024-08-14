@@ -1,58 +1,42 @@
 import React from 'react';
-import preferences from '../../../helpers/preferences.json';
 import OptionSections from '../outputOptions';
-import { IPreferencesOptions } from '../types';
+import { IPreferencesOptions, IPreferencesSections } from '../types';
 import NumericFormatSections from '../numericFormatOptions';
 import PreferencesStatisticsSection from '../prefsStatistics';
 
 interface PreferencesOptionsSection {
-
+    mainOptions: IPreferencesSections[]; 
+    outOptions: IPreferencesOptions[];
+    numericFormatOptions: IPreferencesOptions[];
+    statisticsOptions: IPreferencesOptions[];
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: any) => void;
 }
 
-const PrefsTab: React.FC<PreferencesOptionsSection> = ({  }) => {
+const PrefsTab: React.FC<PreferencesOptionsSection> = ({outOptions, statisticsOptions, numericFormatOptions, updatePrefsOptions}) => {
 
-    const outOptions = preferences.sections.filter((section) => section.name == 'Output Options');
-
-    const numericFormatOptions = preferences.sections.filter((section) => section.name == 'Numeric Format');
-
-    const statisticsOptions = preferences.sections.filter((section) => section.name == 'Statistics');
-
-    console.log('outOptions', outOptions[0]);
-
-    function parseItemsFromJsonToPrefOptions(item: any): IPreferencesOptions[] {
-        return item.items.map((item: any) => {
-            return {
-                nodename: item.nodename ?? '',
-                value: item.value ?? '',
-                name: item.name ?? '',
-                select: item.select ?? '',
-                returnname: item.returnname ?? '',
-                min: item.min ?? 0,
-                max: item.max ?? 0,
-            }
-        })
-        
-    }
     return (
         <div style={{
             width: '100%',    
-            height: '500px',
+            height: '600px',
             overflowY: 'auto', // Enable vertical scrolling   
  
         }}>
            <OptionSections
-            name={outOptions[0].name}
-            items={parseItemsFromJsonToPrefOptions(outOptions[0])}
+            name={'Output Options'}
+            items={outOptions}
+            updatePrefsOptions={updatePrefsOptions}
            />
            <NumericFormatSections
-            name={numericFormatOptions[0].name}
-            items={parseItemsFromJsonToPrefOptions(numericFormatOptions[0])
-            }
+            name={'Numeric Format'}
+            items={numericFormatOptions}
+            updatePrefsOptions={updatePrefsOptions}
+
+            
             />
             <PreferencesStatisticsSection
-            name={statisticsOptions[0].name}
-            items={parseItemsFromJsonToPrefOptions(statisticsOptions[0])
-            }
+            name={'Statistics'}
+            items={statisticsOptions}
+            updatePrefsOptions={updatePrefsOptions}
             />
         </div>
     );
