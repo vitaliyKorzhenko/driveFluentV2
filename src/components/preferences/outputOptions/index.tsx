@@ -8,9 +8,10 @@ import { PrefsCheckBox } from '../prefsCheckBox';
 interface PreferencesOptionsSection {
     name: string;
     items: IPreferencesOptions[];
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: any) => void;
 }
 
-const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
+const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items, updatePrefsOptions }) => {
    
 
    
@@ -36,16 +37,22 @@ const OptionSections: React.FC<PreferencesOptionsSection> = ({ name, items }) =>
                         item.nodename == 'font' ?
                         <PrefFont 
                         option={item}
+                        name={name}
+                        updatePrefsOptions={updatePrefsOptions}
                         />
                         :
                         item.nodename == 'fontsize' ?
                         <PrefFontSize
                         option={item}
+                        name={name}
+                        updatePrefsOptions={updatePrefsOptions}
                         />
                         :
                         item.nodename == 'checkbox' ?
                         <PrefsCheckBox
                         item={item}
+                        name={name}
+                        updatePrefsOptions={updatePrefsOptions}
                         />
                         :
                         <></>

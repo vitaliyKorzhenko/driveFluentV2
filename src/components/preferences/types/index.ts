@@ -8,3 +8,8 @@ export interface IPreferencesOptions {
     max?: number;
 }
 
+export interface IPreferencesSections {
+    name: string;
+    items: IPreferencesOptions[];
+}
+

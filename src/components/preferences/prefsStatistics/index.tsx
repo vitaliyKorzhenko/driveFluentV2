@@ -7,9 +7,10 @@ import { PrefsNumberInt } from '../prefsNumberInt';
 interface PreferencesOptionsSection {
     name: string;
     items: IPreferencesOptions[];
+    updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: any) => void;
 }
 
-const PreferencesStatisticsSection: React.FC<PreferencesOptionsSection> = ({ name, items }) => {
+const PreferencesStatisticsSection: React.FC<PreferencesOptionsSection> = ({ name, items, updatePrefsOptions }) => {
 
 
 
@@ -34,12 +35,16 @@ const PreferencesStatisticsSection: React.FC<PreferencesOptionsSection> = ({ nam
                         item.nodename == 'list' ?
                             <PrefsList
                                 option={item}
+                                name={name}
+                                updatePrefsOptions={updatePrefsOptions}
                             />
                             :
                             item.nodename == 'numberint'
                                 ?
                                 <PrefsNumberInt
                                     option={item}
+                                    name={name} 
+                                    updatePrefsOptions={updatePrefsOptions}
                                 />
                                 :
 

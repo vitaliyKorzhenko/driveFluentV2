@@ -5,11 +5,14 @@ import { IPreferencesOptions } from "../types";
 
 interface IPrefsListProps {
   option: IPreferencesOptions;
+  name: string;
+  updatePrefsOptions: (sectionName: string, item: IPreferencesOptions, newValue: any) => void;
 }
 
 
 export const PrefsList = (props: IPrefsListProps) => {
-  const [selectedValue, setSelectedValue] = React.useState<string>(props.option.value);
+  const [values] = React.useState<string[]>(props.option.value.split('\\n'));
+  const [selectedValue, setSelectedValue] = React.useState<string>(props.option.select && props.option.select.length > 0 ?  props.option.select: values[0]);
 
 
   return (
@@ -22,10 +25,11 @@ export const PrefsList = (props: IPrefsListProps) => {
         defaultValue={selectedValue}
         onChange={(_ev, data) => {
           setSelectedValue(data.value as string);
+          props.updatePrefsOptions(props.name, props.option, data.value);
         }}
       >
         {
-          props.option.value.split('\\n').map((item: string) => {
+         values.map((item: string) => {
             return <option key={item} value={item}>{item}</option>
           })
         }

@@ -93,8 +93,8 @@ content={
           style={{
             color: 'white',
             backgroundColor: 'transparent',
-            border: 'none', // Убедитесь, что нет границ
-            outline: 'none', // Убираем стандартный фокус
+            border: 'none', 
+            outline: 'none',
           }}
  aria-label="ChangeLanguage" icon={<LocalLanguage24Regular style={{color: 'white'}} />} />
       </MenuTrigger>

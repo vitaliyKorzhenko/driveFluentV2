@@ -60,6 +60,28 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
     setOpenFeedback(false);
   }
 
+  const whiteButtonStyle = {
+    color: 'white',
+    backgroundColor: 'transparent',
+    border: 'none',
+    outline: 'none',
+    cursor: 'pointer',
+    ':hover': {
+      color: 'white',
+      backgroundColor: 'transparent',
+    },
+    ':active': {
+      color: 'white',
+      backgroundColor: 'transparent',
+    },
+    ':focus': {
+      color: 'white',
+      backgroundColor: 'transparent',
+    },
+  };
+  
+  const whiteIconStyle ={color: 'white'} 
+
   return (
     <Toolbar aria-label="Default" {...props} style={{ backgroundColor: tokens.colorBrandBackground }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -69,6 +91,7 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
           appearance="primary"
           icon={<Apps24Regular />}
           title="StatPlus.io"
+          style={whiteButtonStyle}
           onClick={() => {
             props.changeDriveMode && props.changeDriveMode();
           }}
@@ -76,13 +99,14 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
           {'StatPlus.io '}
           <Label style={{ color: 'red' }}>{'v' + VersionHelper.getVersion()}</Label>
         </ToolbarButton>
-        <Label color="white" weight="semibold"> {props.fileName}</Label>
+        <Label style={whiteButtonStyle} color="white" weight="semibold"> {props.fileName}</Label>
 
         <ToolbarButton
           aria-label="Feedback"
           onClick={openFeedbackDialog}
-          icon={<Question24Regular />}
+          icon={<Question24Regular style={whiteIconStyle} />}
           appearance="primary"
+          style={whiteButtonStyle}
 
         >
 
@@ -113,13 +137,13 @@ export const MainTopPanelSpread = (props: MainTopPanelProps) => {
         />
         <ToolbarButton
           aria-label="Dark Theme"
-          icon={<DarkTheme24Filled />}
+          icon={<DarkTheme24Filled  style={whiteIconStyle}/>}
           onClick={props.changeTheme}
-
+          style={whiteButtonStyle}
         />
           <Menu>
       <MenuTrigger>
-        <ToolbarButton aria-label="ChangeLanguage" icon={<LocalLanguage24Regular />} />
+        <ToolbarButton style={whiteButtonStyle} aria-label="ChangeLanguage" icon={<LocalLanguage24Regular style={whiteIconStyle}  />} />
       </MenuTrigger>
 
       <MenuPopover>
