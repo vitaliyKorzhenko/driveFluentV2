@@ -9,6 +9,7 @@ import {
   import type { ToolbarProps } from "@fluentui/react-components";
 import { CreateFileDialog } from "../createFileDialog";
 import { translate } from "../../localization/localization";
+import { ConstStyles } from "../constStyles";
  
   export interface UserFilesToolbarProps extends ToolbarProps {
     /**
@@ -39,6 +40,8 @@ import { translate } from "../../localization/localization";
       <ToolbarDivider />
       <CreateFileDialog
       refreshFiles={props.refreshFiles}
+      width={ConstStyles.createFileDialogWidth}
+      height={ConstStyles.createFileDialogHeight}
         
       />
     
