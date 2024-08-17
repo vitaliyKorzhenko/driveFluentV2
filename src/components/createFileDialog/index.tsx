@@ -12,6 +12,7 @@ import {
     Field,
     Input,
     useId,
+    
 } from "@fluentui/react-components";
 import {
     Add24Regular
@@ -24,20 +25,43 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         rowGap: "10px",
-    },
+    }
 });
 
 export interface CreateFileDialogProps {
     refreshFiles?: () => void;
+    width?: string;
+    height?: string;
 }
 
-export const CreateFileDialog = (props: CreateFileDialogProps) => {
+type ValidationState = "none" | "error" | "warning" | "success";
+
+
+export const  CreateFileDialog = (props: CreateFileDialogProps) => {
+    console.log('CreateFileDialog', props);
     const styles = useStyles();
     const inputId = useId("input");
     const [fileName, setFileName] = React.useState('');
+    const [validationMessage, setValidationMessage] = React.useState('');
+    const [validationState, setValidationState] = React.useState<ValidationState>('none');
     const [open, setOpen] = React.useState(false);
 
+
+        // Dynamic styles based on props
+        const dialogSurfaceStyle = {
+            width: props.width || "400px", // Fallback to default if width is not provided
+            height: props.height || "400px", // Fallback to auto if height is not provided
+        };
+    
     const handleSubmit = async (ev: React.FormEvent) => {
+        if (!fileName || fileName === '') {
+            setValidationMessage('File Name cannot be empty');
+            setValidationState('error');
+            return;
+        } else {
+            setValidationMessage('');
+            setValidationState('none');
+        }
         ev.preventDefault();
         try {
             const userId = UserProfile.getCurrentUserIdNumber();
@@ -58,6 +82,7 @@ export const CreateFileDialog = (props: CreateFileDialogProps) => {
             
         }
     };
+    
     return (
         <Dialog 
         modalType="non-modal"
@@ -71,31 +96,47 @@ export const CreateFileDialog = (props: CreateFileDialogProps) => {
                 icon={<Add24Regular/>}
                 onClick={() => setOpen(true)}
                 >
-                    {translate('drive.create', 'Create')}
+                    {translate('drive.createFile', 'Create File')}
                 </Button>
             </DialogTrigger>
-            <DialogSurface aria-describedby={undefined}>
-                <form onSubmit={handleSubmit}>
-                    <DialogBody>
+            <DialogSurface style={dialogSurfaceStyle} aria-describedby={undefined} >
+                    <DialogBody >
                         <DialogTitle>
-                            {translate('drive.create', 'Create file')}
+                            {translate('drive.createFile', 'Create File')}
                         </DialogTitle>
                         <DialogContent className={styles.content}>
-                            <Field required>
+                            <Field 
+                            validationMessage={validationMessage}
+                            validationState={validationState}
+                            
+                            >
                                 <Input 
                                 id={inputId} 
                                 value={fileName}
-                                onChange={(ev) => setFileName(ev.target.value)}
+                                onChange={(ev) => 
+                                    {
+                                    if (ev.target.value.length > 0) { 
+                                        setFileName(ev.target.value)
+                                        setValidationMessage('');
+                                       setValidationState('none');
+                                    } else {
+                                        setValidationMessage('File Name cannot be empty');
+                                        setValidationState('error');
+                                        setFileName('');
+                                    }
+                                }}
                                 />
                             </Field>
                         </DialogContent>
                         <DialogActions>
-                            <Button type="submit" appearance="primary">
+                            <Button  
+                            appearance="primary" 
+                            onClick={handleSubmit}
+                            >
                             {translate('ui.save', 'Save')}
                             </Button>
                         </DialogActions>
                     </DialogBody>
-                </form>
             </DialogSurface>
         </Dialog>
     );
