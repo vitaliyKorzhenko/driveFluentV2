@@ -29,6 +29,7 @@ import { ApiUserFilesNode } from "../../api/ApiUserFiles/userFiles";
 import { useProgressBar } from "../progressBar/progressContext";
 import { AuthorCell, Item, parseSizeToMbLabel } from "../../helpers/fileGridHelper";
 import { translate } from "../../localization/localization";
+import { ConstStyles } from "../constStyles";
 
 
 
@@ -303,6 +304,8 @@ export const FilesGrid = (props: FilesGridProps) => {
       fileId={fileId}
       fileName={fileName}
       closeDialog={closeEditFileDialog}
+      width={ConstStyles.editFileDialogWidth}
+      height={ConstStyles.editFileDialogHeight}
 
       />
     </>
