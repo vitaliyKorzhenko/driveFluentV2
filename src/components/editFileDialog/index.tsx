@@ -29,15 +29,21 @@ export interface EditFileDialogProps {
     fileId: number;
     fileName: string;
     closeDialog: () => void;
+    width?: string;
+    height?: string;
 }
+
+type ValidationState = "none" | "error" | "warning" | "success";
 
 export const EditFileDialog = (props: EditFileDialogProps) => {
     const styles = useStyles();
     const inputId = useId("input");
     const [fileId, setFileId] = React.useState<number>(props.fileId);
     const [fileName, setFileName] = React.useState(props.fileName);
-  
-      React.useEffect(() => {
+    const [validationMessage, setValidationMessage] = React.useState('');
+    const [validationState, setValidationState] = React.useState<ValidationState>('none');
+
+    React.useEffect(() => {
         setFileId(props.fileId);
         setFileName(props.fileName);
     }, [props.open]);
@@ -45,6 +51,11 @@ export const EditFileDialog = (props: EditFileDialogProps) => {
     const handleSubmit = async (ev: React.FormEvent) => {
         ev.preventDefault();
         try {
+            if (!fileName || fileName === '') {
+                setValidationMessage('File Name cannot be empty');
+                setValidationState('error');
+                return;
+            }
             const userId = UserProfile.getCurrentUserIdNumber();
             if (!userId) {
                 console.error("Error fetching files: User not found");
@@ -66,38 +77,60 @@ export const EditFileDialog = (props: EditFileDialogProps) => {
 
         } catch (error) {
             console.error("Error fetching files:", error);
-            
+
         }
     };
+
+    // Dynamic styles based on props
+    const dialogSurfaceStyle = {
+        width: props.width || "400px", // Fallback to default if width is not provided
+        height: props.height || "400px", // Fallback to auto if height is not provided
+    };
+
     return (
-        <Dialog 
-        modalType="non-modal"
-        open={props.open}
-        onOpenChange={(_ev, data) => 
-            data.open ? null : props.closeDialog()}
+        <Dialog
+            modalType="non-modal"
+            open={props.open}
+            onOpenChange={(_ev, data) =>
+                data.open ? null : props.closeDialog()}
         >
-            <DialogSurface aria-describedby={undefined}>
-                <form onSubmit={handleSubmit}>
+            <DialogSurface aria-describedby={undefined} style={dialogSurfaceStyle} >
                     <DialogBody>
                         <DialogTitle>
-                        {translate('drive.rename.file', 'Rename File')}
+                            {translate('drive.rename.file', 'Rename File')}
                         </DialogTitle>
                         <DialogContent className={styles.content}>
-                            <Field required>
-                                <Input 
-                                id={inputId} 
-                                value={fileName}
-                                onChange={(ev) => setFileName(ev.target.value)}
+                            <Field 
+                              validationMessage={validationMessage}
+                              validationState={validationState}
+                            >
+                                <Input
+                                    id={inputId}
+                                    value={fileName}
+                                    onChange={(ev) => 
+                                        {
+                                        if (ev.target.value.length > 0 ) { 
+                                            setFileName(ev.target.value)
+                                            setValidationMessage('');
+                                            setValidationState('none');
+                                        } else {
+                                            setValidationMessage('File Name cannot be empty');
+                                            setValidationState('error');
+                                            setFileName('');
+                                        }
+                                    }}
                                 />
                             </Field>
                         </DialogContent>
                         <DialogActions>
-                            <Button type="submit" appearance="primary">
-                               {translate('ui.save', 'Save')}
+                            <Button  
+                            appearance="primary"
+                            onClick={handleSubmit}
+                            >
+                                {translate('ui.save', 'Save')}
                             </Button>
                         </DialogActions>
                     </DialogBody>
-                </form>
             </DialogSurface>
         </Dialog>
     );

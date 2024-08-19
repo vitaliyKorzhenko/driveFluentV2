@@ -28,14 +28,23 @@ export interface FeedbackDialogProps {
     closeDialog: () => void;
 }
 
+type ValidationState = "none" | "error" | "warning" | "success";
+
+
 export const FeedbackDialog = (props: FeedbackDialogProps) => {
     const styles = useStyles();
     const [feedback, setFeedback] = React.useState("");
-    const handleSubmit = async(ev: React.FormEvent) => {
-        ev.preventDefault();
-        alert("form submitted!");
+    const [validationMessage, setValidationMessage] = React.useState('');
+    const [validationState, setValidationState] = React.useState<ValidationState>('none');
 
+    const handleSubmit = async () => {
+       
         try {
+            if (!feedback || feedback === '') {
+                setValidationMessage('Feedback cannot be empty');
+                setValidationState('error');
+                return;
+            }
             const userId = UserProfile.getCurrentUserId();
             if (!userId) {
                 console.error("Error fetching files: User not found");
@@ -71,17 +80,25 @@ export const FeedbackDialog = (props: FeedbackDialogProps) => {
         }}
         >
             <DialogSurface aria-describedby={undefined}>
-                <form onSubmit={handleSubmit}>
                     <DialogBody>
                         <DialogTitle>{translate('ui.label.feedback', 'Feedback')}</DialogTitle>
                         <DialogContent className={styles.content}>
-                            <Field required>
+                            <Field 
+                            validationMessage={validationMessage} 
+                            validationState={validationState}>
                                 <Textarea
                                     appearance="outline"
                                     placeholder="type here..."
                                     resize="both"
                                     value={feedback}
                                     onChange={(ev) => {
+                                        if (ev.target.value.length == 0) {
+                                            setValidationMessage('Feedback cannot be empty');
+                                            setValidationState('error');
+                                        } else {
+                                            setValidationMessage('');
+                                            setValidationState('none');
+                                        }
                                         setFeedback(ev.target.value);
                                     
                                     }}
@@ -89,12 +106,11 @@ export const FeedbackDialog = (props: FeedbackDialogProps) => {
                             </Field>
                         </DialogContent>
                         <DialogActions>
-                            <Button type="submit" appearance="primary">
+                            <Button  appearance="primary" onClick={handleSubmit}>
                                 {translate('ui.label.submit', 'Submit')}
                             </Button>
                         </DialogActions>
                     </DialogBody>
-                </form>
             </DialogSurface>
         </Dialog>
     );
